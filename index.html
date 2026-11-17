@@ -2,12 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>CodePatch STEM | South Brunswick High School</title>
-    <link rel="stylesheet" href="./codepatch-stem.bundle.css" />
+    <meta name="description" content="CodePatch STEM: accessible, student-led STEM education. Featured chapter: South Brunswick High School Vikings." />
+    <meta name="theme-color" content="#060a11" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- id matches what the bundle checks for, so it will not add its own font link -->
+    <link id="cp-viking-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Uncial+Antiqua&display=swap" />
+    <link rel="stylesheet" href="./norse-theme.css" />
+    <!-- Draws the tab icon with canvas, runs the intro loader and scroll effects -->
+    <script src="./norse-fx.js"></script>
   </head>
-  <body>
+  <body class="nx-loading">
+    <div id="nx-intro" role="status" aria-live="polite">
+      <div class="nx-gate nx-gate--l"></div>
+      <div class="nx-gate nx-gate--r"></div>
+      <div class="nx-core">
+        <div class="nx-ring">
+          <svg viewBox="-158 -158 316 316" aria-hidden="true">
+            <circle class="nx-orbit" r="138" stroke-dasharray="867" stroke-dashoffset="867" />
+            <path class="nx-kenaz" d="M14 -44 L-18 0 L14 44" />
+            <circle class="nx-ember" cx="34" cy="0" r="5" />
+          </svg>
+        </div>
+        <h1 class="nx-word">CodePatch STEM</h1>
+        <div class="nx-bar"><i></i></div>
+        <p class="nx-status">Kindling the forge…</p>
+        <button type="button" class="cp-btn cp-btn--gold nx-retry">Try again</button>
+      </div>
+    </div>
+    <canvas id="nx-sky" aria-hidden="true"></canvas>
     <div id="root"></div>
+    <noscript>CodePatch STEM needs JavaScript to run.</noscript>
     <script src="./codepatch-stem.bundle.js" charset="UTF-8"></script>
   </body>
 </html>
