@@ -1741,7 +1741,7 @@
             h('span', null, 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ'),
             h('span', null, 'South Brunswick High School • Featured chapter')
           ),
-          h('h1', { className: 'cp-hero__title', 'aria-label': 'Forge your path in STEM' }, ['Forge', 'your', 'path', 'in', 'STEM'].map((w, i) => h('span', { key: w, className: 'nx-w', 'aria-hidden': 'true', style: { '--w': i } }, w + (i < 4 ? '\u00a0' : '')))),
+          (() => { let n = 0; return h('h1', { className: 'cp-hero__title', 'aria-label': 'Forge your path in STEM' }, ['Forge', 'your', 'path', 'in', 'STEM'].map((w, i) => h('span', { key: w, className: 'nx-w', 'aria-hidden': 'true' }, Array.from(w).map((c, j) => h('span', { key: j, className: 'nx-c', style: { '--c': n++ } }, c)), i < 4 ? h('span', { className: 'nx-sp' }, '\u00a0') : null))); })(),
           h(
             'p',
             { className: 'cp-hero__desc cp-hero__stagger-3' },
