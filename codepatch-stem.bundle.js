@@ -42,7 +42,7 @@
   const STEM_DISCIPLINES = [
     {
       id: 'cs',
-      code: 'RUNE 01 // COMPUTER SCIENCE',
+      code: 'Kenaz, the torch',
       rune: 'ᚲ',
       name: 'Computer Science',
       short: 'Computer Science',
@@ -54,7 +54,7 @@
     },
     {
       id: 'math',
-      code: 'RUNE 02 // MATHEMATICS',
+      code: 'Mannaz, the thinker',
       rune: 'ᛗ',
       name: 'Mathematics',
       short: 'Mathematics',
@@ -66,7 +66,7 @@
     },
     {
       id: 'eng',
-      code: 'RUNE 03 // ENGINEERING',
+      code: 'Ehwaz, steady partnership',
       rune: 'ᛖ',
       name: 'Engineering',
       short: 'Engineering',
@@ -78,7 +78,7 @@
     },
     {
       id: 'tech',
-      code: 'RUNE 04 // TECHNOLOGY',
+      code: 'Tiwaz, the guiding star',
       rune: 'ᛏ',
       name: 'Technology',
       short: 'Technology',
@@ -90,7 +90,7 @@
     },
     {
       id: 'sci',
-      code: 'RUNE 05 // SCIENCE',
+      code: 'Sowilo, the sun',
       rune: 'ᛊ',
       name: 'Science',
       short: 'Science',
@@ -897,7 +897,7 @@
         {
           viewBox: '0 0 440 330',
           width: '100%',
-          height: 'auto',
+          style: { height: 'auto' },
           role: 'img',
           'aria-label': 'Interactive Norse Vegvisir STEM Compass Architecture Diagram',
         },
@@ -1038,7 +1038,7 @@
         { className: 'cp-visual-frame' },
         h(
           'svg',
-          { viewBox: '0 0 360 250', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Computer Science Compiler Telemetry' },
+          { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Computer Science Compiler Telemetry' },
           h(
             'defs',
             null,
@@ -1073,7 +1073,7 @@
         { className: 'cp-visual-frame' },
         h(
           'svg',
-          { viewBox: '0 0 360 250', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Mathematics Harmonic Geometry' },
+          { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Mathematics Harmonic Geometry' },
           h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
           h('line', { x1: 36, y1: 125, x2: 324, y2: 125, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1 }),
           h('line', { x1: 180, y1: 32, x2: 180, y2: 218, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1 }),
@@ -1105,7 +1105,7 @@
         { className: 'cp-visual-frame' },
         h(
           'svg',
-          { viewBox: '0 0 360 250', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Engineering Structural Truss Blueprint' },
+          { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Engineering Structural Truss Blueprint' },
           h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
           h(
             'g',
@@ -1134,7 +1134,7 @@
         { className: 'cp-visual-frame' },
         h(
           'svg',
-          { viewBox: '0 0 360 250', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Technology Distributed Mesh' },
+          { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Technology Distributed Mesh' },
           h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
           [
             { x1: 136, y1: 108, x2: 68, y2: 68 },
@@ -1164,7 +1164,7 @@
       { className: 'cp-visual-frame' },
       h(
         'svg',
-        { viewBox: '0 0 360 250', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Science Quantum Orbital Model' },
+        { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Science Quantum Orbital Model' },
         h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
         h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(-26 180 130)', fill: 'none', stroke: '#E5B83F', strokeWidth: 1.6, className: 'cp-svg-flow' }),
         h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(26 180 130)', fill: 'none', stroke: 'rgba(255,216,77,0.75)', strokeWidth: 1.6, className: 'cp-svg-flow' }),
@@ -1648,7 +1648,7 @@
         .cp-nav__toggle { display: inline-flex; }
       }
     `;
-    document.head.appendChild(style);
+    document.head.insertBefore(style, document.head.firstChild);
   }
 
   /* ==========================================================================
@@ -1689,9 +1689,10 @@
               type: 'button',
               className: 'cp-nav__toggle',
               'aria-expanded': menuOpen,
+              'aria-label': menuOpen ? 'Close menu' : 'Open menu',
               onClick: () => setMenuOpen((prev) => !prev),
             },
-            menuOpen ? 'CLOSE' : 'MENU'
+            h('span', { className: 'nx-burger', 'aria-hidden': 'true' }, h('i'), h('i'), h('i'))
           ),
           h(
             'nav',
@@ -1713,7 +1714,9 @@
                     item.label
                   )
                 )
-              )
+              ).concat([
+                h('li', { key: 'join' }, h('a', { href: '#contact', className: 'cp-btn cp-btn--gold nx-nav-cta', onClick: () => setMenuOpen(false) }, 'Join us')),
+              ])
             )
           )
         )
@@ -1736,9 +1739,9 @@
             'div',
             { className: 'cp-hero__badge cp-hero__stagger-1' },
             h('span', null, 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ'),
-            h('span', null, 'SOUTH BRUNSWICK HIGH SCHOOL • FEATURED CHAPTER')
+            h('span', null, 'South Brunswick High School • Featured chapter')
           ),
-          h('h1', { className: 'cp-hero__title cp-hero__stagger-2' }, 'FORGE YOUR PATH IN STEM'),
+          h('h1', { className: 'cp-hero__title', 'aria-label': 'Forge your path in STEM' }, ['Forge', 'your', 'path', 'in', 'STEM'].map((w, i) => h('span', { key: w, className: 'nx-w', 'aria-hidden': 'true', style: { '--w': i } }, w + (i < 4 ? '\u00a0' : '')))),
           h(
             'p',
             { className: 'cp-hero__desc cp-hero__stagger-3' },
@@ -1768,7 +1771,7 @@
           h(
             'div',
             null,
-            h('span', { className: 'cp-eyebrow' }, '01 // MISSION & COMPASS'),
+            h('span', { className: 'cp-eyebrow' }, 'Mission and compass'),
             h('h2', { className: 'cp-heading' }, 'Built by Students, Driven by Curiosity'),
             h(
               'p',
@@ -1827,7 +1830,7 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, '02 // FIVE RUNES OF DISCOVERY'),
+        h('span', { className: 'cp-eyebrow' }, 'Five runes of discovery'),
         h('h2', { className: 'cp-heading' }, 'STEM Dimensions'),
         h(
           'p',
@@ -1881,7 +1884,7 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, '03 // SOUTH BRUNSWICK VIKINGS'),
+        h('span', { className: 'cp-eyebrow' }, 'South Brunswick Vikings'),
         h('h2', { className: 'cp-heading' }, 'Our Chapter & Departments'),
         h(
           'p',
@@ -1952,7 +1955,7 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, '04 // CHAPTER ROSTER'),
+        h('span', { className: 'cp-eyebrow' }, 'Chapter roster'),
         h('h2', { className: 'cp-heading' }, 'Our Team'),
         h('p', { className: 'cp-lead' }, DEPARTMENT_DESCRIPTIONS[deptFilter] || DEPARTMENT_DESCRIPTIONS.All),
         h(
@@ -2019,7 +2022,7 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, '05 // GATHERINGS & WORKSHOPS'),
+        h('span', { className: 'cp-eyebrow' }, 'Gatherings and workshops'),
         h('h2', { className: 'cp-heading' }, 'Meetings & Events'),
         h(
           'p',
@@ -2107,7 +2110,7 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, '06 // QUESTIONS & CHAPTER INTEREST'),
+        h('span', { className: 'cp-eyebrow' }, 'Questions and chapter interest'),
         h('h2', { className: 'cp-heading' }, 'FAQ & Interest Wizard'),
         h(
           'div',
@@ -2273,18 +2276,35 @@
       { className: 'cp-footer' },
       h(
         'div',
-        { className: 'cp-container', style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '1rem', alignItems: 'center' } },
+        { className: 'cp-container nx-foot' },
         h(
           'div',
-          null,
-          h('strong', { style: { color: '#FFF', fontFamily: 'var(--cp-font-display)', letterSpacing: '0.05em' } }, 'CODEPATCH STEM'),
-          h('div', null, 'South Brunswick High School Vikings Chapter | Designed & Developed by Aakshat Hariharan')
+          { className: 'nx-foot__top' },
+          h(
+            'div',
+            { className: 'nx-foot__brand' },
+            h(VikingShieldLogo),
+            h('div', null, h('div', { className: 'nx-foot__name' }, 'CodePatch STEM'), h('div', { className: 'nx-foot__sub' }, 'South Brunswick High School Vikings Chapter'))
+          ),
+          h(
+            'nav',
+            { className: 'nx-foot__links', 'aria-label': 'Footer' },
+            NAV_ITEMS.map((item) => h('a', { key: item.id, href: '#' + item.id }, item.label)),
+            h('a', { href: SOCIAL_LINKS.instagram, target: '_blank', rel: 'noopener noreferrer' }, 'Instagram'),
+            h('a', { href: SOCIAL_LINKS.youtube, target: '_blank', rel: 'noopener noreferrer' }, 'YouTube')
+          )
         ),
         h(
           'div',
-          { style: { display: 'flex', gap: '1.35rem' } },
-          h('a', { href: SOCIAL_LINKS.instagram, target: '_blank', rel: 'noopener noreferrer', className: 'cp-nav__link' }, 'Instagram'),
-          h('a', { href: SOCIAL_LINKS.youtube, target: '_blank', rel: 'noopener noreferrer', className: 'cp-nav__link' }, 'YouTube')
+          { className: 'nx-credit' },
+          h('span', { className: 'nx-credit__label' }, 'Designed and developed by'),
+          h('strong', { className: 'nx-credit__name' }, 'Aakshat Hariharan')
+        ),
+        h(
+          'div',
+          { className: 'nx-foot__bottom' },
+          h('span', null, '\u00a9 ' + new Date().getFullYear() + ' CodePatch STEM. South Brunswick, New Jersey.'),
+          h('a', { href: '#home' }, 'Back to top')
         )
       )
     );
