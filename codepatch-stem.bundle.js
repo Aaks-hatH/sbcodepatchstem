@@ -16,7 +16,7 @@
   ]);
 
   const React = ReactMod.default || ReactMod;
-  const { useState, useEffect, useRef, useMemo, useCallback, createElement: h, Fragment } = React;
+  const { useState, useEffect, useRef, useMemo, createElement: h, Fragment } = React;
   const { createRoot } = ReactDOMClientMod.default || ReactDOMClientMod;
   const THREE = THREEMod;
 
@@ -39,7 +39,6 @@
     { id: 'contact', label: 'Contact' },
   ];
 
-  // Exact 5 STEM dimensions from the original site
   const STEM_DISCIPLINES = [
     {
       id: 'cs',
@@ -103,7 +102,6 @@
     },
   ];
 
-  // Exact 3-stage loop from original #path
   const PATH_STAGES = [
     {
       num: '01',
@@ -125,7 +123,6 @@
     },
   ];
 
-  // Exact stats & 4 department descriptions from original #chapter and #team
   const CHAPTER_STATS = [
     { value: '14', label: 'Members', sub: 'Student innovators at SBHS' },
     { value: '4', label: 'Departments', sub: 'Coding, Mathematics, Marketing & Science' },
@@ -163,7 +160,6 @@
     },
   ];
 
-  // EXACT 14-MEMBER ROSTER FROM ORIGINAL SITE (names, roles, and department tags preserved 1:1)
   const TEAM_ROSTER = [
     {
       id: 'member-01',
@@ -265,7 +261,6 @@
     },
   ];
 
-  // Exact Meetings & Events data from original #meetings and #events (preserving TBD values)
   const EVENTS_DATA = [
     {
       id: 'meeting-tbd',
@@ -289,7 +284,6 @@
     },
   ];
 
-  // Exact FAQ items from original #faq
   const FAQ_ITEMS = [
     {
       q: 'What is CodePatch STEM?',
@@ -363,7 +357,6 @@
 
     svg.innerHTML = `
       <defs>
-        <!-- Powerful Norse Stone-Carved Crumbling Headline Filter -->
         <filter id="cp-viking-crumble" x="-6%" y="-10%" width="112%" height="120%" color-interpolation-filters="sRGB">
           <feTurbulence type="fractalNoise" baseFrequency="0.065 0.11" numOctaves="4" seed="14" result="stoneNoise" />
           <feDisplacementMap in="SourceGraphic" in2="stoneNoise" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="chiseledText" />
@@ -376,7 +369,6 @@
           <feComposite in="chiseledText" in2="pitMask" operator="out" result="crumbledFinal" />
         </filter>
 
-        <!-- Subtle Weathered Rune Filter for Section Headings -->
         <filter id="cp-viking-crumble-soft" x="-4%" y="-8%" width="108%" height="116%" color-interpolation-filters="sRGB">
           <feTurbulence type="fractalNoise" baseFrequency="0.08 0.13" numOctaves="3" seed="9" result="softStone" />
           <feDisplacementMap in="SourceGraphic" in2="softStone" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
@@ -493,7 +485,6 @@
       const camera = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
       camera.position.set(0, 0, 11.8);
 
-      // Forged Gold & Obsidian Lighting
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.42);
       scene.add(ambientLight);
 
@@ -505,12 +496,10 @@
       amberRimLight.position.set(-6, -4, 4);
       scene.add(amberRimLight);
 
-      // Centerpiece Norse Relic Group
       const relicGroup = new THREE.Group();
       relicGroup.position.set(width > 940 ? 3.2 : 0, 0.1, 0);
       scene.add(relicGroup);
 
-      // 1. Outer Chiseled Icosahedral Shield Cage
       const cageGeo = new THREE.IcosahedronGeometry(2.45, 1);
       const cageMat = new THREE.MeshStandardMaterial({
         color: 0xe5b83f,
@@ -522,7 +511,6 @@
       const cageMesh = new THREE.Mesh(cageGeo, cageMat);
       relicGroup.add(cageMesh);
 
-      // 2. Inner Forged Gold Runestone Core (Octahedron + Crossbar Prism)
       const coreGeo = new THREE.OctahedronGeometry(1.12, 0);
       const coreMat = new THREE.MeshStandardMaterial({
         color: 0xffd84d,
@@ -533,7 +521,6 @@
       const coreMesh = new THREE.Mesh(coreGeo, coreMat);
       relicGroup.add(coreMesh);
 
-      // 3. Carved Elder Futhark Runic Band Cylinder
       const runeTex = createRuneRingTexture();
       const runeBandGeo = new THREE.CylinderGeometry(3.15, 3.15, 0.48, 64, 1, true);
       const runeBandMat = new THREE.MeshBasicMaterial({
@@ -546,7 +533,6 @@
       runeBand.rotation.set(0.38, 0, -0.22);
       relicGroup.add(runeBand);
 
-      // 4. Outer Hammered Gold Astrolabe Ring
       const outerRingGeo = new THREE.TorusGeometry(3.75, 0.022, 12, 120);
       const outerRingMat = new THREE.MeshStandardMaterial({
         color: 0xe5b83f,
@@ -558,7 +544,6 @@
       outerRing.rotation.set(-Math.PI / 3.2, 0.4, 0.2);
       relicGroup.add(outerRing);
 
-      // 5. Orbiting Obsidian & Gold Monolith Shards
       const shardGeo = new THREE.ConeGeometry(0.16, 0.46, 4);
       const shardMat = new THREE.MeshStandardMaterial({
         color: 0xffd84d,
@@ -582,7 +567,6 @@
         shards.push(shard);
       }
 
-      // 6. Golden Ember & Ash Particle Field
       const particleCount = 640;
       const positions = new Float32Array(particleCount * 3);
       const colors = new Float32Array(particleCount * 3);
@@ -716,7 +700,6 @@
       h(
         'svg',
         { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none' },
-        // Viking Shield Hexagon + Runic Bind-Code
         h('polygon', {
           points: '12,1.8 21,6.8 21,17.2 12,22.2 3,17.2 3,6.8',
           stroke: '#FFD84D',
@@ -774,15 +757,12 @@
             h('stop', { offset: '100%', stopColor: '#E5B83F' })
           )
         ),
-        // Outer Runic Compass Circles
         h('circle', { cx: 210, cy: 145, r: 112, stroke: 'rgba(229,184,63,0.3)', strokeWidth: 1.2, strokeDasharray: '6 4', fill: 'none' }),
         h('circle', { cx: 210, cy: 145, r: 76, stroke: 'rgba(255,216,77,0.2)', strokeWidth: 1, fill: 'none' }),
-        // 8-Point Norse Compass Spokes
         h('line', { x1: 210, y1: 33, x2: 210, y2: 257, stroke: 'rgba(229,184,63,0.35)', strokeWidth: 1.4 }),
         h('line', { x1: 98, y1: 145, x2: 322, y2: 145, stroke: 'rgba(229,184,63,0.35)', strokeWidth: 1.4 }),
         h('line', { x1: 132, y1: 67, x2: 288, y2: 223, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1.1 }),
         h('line', { x1: 288, y1: 67, x2: 132, y2: 223, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1.1 }),
-        // Center Shield Crest
         h('polygon', {
           points: '210,102 248,123.5 248,166.5 210,188 172,166.5 172,123.5',
           fill: 'rgba(229,184,63,0.18)',
@@ -791,7 +771,6 @@
         }),
         h('text', { x: 210, y: 141, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 10.5, fontFamily: 'Cinzel', fontWeight: 900 }, 'CODEPATCH'),
         h('text', { x: 210, y: 157, textAnchor: 'middle', fill: '#FFD84D', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'SBHS • STEM'),
-        // Cardinal Rune Nodes
         [
           { x: 210, y: 33, label: 'ᚲ CODING' },
           { x: 322, y: 145, label: 'ᛖ ENG // LAB' },
@@ -850,7 +829,7 @@
     if (type === 'cs') {
       return h(
         'svg',
-        { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
+        { viewBox: '0 0 320 220', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Computer Science Runestone Compiler' },
         h('rect', { x: 20, y: 20, width: 280, height: 180, rx: 12, fill: '#11100D', stroke: 'rgba(229,184,63,0.45)' }),
         h('text', { x: 38, y: 46, fill: '#E5B83F', fontSize: 11, fontFamily: 'JetBrains Mono' }, '// ᚲ RUNESTONE COMPILER'),
         h('text', { x: 38, y: 78, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'function forgeCode(steps) {'),
@@ -858,13 +837,13 @@
         h('text', { x: 54, y: 126, fill: '#A5A5A5', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'return execute(program);'),
         h('text', { x: 38, y: 150, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, '}'),
         h('rect', { x: 38, y: 166, width: 136, height: 18, rx: 4, fill: 'rgba(229,184,63,0.18)' }),
-        h('text', { x: 46, y: 179, fill: '#FFD84D', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'STATUS: FORGED ✓')
+        h('text', { x: 46, y: 179, fill: '#FFD84D', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'STATUS: FORGED')
       );
     }
     if (type === 'math') {
       return h(
         'svg',
-        { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
+        { viewBox: '0 0 320 220', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Mathematics Harmonic Geometry' },
         h('line', { x1: 30, y1: 110, x2: 290, y2: 110, stroke: 'rgba(255,255,255,0.2)', strokeWidth: 1 }),
         h('line', { x1: 160, y1: 20, x2: 160, y2: 200, stroke: 'rgba(255,255,255,0.2)', strokeWidth: 1 }),
         h('path', {
@@ -874,181 +853,447 @@
           strokeWidth: 2.5,
         }),
         h('circle', { cx: 160, cy: 110, r: 58, fill: 'none', stroke: 'rgba(229,184,63,0.45)', strokeWidth: 1.6, strokeDasharray: '5 4' }),
-        h('text', { x: 175, y: 38, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'ᛗ // PATTERN & PROOF')
+        h('text', { x: 175, y: 38, fill: '#FFD84D', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'ᛗ // PATTERN & PROOF')
       );
     }
     if (type === 'eng') {
       return h(
         'svg',
-        { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
+        { viewBox: '0 0 320 220', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Engineering Structural Truss' },
         h('polygon', { points: '160,34 226,72 226,148 160,186 94,148 94,72', fill: 'none', stroke: '#E5B83F', strokeWidth: 2 }),
         h('line', { x1: 94, y1: 72, x2: 226, y2: 148, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
         h('line', { x1: 226, y1: 72, x2: 94, y2: 148, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
         h('line', { x1: 160, y1: 34, x2: 160, y2: 186, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
         h('circle', { cx: 160, cy: 110, r: 18, fill: 'rgba(229,184,63,0.2)', stroke: '#FFD84D', strokeWidth: 2 }),
-        h('text', { x: 160, y: 208, textAnchor: 'middle', fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛖ // SKETCH • BUILD • TEST')
+        h('text', { x: 24, y: 28, fill: '#FFD84D', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'ᛖ // PROTOTYPE TRUSS')
       );
     }
-    if (type === 'sci') {
+    if (type === 'tech') {
       return h(
         'svg',
-        { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
-        h('ellipse', { cx: 160, cy: 110, rx: 95, ry: 36, transform: 'rotate(28 160 110)', fill: 'none', stroke: '#E5B83F', strokeWidth: 1.8 }),
-        h('ellipse', { cx: 160, cy: 110, rx: 95, ry: 36, transform: 'rotate(-28 160 110)', fill: 'none', stroke: '#FFD84D', strokeWidth: 1.8 }),
-        h('ellipse', { cx: 160, cy: 110, rx: 95, ry: 36, transform: 'rotate(90 160 110)', fill: 'none', stroke: 'rgba(255,255,255,0.35)', strokeWidth: 1.4 }),
-        h('circle', { cx: 160, cy: 110, r: 12, fill: '#FFD84D' })
+        { viewBox: '0 0 320 220', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Technology Systems Network' },
+        h('rect', { x: 118, y: 78, width: 84, height: 64, rx: 10, fill: 'rgba(229,184,63,0.16)', stroke: '#FFD84D', strokeWidth: 2 }),
+        h('text', { x: 160, y: 114, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'CORE // ᛏ'),
+        [
+          { x1: 118, y1: 92, x2: 56, y2: 54 },
+          { x1: 202, y1: 92, x2: 264, y2: 54 },
+          { x1: 118, y1: 128, x2: 56, y2: 166 },
+          { x1: 202, y1: 128, x2: 264, y2: 166 },
+        ].map((line, i) =>
+          h(
+            Fragment,
+            { key: i },
+            h('line', { x1: line.x1, y1: line.y1, x2: line.x2, y2: line.y2, stroke: '#E5B83F', strokeWidth: 1.5, strokeDasharray: '4 3' }),
+            h('circle', { cx: line.x2, cy: line.y2, r: 10, fill: '#12100C', stroke: '#FFD84D', strokeWidth: 1.8 })
+          )
+        ),
+        h('text', { x: 24, y: 26, fill: '#FFD84D', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'ᛏ // APPLIED SYSTEMS')
       );
     }
     return h(
       'svg',
-      { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
-      h('rect', { x: 105, y: 55, width: 110, height: 110, rx: 10, fill: 'rgba(229,184,63,0.12)', stroke: '#E5B83F', strokeWidth: 2 }),
-      [130, 160, 190].map((pos, idx) =>
-        h(
-          Fragment,
-          { key: idx },
-          h('line', { x1: pos, y1: 28, x2: pos, y2: 55, stroke: '#FFD84D', strokeWidth: 2 }),
-          h('line', { x1: pos, y1: 165, x2: pos, y2: 192, stroke: '#FFD84D', strokeWidth: 2 }),
-          h('line', { x1: 78, y1: pos - 50, x2: 105, y2: pos - 50, stroke: '#FFD84D', strokeWidth: 2 }),
-          h('line', { x1: 215, y1: pos - 50, x2: 242, y2: pos - 50, stroke: '#FFD84D', strokeWidth: 2 })
-        )
-      ),
-      h('circle', { cx: 160, cy: 110, r: 16, fill: 'none', stroke: '#FFD84D', strokeWidth: 2 })
+      { viewBox: '0 0 320 220', width: '100%', height: 'auto', role: 'img', 'aria-label': 'Science Empirical Orbital Model' },
+      h('ellipse', { cx: 160, cy: 110, rx: 92, ry: 34, transform: 'rotate(-24 160 110)', fill: 'none', stroke: '#E5B83F', strokeWidth: 1.6 }),
+      h('ellipse', { cx: 160, cy: 110, rx: 92, ry: 34, transform: 'rotate(24 160 110)', fill: 'none', stroke: 'rgba(255,216,77,0.65)', strokeWidth: 1.6 }),
+      h('ellipse', { cx: 160, cy: 110, rx: 34, ry: 88, fill: 'none', stroke: 'rgba(255,255,255,0.28)', strokeWidth: 1.2 }),
+      h('circle', { cx: 160, cy: 110, r: 14, fill: '#FFD84D' }),
+      h('text', { x: 24, y: 26, fill: '#FFD84D', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'ᛊ // EMPIRICAL INQUIRY')
     );
   }
 
   /* ==========================================================================
-     5. SECTION COMPONENTS
+     5. NORSE VIKING OBSIDIAN & FORGED GOLD STYLESHEET INJECTION
      ========================================================================== */
 
-  function Header({ activeSection, onNavigate }) {
-    const [scrolled, setScrolled] = useState(false);
+  function ensureVikingStyles() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('cp-viking-styles')) return;
+
+    if (!document.getElementById('cp-viking-fonts')) {
+      const fontLink = document.createElement('link');
+      fontLink.id = 'cp-viking-fonts';
+      fontLink.rel = 'stylesheet';
+      fontLink.href =
+        'https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap';
+      document.head.appendChild(fontLink);
+    }
+
+    const style = document.createElement('style');
+    style.id = 'cp-viking-styles';
+    style.textContent = `
+      :root {
+        --cp-bg: #080705;
+        --cp-bg-elev: #110F0B;
+        --cp-bg-card: rgba(20, 17, 12, 0.86);
+        --cp-gold: #E5B83F;
+        --cp-yellow: #FFD84D;
+        --cp-text: #F6F3EC;
+        --cp-muted: #A9A295;
+        --cp-border: rgba(229, 184, 63, 0.24);
+        --cp-border-strong: rgba(255, 216, 77, 0.55);
+        --cp-font-display: 'Cinzel', Georgia, serif;
+        --cp-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        --cp-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; background: var(--cp-bg); color: var(--cp-text); }
+      body {
+        margin: 0;
+        font-family: var(--cp-font-sans);
+        background:
+          radial-gradient(circle at 80% 12%, rgba(229, 184, 63, 0.11), transparent 42%),
+          radial-gradient(circle at 12% 45%, rgba(200, 150, 36, 0.07), transparent 48%),
+          var(--cp-bg);
+        color: var(--cp-text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .cp-container { width: min(1180px, calc(100% - 2.5rem)); margin: 0 auto; }
+      .cp-section { padding: 5.5rem 0; position: relative; border-top: 1px solid rgba(229, 184, 63, 0.1); }
+      .cp-eyebrow {
+        font-family: var(--cp-font-mono);
+        font-size: 0.76rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--cp-gold);
+        margin-bottom: 0.65rem;
+        display: block;
+      }
+      .cp-heading {
+        font-family: var(--cp-font-display);
+        font-size: clamp(1.9rem, 3.6vw, 2.85rem);
+        font-weight: 900;
+        line-height: 1.15;
+        margin: 0 0 1rem;
+        color: #FFFFFF;
+        letter-spacing: 0.03em;
+        filter: url(#cp-viking-crumble-soft);
+      }
+      .cp-lead { color: var(--cp-muted); font-size: 1.05rem; max-width: 64ch; margin: 0 0 2.25rem; }
+
+      .cp-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+      .cp-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+      .cp-nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(14px);
+        background: rgba(8, 7, 5, 0.84);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .cp-nav__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 4.5rem;
+        gap: 1rem;
+      }
+      .cp-brand { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; color: #FFF; }
+      .cp-brand__mark {
+        width: 2.4rem;
+        height: 2.4rem;
+        border-radius: 0.6rem;
+        display: grid;
+        place-items: center;
+        background: rgba(229, 184, 63, 0.1);
+        border: 1px solid var(--cp-border-strong);
+      }
+      .cp-brand__title { font-family: var(--cp-font-display); font-weight: 900; font-size: 1.02rem; letter-spacing: 0.06em; }
+      .cp-brand__sub { display: block; font-family: var(--cp-font-mono); font-size: 0.65rem; color: var(--cp-gold); letter-spacing: 0.1em; }
+      .cp-nav__links { display: flex; align-items: center; gap: 1.35rem; list-style: none; margin: 0; padding: 0; }
+      .cp-nav__link {
+        color: var(--cp-muted);
+        text-decoration: none;
+        font-size: 0.88rem;
+        font-weight: 500;
+        transition: color 0.2s ease;
+      }
+      .cp-nav__link:hover, .cp-nav__link.is-active { color: var(--cp-yellow); }
+      .cp-nav__toggle {
+        display: none;
+        background: transparent;
+        border: 1px solid var(--cp-border);
+        color: var(--cp-yellow);
+        padding: 0.45rem 0.75rem;
+        border-radius: 0.5rem;
+        font-family: var(--cp-font-mono);
+        cursor: pointer;
+      }
+
+      .cp-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1.45rem;
+        border-radius: 0.6rem;
+        font-family: var(--cp-font-mono);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+      .cp-btn:hover { transform: translateY(-2px); }
+      .cp-btn--gold {
+        background: linear-gradient(135deg, #E5B83F 0%, #FFD84D 100%);
+        color: #120E05;
+        box-shadow: 0 8px 26px rgba(229, 184, 63, 0.28);
+      }
+      .cp-btn--outline {
+        background: rgba(229, 184, 63, 0.08);
+        border-color: var(--cp-border-strong);
+        color: var(--cp-yellow);
+      }
+
+      .cp-hero {
+        position: relative;
+        min-height: calc(100vh - 4.5rem);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding: 4.5rem 0;
+      }
+      .cp-hero__canvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+      .cp-hero__content { position: relative; z-index: 2; max-width: 650px; }
+      .cp-hero__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.42rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(229, 184, 63, 0.12);
+        border: 1px solid var(--cp-border-strong);
+        font-family: var(--cp-font-mono);
+        font-size: 0.74rem;
+        color: var(--cp-yellow);
+        margin-bottom: 1.35rem;
+      }
+      .cp-hero__title {
+        font-family: var(--cp-font-display);
+        font-size: clamp(2.55rem, 5.4vw, 4.4rem);
+        font-weight: 900;
+        line-height: 1.06;
+        letter-spacing: 0.03em;
+        margin: 0 0 1.25rem;
+        background: linear-gradient(180deg, #FFFFFF 15%, #FFD84D 68%, #C89624 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: url(#cp-viking-crumble);
+      }
+      .cp-hero__desc { font-size: 1.12rem; color: #D7D1C5; margin: 0 0 2rem; max-width: 54ch; }
+      .cp-hero__actions { display: flex; flex-wrap: wrap; gap: 0.95rem; }
+
+      .cp-grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; align-items: center; }
+      .cp-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4rem; }
+      .cp-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
+      .cp-card, .cp-schematic-box {
+        background: var(--cp-bg-card);
+        border: 1px solid var(--cp-border);
+        border-radius: 1rem;
+        padding: 1.55rem;
+        box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+      }
+      .cp-card:hover { border-color: var(--cp-border-strong); }
+      .cp-rune-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.35rem;
+        height: 2.35rem;
+        border-radius: 0.55rem;
+        background: rgba(229, 184, 63, 0.14);
+        border: 1px solid var(--cp-border-strong);
+        color: var(--cp-yellow);
+        font-size: 1.15rem;
+        font-weight: 700;
+      }
+
+      .cp-tabs { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.75rem; }
+      .cp-tab {
+        padding: 0.62rem 1.05rem;
+        border-radius: 0.55rem;
+        background: var(--cp-bg-card);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-muted);
+        font-family: var(--cp-font-mono);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .cp-tab.is-active, .cp-tab:hover {
+        border-color: var(--cp-yellow);
+        color: var(--cp-yellow);
+        background: rgba(229, 184, 63, 0.14);
+      }
+      .cp-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.15rem; }
+      .cp-chip {
+        padding: 0.32rem 0.72rem;
+        border-radius: 999px;
+        font-family: var(--cp-font-mono);
+        font-size: 0.74rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--cp-border);
+        color: #EAE4D7;
+      }
+
+      .cp-member-card { display: flex; flex-direction: column; gap: 0.75rem; }
+      .cp-member-head { display: flex; align-items: center; gap: 0.85rem; }
+      .cp-avatar {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.7rem;
+        display: grid;
+        place-items: center;
+        font-family: var(--cp-font-display);
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: #120E05;
+        background: linear-gradient(135deg, #E5B83F, #FFD84D);
+        flex-shrink: 0;
+      }
+      .cp-badge-gold {
+        display: inline-block;
+        padding: 0.2rem 0.55rem;
+        border-radius: 0.35rem;
+        font-family: var(--cp-font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        background: rgba(255, 216, 77, 0.18);
+        border: 1px solid var(--cp-yellow);
+        color: var(--cp-yellow);
+      }
+
+      .cp-faq-item { border-bottom: 1px solid var(--cp-border); padding: 1rem 0; }
+      .cp-faq-btn {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        background: none;
+        border: none;
+        color: #FFF;
+        font-family: var(--cp-font-sans);
+        font-size: 1rem;
+        font-weight: 600;
+        text-align: left;
+        cursor: pointer;
+        padding: 0.35rem 0;
+      }
+      .cp-input, .cp-select, .cp-textarea {
+        width: 100%;
+        padding: 0.75rem 0.9rem;
+        border-radius: 0.55rem;
+        background: #0D0B08;
+        border: 1px solid var(--cp-border);
+        color: #FFF;
+        font-family: var(--cp-font-sans);
+        font-size: 0.92rem;
+        margin-top: 0.35rem;
+      }
+      .cp-input:focus, .cp-select:focus, .cp-textarea:focus { outline: none; border-color: var(--cp-yellow); }
+
+      .cp-footer {
+        border-top: 1px solid var(--cp-border);
+        padding: 3rem 0;
+        background: #060504;
+        color: var(--cp-muted);
+        font-size: 0.88rem;
+      }
+
+      @media (max-width: 940px) {
+        .cp-grid-2, .cp-grid-3, .cp-grid-4 { grid-template-columns: 1fr; }
+        .cp-nav__links { display: none; }
+        .cp-nav__links.is-open {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 4.5rem;
+          left: 0;
+          right: 0;
+          background: #0C0A07;
+          padding: 1.25rem;
+          border-bottom: 1px solid var(--cp-border);
+        }
+        .cp-nav__toggle { display: inline-flex; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  /* ==========================================================================
+     6. PAGE SECTIONS & INTERACTIVE COMPONENTS
+     ========================================================================== */
+
+  function Navbar({ activeId }) {
     const [menuOpen, setMenuOpen] = useState(false);
 
-    useEffect(() => {
-      const onScroll = () => setScrolled(window.scrollY > 28);
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
-      return () => window.removeEventListener('scroll', onScroll);
-    }, []);
-
-    const handleLinkClick = (e, id) => {
-      e.preventDefault();
-      setMenuOpen(false);
-      onNavigate(id);
-    };
-
     return h(
-      Fragment,
-      null,
-      h(
-        'header',
-        { className: `cp-header ${scrolled ? 'is-scrolled' : ''}` },
-        h(
-          'div',
-          { className: 'cp-container cp-header__inner' },
-          h(
-            'a',
-            {
-              href: '#home',
-              className: 'cp-brand',
-              onClick: (e) => handleLinkClick(e, 'home'),
-            },
-            h(VikingShieldLogo),
-            h(
-              'span',
-              null,
-              'CODEPATCH ',
-              h('span', { style: { color: 'var(--cp-gold)' } }, 'STEM'),
-              h('span', { className: 'cp-brand__sub' }, 'SBHS Vikings • NJ')
-            )
-          ),
-          h(
-            'nav',
-            { className: 'cp-nav', 'aria-label': 'Primary Navigation' },
-            NAV_ITEMS.map((item) =>
-              h(
-                'a',
-                {
-                  key: item.id,
-                  href: `#${item.id}`,
-                  className: `cp-nav__link ${activeSection === item.id ? 'is-active' : ''}`,
-                  onClick: (e) => handleLinkClick(e, item.id),
-                },
-                item.label
-              )
-            )
-          ),
-          h(
-            'div',
-            { className: 'cp-header__actions' },
-            h(
-              'button',
-              {
-                type: 'button',
-                className: 'cp-btn cp-btn--primary cp-btn--sm',
-                onClick: () => onNavigate('contact', 'Join a chapter'),
-              },
-              'Get Involved'
-            ),
-            h(
-              'button',
-              {
-                type: 'button',
-                className: 'cp-burger',
-                'aria-label': menuOpen ? 'Close navigation menu' : 'Open navigation menu',
-                'aria-expanded': menuOpen,
-                onClick: () => setMenuOpen((prev) => !prev),
-              },
-              h(
-                'svg',
-                { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: '#FFD84D', strokeWidth: 2 },
-                menuOpen
-                  ? h('path', { d: 'M18 6L6 18M6 6l12 12', strokeLinecap: 'round' })
-                  : h('path', { d: 'M4 7h16M4 12h16M4 17h16', strokeLinecap: 'round' })
-              )
-            )
-          )
-        )
-      ),
+      'header',
+      { className: 'cp-nav' },
       h(
         'div',
-        { className: `cp-mobile-drawer ${menuOpen ? 'is-open' : ''}`, 'aria-hidden': !menuOpen },
-        NAV_ITEMS.map((item) =>
+        { className: 'cp-container cp-nav__inner' },
+        h(
+          'a',
+          { href: '#home', className: 'cp-brand', onClick: () => setMenuOpen(false) },
+          h(VikingShieldLogo),
           h(
-            'a',
-            {
-              key: item.id,
-              href: `#${item.id}`,
-              className: activeSection === item.id ? 'is-active' : '',
-              onClick: (e) => handleLinkClick(e, item.id),
-            },
-            item.label
+            'span',
+            null,
+            h('span', { className: 'cp-brand__title' }, 'CODEPATCH STEM'),
+            h('span', { className: 'cp-brand__sub' }, 'SBHS VIKINGS CHAPTER')
           )
         ),
         h(
           'button',
           {
             type: 'button',
-            className: 'cp-btn cp-btn--primary',
-            style: { marginTop: '16px' },
-            onClick: () => {
-              setMenuOpen(false);
-              onNavigate('contact', 'Join a chapter');
-            },
+            className: 'cp-nav__toggle',
+            'aria-expanded': menuOpen,
+            onClick: () => setMenuOpen((prev) => !prev),
           },
-          'Get Involved →'
+          menuOpen ? 'CLOSE' : 'MENU'
+        ),
+        h(
+          'nav',
+          { 'aria-label': 'Primary Navigation' },
+          h(
+            'ul',
+            { className: 'cp-nav__links' + (menuOpen ? ' is-open' : '') },
+            NAV_ITEMS.map((item) =>
+              h(
+                'li',
+                { key: item.id },
+                h(
+                  'a',
+                  {
+                    href: '#' + item.id,
+                    className: 'cp-nav__link' + (activeId === item.id ? ' is-active' : ''),
+                    onClick: () => setMenuOpen(false),
+                  },
+                  item.label
+                )
+              )
+            )
+          )
         )
       )
     );
   }
 
-  function HeroSection({ reducedMotion, onNavigate }) {
+  function HeroSection({ reducedMotion }) {
     return h(
       'section',
-      { id: 'home', className: 'cp-hero cp-grid-bg' },
+      { id: 'home', className: 'cp-hero' },
       h(HeroThreeCanvas, { reducedMotion }),
-      h('div', { className: 'cp-hero__vignette' }),
       h(
         'div',
         { className: 'cp-container' },
@@ -1057,64 +1302,21 @@
           { className: 'cp-hero__content' },
           h(
             'div',
-            { className: 'cp-hero__pill' },
-            h('span', { className: 'cp-hero__dot' }),
-            'ᚠ South Brunswick High School Chapter • New Jersey ᛟ'
+            { className: 'cp-hero__badge' },
+            h('span', null, 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ'),
+            h('span', null, 'SOUTH BRUNSWICK HIGH SCHOOL • FEATURED CHAPTER')
           ),
-          h(
-            'h1',
-            { className: 'cp-hero__title' },
-            'WHERE CURIOSITY ',
-            h('span', { className: 'cp-hero__title-accent' }, 'BECOMES CREATION.')
-          ),
+          h('h1', { className: 'cp-hero__title' }, 'FORGE YOUR PATH IN STEM'),
           h(
             'p',
-            { className: 'cp-hero__subtitle' },
-            'Building the next generation of innovation — where code meets creativity, mathematics meets possibility, and students build the future.'
+            { className: 'cp-hero__desc' },
+            'Accessible STEM education powered by student collaboration across computer science, mathematics, engineering, technology, and scientific discovery.'
           ),
           h(
             'div',
-            { className: 'cp-hero__ctas' },
-            h(
-              'button',
-              {
-                type: 'button',
-                className: 'cp-btn cp-btn--primary',
-                onClick: () => onNavigate('contact', 'Join a chapter'),
-              },
-              'Get Involved →'
-            ),
-            h(
-              'button',
-              {
-                type: 'button',
-                className: 'cp-btn cp-btn--secondary',
-                onClick: () => onNavigate('stem'),
-              },
-              'Explore CodePatch STEM'
-            )
-          ),
-          h(
-            'div',
-            { className: 'cp-hero__telemetry' },
-            h(
-              'div',
-              null,
-              h('div', { className: 'cp-telemetry__val' }, '14', h('span', null, '')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'Chapter Members')
-            ),
-            h(
-              'div',
-              null,
-              h('div', { className: 'cp-telemetry__val' }, '04', h('span', null, '')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'SBHS Departments')
-            ),
-            h(
-              'div',
-              null,
-              h('div', { className: 'cp-telemetry__val' }, 'SBHS', h('span', null, '.NJ')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'South Brunswick Vikings')
-            )
+            { className: 'cp-hero__actions' },
+            h('a', { href: '#stem', className: 'cp-btn cp-btn--gold' }, 'Explore STEM Runes'),
+            h('a', { href: '#contact', className: 'cp-btn cp-btn--outline' }, 'Join the Chapter')
           )
         )
       )
@@ -1122,254 +1324,57 @@
   }
 
   function AboutSection() {
-    const pillars = [
-      {
-        num: '01 // ᚲ',
-        title: 'Accessible STEM Education',
-        desc: 'Promoting computer science, mathematics, engineering, and technology for every student.',
-      },
-      {
-        num: '02 // ᛗ',
-        title: 'Student Collaboration',
-        desc: 'Encouraging students to explore technology, develop technical knowledge, and build together.',
-      },
-      {
-        num: '03 // ᛖ',
-        title: 'Hands-On Workshops',
-        desc: 'Applying classroom concepts through practical activities, coding labs, and educational initiatives.',
-      },
-      {
-        num: '04 // ᛟ',
-        title: 'Viking Builder Spirit',
-        desc: 'Forging resilient problem-solvers at South Brunswick High School and beyond.',
-      },
-    ];
-
     return h(
       'section',
       { id: 'about', className: 'cp-section' },
       h(
         'div',
-        { className: 'cp-container cp-about__grid' },
-        h(
-          'div',
-          { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Our Mission'),
-          h('h2', { className: 'cp-h2' }, 'Forged to Build ', h('span', { className: 'cp-gold' }, 'The Future Together.')),
-          h(
-            'blockquote',
-            { className: 'cp-about__manifesto' },
-            '“CodePatch STEM promotes accessible STEM education through computer science, mathematics, engineering, technology, student collaboration, workshops, and educational initiatives.”'
-          ),
-          h(
-            'p',
-            { className: 'cp-lead' },
-            'The organization encourages students to explore technology, develop technical knowledge, collaborate with others, and apply their learning through practical activities.'
-          ),
-          h(
-            'div',
-            { className: 'cp-pillars-mini' },
-            pillars.map((p) =>
-              h(
-                'div',
-                { key: p.num, className: 'cp-mini-card' },
-                h('div', { className: 'cp-mini-card__num' }, p.num),
-                h('div', { className: 'cp-mini-card__title' }, p.title),
-                h('div', { className: 'cp-mini-card__desc' }, p.desc)
-              )
-            )
-          )
-        ),
-        h('div', { className: 'cp-reveal' }, h(AboutVegvisirSchematic))
-      )
-    );
-  }
-
-  function StemSection({ disciplines, reducedMotion }) {
-    const [activeId, setActiveId] = useState('cs');
-    const [forgeProgress, setForgeProgress] = useState(0);
-    const [forging, setForging] = useState(false);
-    const [forgedComplete, setForgedComplete] = useState(false);
-    const rafRef = useRef(null);
-    const lastTimeRef = useRef(0);
-
-    const active = useMemo(
-      () => disciplines.find((d) => d.id === activeId) || disciplines[0],
-      [disciplines, activeId]
-    );
-
-    useEffect(() => {
-      const step = (now) => {
-        const dt = Math.min(60, now - (lastTimeRef.current || now));
-        lastTimeRef.current = now;
-
-        setForgeProgress((prev) => {
-          const next = Math.min(1, Math.max(0, prev + (forging ? dt / 1500 : -dt / 700)));
-          if (next >= 1) {
-            setForgedComplete(true);
-            setForging(false);
-            return 1;
-          }
-          if (next > 0 && !forgedComplete) {
-            rafRef.current = requestAnimationFrame(step);
-          }
-          return next;
-        });
-      };
-
-      if (forging || (forgeProgress > 0 && !forgedComplete)) {
-        lastTimeRef.current = performance.now();
-        rafRef.current = requestAnimationFrame(step);
-      }
-
-      return () => {
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      };
-    }, [forging, forgedComplete]);
-
-    const startForge = () => {
-      if (reducedMotion) {
-        setForgeProgress(1);
-        setForgedComplete(true);
-        return;
-      }
-      if (forgedComplete) {
-        setForgedComplete(false);
-        setForgeProgress(0);
-      }
-      setForging(true);
-    };
-
-    const stopForge = () => {
-      setForging(false);
-    };
-
-    const activeStageCount = Math.min(3, Math.floor(forgeProgress * 3.0001));
-
-    return h(
-      'section',
-      { id: 'stem', className: 'cp-section cp-section--alt cp-grid-bg' },
-      h(
-        'div',
         { className: 'cp-container' },
         h(
           'div',
-          { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Dimensions of STEM'),
-          h('h2', { className: 'cp-h2' }, 'Explore ', h('span', { className: 'cp-gold' }, 'CodePatch STEM.')),
+          { className: 'cp-grid-2 cp-reveal' },
           h(
-            'p',
-            { className: 'cp-lead' },
-            'Accessible STEM education, built by students — computer science, mathematics, engineering, technology, and science explored together.'
-          )
+            'div',
+            null,
+            h('span', { className: 'cp-eyebrow' }, '01 // MISSION & COMPASS'),
+            h('h2', { className: 'cp-heading' }, 'Built by Students, Driven by Curiosity'),
+            h(
+              'p',
+              { className: 'cp-lead' },
+              'CodePatch STEM empowers high school students to explore technical disciplines hands-on, build real projects together, and expand educational opportunities across our school community.'
+            ),
+            h(
+              'div',
+              { style: { display: 'flex', flexWrap: 'wrap', gap: '0.85rem' } },
+              h(
+                'a',
+                { href: SOCIAL_LINKS.instagram, target: '_blank', rel: 'noopener noreferrer', className: 'cp-btn cp-btn--outline' },
+                'Instagram @sbcodepatch'
+              ),
+              h(
+                'a',
+                { href: SOCIAL_LINKS.youtube, target: '_blank', rel: 'noopener noreferrer', className: 'cp-btn cp-btn--outline' },
+                'YouTube @SBCPS-Chapter'
+              )
+            )
+          ),
+          h(AboutVegvisirSchematic)
         ),
         h(
           'div',
-          { className: 'cp-stem__tabs', role: 'tablist', 'aria-label': 'STEM Disciplines' },
-          disciplines.map((d) =>
+          { className: 'cp-grid-3 cp-reveal', style: { marginTop: '3.25rem' } },
+          PATH_STAGES.map((stage) =>
             h(
-              'button',
-              {
-                key: d.id,
-                type: 'button',
-                role: 'tab',
-                'aria-selected': activeId === d.id,
-                className: `cp-stem__tab ${activeId === d.id ? 'is-active' : ''}`,
-                onClick: () => setActiveId(d.id),
-              },
-              h('span', { style: { color: 'var(--cp-gold)' } }, d.rune),
-              d.short
-            )
-          )
-        ),
-        active &&
-          h(
-            'div',
-            { className: 'cp-stem__showcase cp-reveal', role: 'tabpanel' },
-            h(
-              'div',
-              null,
-              h('div', { className: 'cp-stem__code' }, active.code),
-              h('h3', { className: 'cp-stem__title' }, active.name),
-              h(
-                'p',
-                { style: { color: 'var(--cp-yellow)', fontWeight: 600, marginBottom: '12px' } },
-                active.tagline
-              ),
-              h('p', { className: 'cp-stem__desc' }, active.description),
+              'article',
+              { key: stage.num, className: 'cp-card' },
               h(
                 'div',
-                { className: 'cp-stem__topics' },
-                active.topics.map((topic) => h('span', { key: topic, className: 'cp-chip' }, topic))
-              )
-            ),
-            h('div', { className: 'cp-stem__visual' }, h(StemIllustration, { type: active.diagramType }))
-          ),
-        // Interactive 3-Stage Loop preserved from original #path
-        h(
-          'div',
-          { className: 'cp-forge-panel cp-reveal' },
-          h(
-            'div',
-            { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
-            h(
-              'div',
-              null,
-              h('div', { className: 'cp-eyebrow', style: { marginBottom: '6px' } }, 'Three Stages, One Loop'),
-              h(
-                'h3',
-                { style: { fontFamily: 'var(--cp-font-norse)', fontSize: '1.6rem', fontWeight: 900, textTransform: 'uppercase' } },
-                'Forge the CodePatch Loop'
-              )
-            ),
-            h('span', { className: 'cp-rune-strip' }, 'ᛚ • ᛒ • ᚲ')
-          ),
-          h(
-            'div',
-            { className: 'cp-stage-grid' },
-            PATH_STAGES.map((st, idx) => {
-              const done = idx < activeStageCount;
-              return h(
-                'article',
-                { key: st.num, className: `cp-stage-card ${done ? 'is-forged' : ''}` },
-                h(
-                  'div',
-                  { style: { display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--cp-font-mono)', fontSize: '0.75rem', color: 'var(--cp-gold)' } },
-                  h('span', null, `${st.num} // ${st.rune}`),
-                  h('span', null, done ? 'FORGED ✓' : 'QUEUED')
-                ),
-                h('h4', null, st.title),
-                h('p', { style: { fontSize: '0.9rem', color: 'var(--cp-muted)' } }, st.desc)
-              );
-            })
-          ),
-          h('div', { className: 'cp-forge-bar' }, h('div', { className: 'cp-forge-bar__fill', style: { width: `${Math.round(forgeProgress * 100)}%` } })),
-          h(
-            'div',
-            { style: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px' } },
-            h(
-              'button',
-              {
-                type: 'button',
-                className: 'cp-btn cp-btn--primary cp-btn--sm',
-                onPointerDown: startForge,
-                onPointerUp: stopForge,
-                onPointerLeave: stopForge,
-                onPointerCancel: stopForge,
-                onClick: () => {
-                  if (reducedMotion) startForge();
-                },
-              },
-              forgedComplete ? 'Patch Forged ✓ (Hold Again)' : 'Hold to Forge the Patch'
-            ),
-            h(
-              'span',
-              { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.82rem', color: 'var(--cp-muted)' }, role: 'status' },
-              forgedComplete
-                ? 'All three stages complete. Built together.'
-                : forging
-                ? 'Forging the patch...'
-                : 'Idle. Press and hold the button to ignite all three stages.'
+                { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' } },
+                h('span', { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.78rem', color: 'var(--cp-gold)' } }, 'STAGE ' + stage.num),
+                h('span', { className: 'cp-rune-pill' }, stage.rune)
+              ),
+              h('h3', { style: { fontFamily: 'var(--cp-font-display)', margin: '0 0 0.5rem', fontSize: '1.25rem' } }, stage.title),
+              h('p', { style: { margin: 0, color: 'var(--cp-muted)', fontSize: '0.94rem' } }, stage.desc)
             )
           )
         )
@@ -1377,712 +1382,524 @@
     );
   }
 
-  function ChapterSection({ stats, onNavigate }) {
+  function StemSection({ disciplines }) {
+    const [selectedId, setSelectedId] = useState(disciplines[0].id);
+    const active = useMemo(
+      () => disciplines.find((d) => d.id === selectedId) || disciplines[0],
+      [disciplines, selectedId]
+    );
+
+    return h(
+      'section',
+      { id: 'stem', className: 'cp-section' },
+      h(
+        'div',
+        { className: 'cp-container cp-reveal' },
+        h('span', { className: 'cp-eyebrow' }, '02 // FIVE RUNES OF DISCOVERY'),
+        h('h2', { className: 'cp-heading' }, 'STEM Dimensions'),
+        h(
+          'p',
+          { className: 'cp-lead' },
+          'Select any discipline rune below to inspect how South Brunswick High School Vikings apply theory to practical experimentation.'
+        ),
+        h(
+          'div',
+          { className: 'cp-tabs', role: 'tablist', 'aria-label': 'STEM Disciplines' },
+          disciplines.map((item) =>
+            h(
+              'button',
+              {
+                key: item.id,
+                type: 'button',
+                role: 'tab',
+                'aria-selected': item.id === active.id,
+                className: 'cp-tab' + (item.id === active.id ? ' is-active' : ''),
+                onClick: () => setSelectedId(item.id),
+              },
+              item.rune + ' ' + item.short
+            )
+          )
+        ),
+        h(
+          'div',
+          { className: 'cp-card cp-grid-2' },
+          h(
+            'div',
+            null,
+            h('span', { className: 'cp-eyebrow' }, active.code),
+            h('h3', { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.75rem', margin: '0 0 0.65rem' } }, active.name),
+            h('p', { style: { color: 'var(--cp-yellow)', fontWeight: 600, margin: '0 0 0.85rem' } }, active.tagline),
+            h('p', { style: { color: 'var(--cp-muted)', margin: 0 } }, active.description),
+            h(
+              'div',
+              { className: 'cp-chips' },
+              active.topics.map((topic) => h('span', { key: topic, className: 'cp-chip' }, topic))
+            )
+          ),
+          h('div', null, h(StemIllustration, { type: active.diagramType }))
+        )
+      )
+    );
+  }
+
+  function ChapterSection({ stats }) {
     return h(
       'section',
       { id: 'chapter', className: 'cp-section' },
       h(
         'div',
-        { className: 'cp-container' },
+        { className: 'cp-container cp-reveal' },
+        h('span', { className: 'cp-eyebrow' }, '03 // SOUTH BRUNSWICK VIKINGS'),
+        h('h2', { className: 'cp-heading' }, 'Our Chapter & Departments'),
         h(
-          'div',
-          { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Featured Chapter • South Brunswick, NJ'),
-          h('h2', { className: 'cp-h2' }, 'South Brunswick ', h('span', { className: 'cp-gold' }, 'High School Vikings.')),
-          h(
-            'p',
-            { className: 'cp-lead' },
-            'Our featured chapter, based in South Brunswick, New Jersey, USA. Students run it, and it is organized into Coding, Mathematics, Marketing, and Science departments.'
-          )
+          'p',
+          { className: 'cp-lead' },
+          'Organized into four specialized student departments working together at South Brunswick High School in New Jersey.'
         ),
         h(
           'div',
-          { className: 'cp-stats-row cp-reveal' },
-          stats.map((st, idx) =>
+          { className: 'cp-grid-3', style: { marginBottom: '2.25rem' } },
+          stats.map((stat) =>
             h(
               'div',
-              { key: idx, className: 'cp-stat-card' },
-              h('div', { className: 'cp-stat-card__num' }, st.value),
-              h('div', { className: 'cp-stat-card__label' }, st.label),
-              h('div', { className: 'cp-stat-card__sub' }, st.sub)
+              { key: stat.label, className: 'cp-card', style: { textAlign: 'center' } },
+              h(
+                'div',
+                {
+                  style: {
+                    fontFamily: 'var(--cp-font-display)',
+                    fontSize: '2.65rem',
+                    fontWeight: 900,
+                    color: 'var(--cp-yellow)',
+                    lineHeight: 1.1,
+                  },
+                },
+                stat.value
+              ),
+              h('div', { style: { fontWeight: 700, marginTop: '0.35rem' } }, stat.label),
+              h('div', { style: { fontSize: '0.84rem', color: 'var(--cp-muted)', marginTop: '0.2rem' } }, stat.sub)
             )
           )
         ),
         h(
           'div',
-          { className: 'cp-dept-grid cp-reveal' },
+          { className: 'cp-grid-4' },
           CHAPTER_DEPARTMENTS.map((dept) =>
             h(
               'div',
-              { key: dept.tag, className: 'cp-dept-card' },
-              h('div', { className: 'cp-dept-card__tag' }, dept.tag),
-              h('h3', { className: 'cp-dept-card__title' }, dept.title),
-              h('p', { className: 'cp-dept-card__desc' }, dept.desc)
+              { key: dept.title, className: 'cp-card' },
+              h('span', { className: 'cp-eyebrow' }, dept.tag),
+              h('h3', { style: { fontFamily: 'var(--cp-font-display)', margin: '0 0 0.45rem', fontSize: '1.15rem' } }, dept.title),
+              h('p', { style: { margin: 0, color: 'var(--cp-muted)', fontSize: '0.9rem' } }, dept.desc)
             )
-          )
-        ),
-        h(
-          'div',
-          {
-            className: 'cp-stone-card cp-reveal',
-            style: {
-              marginTop: '24px',
-              padding: '24px 28px',
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '16px',
-              borderColor: 'var(--cp-border-gold)',
-            },
-          },
-          h(
-            'div',
-            null,
-            h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, color: 'var(--cp-yellow)' } }, 'SBHS Chapter • Chapter President: Srijeet Ghosh'),
-            h('div', { style: { fontSize: '0.92rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Want to start a chapter at your school? This directory is built to add more chapters.')
-          ),
-          h(
-            'button',
-            {
-              type: 'button',
-              className: 'cp-btn cp-btn--secondary cp-btn--sm',
-              onClick: () => onNavigate('contact', 'Start a chapter at my school'),
-            },
-            'Tell Us About Your School →'
           )
         )
       )
     );
   }
 
-  function MemberAvatar({ member, large }) {
-    return h(
-      'div',
-      { className: `cp-avatar ${large ? 'cp-avatar--lg' : ''}`, 'aria-hidden': 'true' },
-      getInitials(member.name)
-    );
-  }
-
   function TeamSection({ roster }) {
-    const [selectedDept, setSelectedDept] = useState('All');
-    const [query, setQuery] = useState('');
+    const [deptFilter, setDeptFilter] = useState('All');
+    const filterKeys = ['All', 'Coding', 'Mathematics', 'Marketing', 'Science'];
 
-    const president = useMemo(() => roster.find((m) => m.isPresident) || roster[0], [roster]);
-
-    const filterTabs = ['All', 'Coding', 'Mathematics', 'Marketing', 'Science'];
-
-    const filteredMembers = useMemo(() => {
-      const q = query.trim().toLowerCase();
-      return roster.filter((member) => {
-        const matchesDept = selectedDept === 'All' || member.departments.includes(selectedDept);
-        const matchesQuery =
-          !q ||
-          member.name.toLowerCase().includes(q) ||
-          member.roles.some((r) => r.toLowerCase().includes(q)) ||
-          member.departments.some((d) => d.toLowerCase().includes(q)) ||
-          (member.departments.length === 0 && 'leadership'.includes(q));
-        return matchesDept && matchesQuery;
-      });
-    }, [roster, selectedDept, query]);
-
-    const liveStatusText = useMemo(() => {
-      if (selectedDept === 'All' && !query.trim()) {
-        return DEPARTMENT_DESCRIPTIONS.All;
-      }
-      const base = DEPARTMENT_DESCRIPTIONS[selectedDept] || '';
-      const countLabel = filteredMembers.length === 1 ? '1 member.' : `${filteredMembers.length} members.`;
-      return `${base} Showing ${countLabel}`.trim();
-    }, [selectedDept, query, filteredMembers.length]);
+    const visibleMembers = useMemo(() => {
+      if (deptFilter === 'All') return roster;
+      return roster.filter((m) => m.departments.includes(deptFilter));
+    }, [roster, deptFilter]);
 
     return h(
       'section',
-      { id: 'team', className: 'cp-section cp-section--alt' },
+      { id: 'team', className: 'cp-section' },
       h(
         'div',
-        { className: 'cp-container' },
+        { className: 'cp-container cp-reveal' },
+        h('span', { className: 'cp-eyebrow' }, '04 // CHAPTER ROSTER'),
+        h('h2', { className: 'cp-heading' }, 'Our Team'),
+        h('p', { className: 'cp-lead' }, DEPARTMENT_DESCRIPTIONS[deptFilter] || DEPARTMENT_DESCRIPTIONS.All),
         h(
           'div',
-          { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'The People Behind The Chapter'),
-          h('h2', { className: 'cp-h2' }, 'Fourteen Members, ', h('span', { className: 'cp-gold' }, 'Four Departments.')),
-          h(
-            'p',
-            { className: 'cp-lead' },
-            'Meet the student leaders and builders of the South Brunswick High School CodePatch STEM chapter. Filter by department or search by name and role.'
+          { className: 'cp-tabs' },
+          filterKeys.map((key) =>
+            h(
+              'button',
+              {
+                key,
+                type: 'button',
+                className: 'cp-tab' + (deptFilter === key ? ' is-active' : ''),
+                onClick: () => setDeptFilter(key),
+              },
+              key
+            )
           )
         ),
-        president &&
-          h(
-            'div',
-            { className: 'cp-president-card cp-reveal' },
-            h(MemberAvatar, { member: president, large: true }),
+        h(
+          'div',
+          { className: 'cp-grid-3' },
+          visibleMembers.map((member) =>
             h(
-              'div',
-              null,
-              h('div', { className: 'cp-badge-gold', style: { marginBottom: '12px' } }, 'ᛟ Featured Chapter President'),
-              h(
-                'h3',
-                { className: 'cp-crumble-subtle', style: { fontSize: '1.8rem', fontWeight: 900 } },
-                president.name
-              ),
+              'article',
+              { key: member.id, className: 'cp-card cp-member-card' },
               h(
                 'div',
-                { style: { color: 'var(--cp-gold)', fontWeight: 600, margin: '6px 0 8px' } },
-                `${president.roles.join(' • ')} — South Brunswick High School Chapter`
+                { className: 'cp-member-head' },
+                h('div', { className: 'cp-avatar' }, getInitials(member.name)),
+                h(
+                  'div',
+                  null,
+                  h('h3', { style: { margin: 0, fontSize: '1.05rem', fontWeight: 700 } }, member.name),
+                  member.isPresident
+                    ? h('span', { className: 'cp-badge-gold', style: { marginTop: '0.25rem' } }, 'CHAPTER PRESIDENT')
+                    : null
+                )
               ),
-              h(
-                'p',
-                { style: { color: 'var(--cp-muted)', maxWidth: '640px', fontSize: '0.95rem' } },
-                'Leading the SBHS chapter across Coding, Mathematics, Marketing, and Science initiatives.'
-              )
-            ),
-            h(
-              'div',
-              { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.76rem', color: 'var(--cp-muted)' } },
-              'SOUTH BRUNSWICK, NJ',
-              h('div', { style: { color: 'var(--cp-yellow)', marginTop: '4px' } }, 'LEADERSHIP')
-            )
-          ),
-        h(
-          'div',
-          { className: 'cp-team-controls cp-reveal' },
-          h(
-            'div',
-            { className: 'cp-filter-pills', role: 'group', 'aria-label': 'Filter by department' },
-            filterTabs.map((dept) => {
-              const count =
-                dept === 'All'
-                  ? roster.length
-                  : roster.filter((m) => m.departments.includes(dept)).length;
-              return h(
-                'button',
-                {
-                  key: dept,
-                  type: 'button',
-                  className: `cp-filter-pill ${selectedDept === dept ? 'is-active' : ''}`,
-                  onClick: () => setSelectedDept(dept),
-                },
-                `${dept} (${count})`
-              );
-            })
-          ),
-          h(
-            'div',
-            { className: 'cp-search-box' },
-            h(
-              'svg',
-              { width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2 },
-              h('circle', { cx: 11, cy: 11, r: 7 }),
-              h('path', { d: 'M20 20l-3.5-3.5', strokeLinecap: 'round' })
-            ),
-            h('input', {
-              type: 'search',
-              value: query,
-              onChange: (e) => setQuery(e.target.value),
-              placeholder: 'Search member, role, or department...',
-              'aria-label': 'Search chapter members',
-            })
-          )
-        ),
-        h('div', { className: 'cp-dept-caption', 'aria-live': 'polite' }, liveStatusText),
-        filteredMembers.length === 0
-          ? h(
-              'div',
-              {
-                style: {
-                  textAlign: 'center',
-                  padding: '48px 20px',
-                  background: 'var(--cp-card)',
-                  borderRadius: '16px',
-                  border: '1px solid var(--cp-border)',
-                  color: 'var(--cp-muted)',
-                },
-              },
-              'No members match that search. ',
-              h(
-                'button',
-                {
-                  type: 'button',
-                  onClick: () => {
-                    setSelectedDept('All');
-                    setQuery('');
-                  },
-                  style: {
-                    background: 'none',
-                    border: 'none',
-                    color: 'var(--cp-yellow)',
-                    textDecoration: 'underline',
-                    cursor: 'pointer',
-                  },
-                },
-                'Reset filters'
-              )
-            )
-          : h(
-              'div',
-              { className: 'cp-team-grid' },
-              filteredMembers.map((member) => {
-                const displayRoles = member.roles.length ? member.roles : ['Member'];
-                const displayTags = member.departments.length ? member.departments : ['Leadership'];
-                return h(
-                  'article',
-                  { key: member.id, className: 'cp-member-card' },
-                  h(
+              member.roles.length > 0
+                ? h(
                     'div',
-                    { className: 'cp-member-card__top' },
-                    h(MemberAvatar, { member, large: false }),
-                    h(
-                      'div',
-                      null,
-                      h('h3', { className: 'cp-member-card__name' }, member.name),
-                      h(
-                        'div',
-                        { className: 'cp-member-card__roles' },
-                        displayRoles.map((r) => h('div', { key: r, className: 'cp-member-card__role' }, r))
-                      )
-                    )
-                  ),
-                  h(
-                    'div',
-                    { className: 'cp-member-card__tags' },
-                    displayTags.map((tag) => h('span', { key: tag, className: 'cp-member-card__dept' }, tag))
+                    { style: { fontSize: '0.86rem', color: 'var(--cp-yellow)', fontWeight: 600 } },
+                    member.roles.join(' • ')
                   )
-                );
-              })
+                : h('div', { style: { fontSize: '0.84rem', color: 'var(--cp-muted)' } }, 'Chapter Member'),
+              member.departments.length > 0
+                ? h(
+                    'div',
+                    { className: 'cp-chips', style: { marginTop: 'auto' } },
+                    member.departments.map((d) => h('span', { key: d, className: 'cp-chip' }, d))
+                  )
+                : null
             )
+          )
+        )
       )
     );
   }
 
-  function EventsSection({ events, onNavigate }) {
+  function EventsSection({ events }) {
     return h(
       'section',
       { id: 'events', className: 'cp-section' },
       h(
         'div',
-        { className: 'cp-container' },
+        { className: 'cp-container cp-reveal' },
+        h('span', { className: 'cp-eyebrow' }, '05 // GATHERINGS & WORKSHOPS'),
+        h('h2', { className: 'cp-heading' }, 'Meetings & Events'),
         h(
-          'div',
-          { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Meetings, Workshops & Socials'),
-          h('h2', { className: 'cp-h2' }, 'Meetings & ', h('span', { className: 'cp-gold' }, 'Upcoming Events.')),
-          h(
-            'p',
-            { className: 'cp-lead' },
-            'Confirmed dates and room assignments will appear here as they are finalized. Follow our official Instagram for dynamic room reminders.'
-          )
+          'p',
+          { className: 'cp-lead' },
+          'Stay updated on upcoming South Brunswick High School chapter meetings, hands-on workshops, and announcements.'
         ),
         h(
           'div',
-          { className: 'cp-events-grid cp-reveal' },
-          events.map((evt) =>
+          { className: 'cp-grid-2' },
+          events.map((ev) =>
             h(
               'article',
-              { key: evt.id, className: 'cp-event-card' },
+              { key: ev.id, className: 'cp-card' },
+              h('span', { className: 'cp-eyebrow' }, ev.category),
+              h('h3', { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.3rem', margin: '0 0 0.65rem' } }, ev.title),
+              h('p', { style: { color: 'var(--cp-muted)', margin: '0 0 1.1rem' } }, ev.description),
               h(
                 'div',
-                null,
-                h(
-                  'div',
-                  { className: 'cp-event-card__meta' },
-                  h('span', { style: { color: 'var(--cp-gold)' } }, evt.category.toUpperCase()),
-                  h('span', { className: 'cp-tbd' }, 'UPCOMING // TBD')
-                ),
-                h('h3', { className: 'cp-event-card__title' }, evt.title),
-                h(
-                  'p',
-                  { style: { color: 'var(--cp-muted)', fontSize: '0.93rem', marginTop: '10px' } },
-                  evt.description
-                )
+                { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.82rem', display: 'grid', gap: '0.4rem', marginBottom: '1rem' } },
+                h('div', null, 'DATE: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.date)),
+                h('div', null, 'TIME: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.time)),
+                h('div', null, 'LOCATION: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.location))
               ),
               h(
-                'div',
-                null,
-                h(
-                  'div',
-                  { className: 'cp-event-card__details' },
-                  h('div', null, h('strong', { style: { color: '#fff' } }, 'Date: '), evt.date),
-                  h('div', null, h('strong', { style: { color: '#fff' } }, 'Time: '), evt.time),
-                  h('div', { style: { gridColumn: '1 / -1' } }, h('strong', { style: { color: '#fff' } }, 'Location: '), evt.location)
-                ),
-                h(
-                  'p',
-                  { style: { fontSize: '0.84rem', color: 'var(--cp-gold)', marginTop: '14px' } },
-                  evt.note
-                )
+                'p',
+                { style: { margin: 0, fontSize: '0.84rem', color: 'var(--cp-muted)', borderTop: '1px solid var(--cp-border)', paddingTop: '0.85rem' } },
+                ev.note
               )
             )
           )
-        ),
-        // Preserved Social Media Links
+        )
+      )
+    );
+  }
+
+  function FaqAndContactSection() {
+    const [openFaq, setOpenFaq] = useState(0);
+    const [form, setForm] = useState({
+      name: '',
+      email: '',
+      track: 'Join SBHS Chapter',
+      department: 'Coding',
+      message: '',
+    });
+    const [submitting, setSubmitting] = useState(false);
+    const [receipt, setReceipt] = useState(null);
+    const [errorMsg, setErrorMsg] = useState('');
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (!form.name.trim() || !form.email.trim()) {
+        setErrorMsg('Please enter your name and email address.');
+        return;
+      }
+      setErrorMsg('');
+      setSubmitting(true);
+      try {
+        const res = await CodePatchService.submitContactWizard(form);
+        setReceipt(res);
+      } finally {
+        setSubmitting(false);
+      }
+    };
+
+    return h(
+      'section',
+      { id: 'contact', className: 'cp-section' },
+      h(
+        'div',
+        { className: 'cp-container cp-reveal' },
+        h('span', { className: 'cp-eyebrow' }, '06 // QUESTIONS & CHAPTER INTEREST'),
+        h('h2', { className: 'cp-heading' }, 'FAQ & Interest Wizard'),
         h(
           'div',
-          { className: 'cp-social-grid cp-reveal' },
-          h(
-            'a',
-            {
-              href: SOCIAL_LINKS.instagram,
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              className: 'cp-social-card',
-            },
-            h(
-              'div',
-              null,
-              h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, fontSize: '1.12rem' } }, 'Instagram — @sbcodepatch'),
-              h('div', { className: 'cp-social-card__handle' }, 'https://www.instagram.com/sbcodepatch/'),
-              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Chapter updates, photographs, activities, and announcements.')
-            ),
-            h('span', { style: { color: 'var(--cp-yellow)', fontSize: '1.4rem' } }, '↗')
-          ),
-          h(
-            'a',
-            {
-              href: SOCIAL_LINKS.youtube,
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              className: 'cp-social-card',
-            },
-            h(
-              'div',
-              null,
-              h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, fontSize: '1.12rem' } }, 'YouTube — @SBCPS-Chapter'),
-              h('div', { className: 'cp-social-card__handle' }, 'https://www.youtube.com/@SBCPS-Chapter'),
-              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Educational videos, coding demonstrations, and workshop content.')
-            ),
-            h('span', { style: { color: 'var(--cp-yellow)', fontSize: '1.4rem' } }, '↗')
-          )
-        ),
-        // Preserved FAQ section from original site
-        h(
-          'div',
-          { style: { marginTop: '72px' }, className: 'cp-reveal' },
+          { className: 'cp-grid-2', style: { alignItems: 'start', marginTop: '2rem' } },
           h(
             'div',
-            { style: { textAlign: 'center' } },
-            h('div', { className: 'cp-eyebrow' }, 'Questions & Answers'),
-            h('h3', { className: 'cp-crumble-subtle', style: { fontSize: '1.85rem', fontWeight: 900 } }, 'Frequently Asked Questions')
-          ),
-          h(
-            'div',
-            { className: 'cp-faq-list' },
-            FAQ_ITEMS.map((item) =>
+            { className: 'cp-card' },
+            h('h3', { style: { fontFamily: 'var(--cp-font-display)', marginTop: 0 } }, 'Frequently Asked Questions'),
+            FAQ_ITEMS.map((item, idx) =>
               h(
-                'details',
+                'div',
                 { key: item.q, className: 'cp-faq-item' },
-                h('summary', null, item.q),
-                h('p', null, item.a)
+                h(
+                  'button',
+                  {
+                    type: 'button',
+                    className: 'cp-faq-btn',
+                    'aria-expanded': openFaq === idx,
+                    onClick: () => setOpenFaq(openFaq === idx ? -1 : idx),
+                  },
+                  h('span', null, item.q),
+                  h('span', { style: { color: 'var(--cp-yellow)', fontFamily: 'var(--cp-font-mono)' } }, openFaq === idx ? '-' : '+')
+                ),
+                openFaq === idx
+                  ? h('p', { style: { margin: '0.55rem 0 0', color: 'var(--cp-muted)', fontSize: '0.92rem' } }, item.a)
+                  : null
               )
             )
+          ),
+          h(
+            'div',
+            { className: 'cp-card' },
+            h('h3', { style: { fontFamily: 'var(--cp-font-display)', marginTop: 0 } }, 'Chapter Interest Wizard'),
+            receipt
+              ? h(
+                  'div',
+                  { style: { padding: '1rem 0' } },
+                  h('span', { className: 'cp-badge-gold' }, 'DISPATCH RECORDED'),
+                  h('h4', { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.3rem', margin: '0.85rem 0 0.4rem' } }, 'Ticket ID: ' + receipt.ticketId),
+                  h(
+                    'p',
+                    { style: { color: 'var(--cp-muted)', marginBottom: '1.25rem' } },
+                    'Thank you, ' + receipt.payload.name + '. Your interest in ' + receipt.payload.track + ' (' + receipt.payload.department + ') has been logged.'
+                  ),
+                  h(
+                    'button',
+                    {
+                      type: 'button',
+                      className: 'cp-btn cp-btn--outline',
+                      onClick: () => {
+                        setReceipt(null);
+                        setForm({ name: '', email: '', track: 'Join SBHS Chapter', department: 'Coding', message: '' });
+                      },
+                    },
+                    'Submit Another Request'
+                  )
+                )
+              : h(
+                  'form',
+                  { onSubmit: handleSubmit, style: { display: 'grid', gap: '1rem' } },
+                  h(
+                    'label',
+                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
+                    'Full Name',
+                    h('input', {
+                      className: 'cp-input',
+                      type: 'text',
+                      placeholder: 'Your full name',
+                      value: form.name,
+                      onChange: (e) => setForm({ ...form, name: e.target.value }),
+                    })
+                  ),
+                  h(
+                    'label',
+                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
+                    'School or Personal Email',
+                    h('input', {
+                      className: 'cp-input',
+                      type: 'email',
+                      placeholder: 'student@example.com',
+                      value: form.email,
+                      onChange: (e) => setForm({ ...form, email: e.target.value }),
+                    })
+                  ),
+                  h(
+                    'label',
+                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
+                    'Interest Path',
+                    h(
+                      'select',
+                      {
+                        className: 'cp-select',
+                        value: form.track,
+                        onChange: (e) => setForm({ ...form, track: e.target.value }),
+                      },
+                      h('option', { value: 'Join SBHS Chapter' }, 'Join South Brunswick High School Chapter'),
+                      h('option', { value: 'Workshops & Events' }, 'Attend Workshops & Events'),
+                      h('option', { value: 'Start a New Chapter' }, 'Start a Chapter at My School')
+                    )
+                  ),
+                  h(
+                    'label',
+                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
+                    'Preferred Department',
+                    h(
+                      'select',
+                      {
+                        className: 'cp-select',
+                        value: form.department,
+                        onChange: (e) => setForm({ ...form, department: e.target.value }),
+                      },
+                      h('option', { value: 'Coding' }, 'Coding'),
+                      h('option', { value: 'Mathematics' }, 'Mathematics'),
+                      h('option', { value: 'Marketing' }, 'Marketing'),
+                      h('option', { value: 'Science' }, 'Science')
+                    )
+                  ),
+                  h(
+                    'label',
+                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
+                    'Notes or School Name',
+                    h('textarea', {
+                      className: 'cp-textarea',
+                      rows: 3,
+                      placeholder: 'Tell us what you want to build or mention your school...',
+                      value: form.message,
+                      onChange: (e) => setForm({ ...form, message: e.target.value }),
+                    })
+                  ),
+                  errorMsg ? h('div', { style: { color: '#FF7B7B', fontSize: '0.85rem' } }, errorMsg) : null,
+                  h(
+                    'button',
+                    { type: 'submit', className: 'cp-btn cp-btn--gold', disabled: submitting },
+                    submitting ? 'Forging Dispatch...' : 'Send Chapter Interest'
+                  )
+                )
           )
+        )
+      )
+    );
+  }
+
+  function Footer() {
+    return h(
+      'footer',
+      { className: 'cp-footer' },
+      h(
+        'div',
+        { className: 'cp-container', style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '1rem', alignItems: 'center' } },
+        h(
+          'div',
+          null,
+          h('strong', { style: { color: '#FFF', fontFamily: 'var(--cp-font-display)' } }, 'CODEPATCH STEM'),
+          h('div', null, 'South Brunswick High School Vikings Chapter | Designed & Developed by Aakshat Hariharan')
+        ),
+        h(
+          'div',
+          { style: { display: 'flex', gap: '1.25rem' } },
+          h('a', { href: SOCIAL_LINKS.instagram, target: '_blank', rel: 'noopener noreferrer', className: 'cp-nav__link' }, 'Instagram'),
+          h('a', { href: SOCIAL_LINKS.youtube, target: '_blank', rel: 'noopener noreferrer', className: 'cp-nav__link' }, 'YouTube')
         )
       )
     );
   }
 
   /* ==========================================================================
-     6. CONTACT — 6-STEP INTERACTIVE WIZARD (ALIGNED WITH ORIGINAL JOIN FIELDS)
+     7. ROOT APPLICATION & DOM MOUNT
      ========================================================================== */
 
-  const WIZARD_STEPS = [
-    '1. Reason',
-    '2. Personal',
-    '3. School',
-    '4. Interests',
-    '5. Message',
-    '6. Review',
-  ];
+  function CodePatchApp() {
+    const reducedMotion = usePrefersReducedMotion();
+    const [activeSection, setActiveSection] = useState('home');
+    const [roster, setRoster] = useState(TEAM_ROSTER);
+    const [disciplines, setDisciplines] = useState(STEM_DISCIPLINES);
+    const [stats, setStats] = useState(CHAPTER_STATS);
+    const [events, setEvents] = useState(EVENTS_DATA);
 
-  const CONTACT_REASONS = [
-    {
-      title: 'Join a chapter',
-      desc: 'Join South Brunswick High School CodePatch STEM and explore coding, math, science, or marketing.',
-    },
-    {
-      title: 'Participate in workshops',
-      desc: 'Take part in student-led STEM workshops, hands-on activities, and coding sessions.',
-    },
-    {
-      title: 'Start a chapter at my school',
-      desc: 'Tell us about your school and bring CodePatch STEM to your student community.',
-    },
-    {
-      title: 'Help organize educational events',
-      desc: 'Collaborate on projects, outreach events, and educational initiatives.',
-    },
-  ];
-
-  const INTEREST_OPTIONS = [
-    'Computer Science',
-    'Mathematics',
-    'Engineering',
-    'Technology',
-    'Science',
-    'Marketing',
-  ];
-
-  function ContactWizardSection({ preselectedReason }) {
-    const [step, setStep] = useState(0);
-    const [error, setError] = useState('');
-    const [submitting, setSubmitting] = useState(false);
-    const [receipt, setReceipt] = useState(null);
-
-    const [form, setForm] = useState({
-      reason: 'Join a chapter',
-      fullName: '',
-      email: '',
-      school: 'South Brunswick High School',
-      grade: '10',
-      interests: ['Computer Science'],
-      message: '',
-    });
+    useRevealOnScroll();
 
     useEffect(() => {
-      if (preselectedReason) {
-        const matched = CONTACT_REASONS.find((r) => r.title === preselectedReason);
-        if (matched) {
-          setForm((prev) => ({ ...prev, reason: matched.title }));
-          setStep(0);
-          setReceipt(null);
-        }
-      }
-    }, [preselectedReason]);
+      ensureVikingSvgFilters();
+      ensureVikingStyles();
 
-    const toggleInterest = (item) => {
-      setForm((prev) => {
-        const exists = prev.interests.includes(item);
-        const next = exists ? prev.interests.filter((i) => i !== item) : [...prev.interests, item];
-        return { ...prev, interests: next };
+      let cancelled = false;
+      Promise.all([
+        CodePatchService.getTeamRoster(),
+        CodePatchService.getStemDisciplines(),
+        CodePatchService.getChapterStats(),
+        CodePatchService.getEvents(),
+      ]).then(([teamData, stemData, statsData, eventsData]) => {
+        if (cancelled) return;
+        setRoster(teamData);
+        setDisciplines(stemData);
+        setStats(statsData);
+        setEvents(eventsData);
       });
-    };
 
-    const validateCurrentStep = () => {
-      setError('');
-      if (step === 0 && !form.reason) {
-        setError('Please select a reason for contacting us.');
-        return false;
-      }
-      if (step === 1) {
-        if (!form.fullName.trim()) {
-          setError('Please enter your full name.');
-          return false;
+      const onScroll = () => {
+        const scrollPos = window.scrollY + 180;
+        for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+          const el = document.getElementById(NAV_ITEMS[i].id);
+          if (el && el.offsetTop <= scrollPos) {
+            setActiveSection(NAV_ITEMS[i].id);
+            break;
+          }
         }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim())) {
-          setError('Enter a valid email, like name@example.com.');
-          return false;
-        }
-      }
-      if (step === 2) {
-        if (!form.school.trim()) {
-          setError('Please enter your school name.');
-          return false;
-        }
-        if (!form.grade.trim()) {
-          setError('Please select your grade level.');
-          return false;
-        }
-      }
-      if (step === 3 && form.interests.length === 0) {
-        setError('Please select at least one area of interest.');
-        return false;
-      }
-      if (step === 4 && form.message.trim().length < 10) {
-        setError('Please share your interests, participation goals, and STEM background (at least 10 characters).');
-        return false;
-      }
-      return true;
-    };
+      };
 
-    const handleNext = () => {
-      if (!validateCurrentStep()) return;
-      setStep((s) => Math.min(s + 1, 5));
-    };
-
-    const handleBack = () => {
-      setError('');
-      setStep((s) => Math.max(s - 1, 0));
-    };
-
-    const handleSubmit = async () => {
-      setSubmitting(true);
-      setError('');
-      try {
-        const res = await CodePatchService.submitContactWizard(form);
-        setReceipt(res);
-      } catch (err) {
-        setError('Simulation error. Please try again.');
-      } finally {
-        setSubmitting(false);
-      }
-    };
-
-    const resetWizard = () => {
-      setReceipt(null);
-      setStep(0);
-      setError('');
-    };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => {
+        cancelled = true;
+        window.removeEventListener('scroll', onScroll);
+      };
+    }, []);
 
     return h(
-      'section',
-      { id: 'contact', className: 'cp-section cp-section--alt cp-grid-bg' },
+      Fragment,
+      null,
+      h(Navbar, { activeId: activeSection }),
       h(
-        'div',
-        { className: 'cp-container' },
-        h(
-          'div',
-          { style: { textAlign: 'center', maxWidth: '700px', margin: '0 auto' }, className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Find Your Way In'),
-          h('h2', { className: 'cp-h2' }, 'Send A ', h('span', { className: 'cp-gold' }, 'Transmission.')),
-          h(
-            'p',
-            { className: 'cp-lead', style: { margin: '0 auto' } },
-            'Join a chapter, participate in workshops, explore coding, join mathematics activities, contribute to projects, or help organize educational events.'
-          )
-        ),
-        h(
-          'div',
-          { className: 'cp-wizard cp-reveal' },
-          h(
-            'div',
-            { className: 'cp-wizard__notice' },
-            'PHASE 1 PREVIEW // Frontend-only mock simulation (Phase 2 connects live backend)'
-          ),
-          receipt
-            ? h(
-                'div',
-                { className: 'cp-success' },
-                h(
-                  'div',
-                  { className: 'cp-success__icon' },
-                  h(
-                    'svg',
-                    { width: 32, height: 32, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2.5 },
-                    h('path', { d: 'M5 13l4 4L19 7', strokeLinecap: 'round', strokeLinejoin: 'round' })
-                  )
-                ),
-                h(
-                  'h3',
-                  { className: 'cp-crumble-subtle', style: { fontSize: '1.85rem', fontWeight: 900, marginBottom: '10px', color: 'var(--cp-yellow)' } },
-                  'TRANSMISSION SECURED'
-                ),
-                h(
-                  'p',
-                  { style: { color: 'var(--cp-muted)', maxWidth: '500px', margin: '0 auto 18px' } },
-                  `Thank you, ${form.fullName}. Your "${form.reason}" application log has been validated in Phase 1 frontend simulation mode.`
-                ),
-                h(
-                  'div',
-                  {
-                    style: {
-                      display: 'inline-block',
-                      padding: '8px 16px',
-                      borderRadius: '8px',
-                      background: '#0d0d0d',
-                      border: '1px solid var(--cp-border-gold)',
-                      fontFamily: 'var(--cp-font-mono)',
-                      fontSize: '0.82rem',
-                      color: 'var(--cp-yellow)',
-                      marginBottom: '26px',
-                    },
-                  },
-                  `SIMULATED REF // ${receipt.ticketId}`
-                ),
-                h(
-                  'div',
-                  null,
-                  h(
-                    'button',
-                    { type: 'button', className: 'cp-btn cp-btn--secondary', onClick: resetWizard },
-                    'Submit Another Response'
-                  )
-                )
-              )
-            : h(
-                Fragment,
-                null,
-                h(
-                  'div',
-                  { className: 'cp-wizard__steps', 'aria-label': 'Wizard Progress' },
-                  WIZARD_STEPS.map((label, idx) =>
-                    h(
-                      'div',
-                      {
-                        key: label,
-                        className: `cp-step-bar ${idx < step ? 'is-done' : ''} ${idx === step ? 'is-active' : ''}`,
-                      },
-                      h('div', { className: 'cp-step-bar__track' }, h('div', { className: 'cp-step-bar__fill' })),
-                      h('div', { className: 'cp-step-bar__lbl' }, label)
-                    )
-                  )
-                ),
-                step === 0 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 1: Reason for Contacting Us'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Select how you want to participate in CodePatch STEM.'),
-                    h(
-                      'div',
-                      { className: 'cp-choice-grid' },
-                      CONTACT_REASONS.map((item) =>
-                        h(
-                          'button',
-                          {
-                            key: item.title,
-                            type: 'button',
-                            className: `cp-choice-btn ${form.reason === item.title ? 'is-selected' : ''}`,
-                            onClick: () => setForm((prev) => ({ ...prev, reason: item.title })),
-                          },
-                          h('div', { className: 'cp-choice-btn__title' }, item.title),
-                          h('div', { className: 'cp-choice-btn__desc' }, item.desc)
-                        )
-                      )
-                    )
-                  ),
-                step === 1 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 2: Personal Information'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Enter your full name and email address.'),
-                    h(
-                      'div',
-                      { className: 'cp-field-group' },
-                      h(
-                        'div',
-                        { className: 'cp-field' },
-                        h('label', { htmlFor: 'cp-fullname' }, 'Full Name *'),
-                        h('input', {
-                          id: 'cp-fullname',
-                          type: 'text',
-                          className: 'cp-input',
-                          value: form.fullName,
-                          placeholder: 'Enter your full name',
-                          onChange: (e) => setForm((prev) => ({ ...prev, fullName: e.target.value })),
-                        })
-                      ),
-                      h(
-                        'div',
-                        { className: 'cp-field' },
-                        h('label', { htmlFor: 'cp-email' }, 'Email Address *'),
-                        h('input', {
-                          id: 'cp-email',
-                          type: 'email',
-                          className: 'cp-input',
-                          value: form.email,
-                          placeholder: 'name@example.com',
-                          onChange: (e) => setForm((prev) => ({ ...prev, email: e.target.value })),
-                        })
-                      )
-                    )
-                  ),
-                step === 2 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 3: School and Grade'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Provide your school name and grade level.'),
-                    h(
-                      'div',
-                      { className: 'cp
+        'main',
+        null,
+        h(HeroSection, { reducedMotion }),
+        h(AboutSection),
+        h(StemSection, { disciplines }),
+        h(ChapterSection, { stats }),
+        h(TeamSection, { roster }),
+        h(EventsSection, { events }),
+        h(FaqAndContactSection)
+      ),
+      h(Footer)
+    );
+  }
+
+  function mountApp() {
+    let container = document.getElementById('root') || document.getElementById('app');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'root';
+      document.body.appendChild(container);
+    }
+    const root = createRoot(container);
+    root.render(h(CodePatchApp));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountApp, { once: true });
+  } else {
+    mountApp();
+  }
+})();
