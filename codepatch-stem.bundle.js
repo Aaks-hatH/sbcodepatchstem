@@ -1,8 +1,8 @@
 /**
  * ============================================================================
- * CODEPATCH STEM — BUNDLED FRONTEND APPLICATION (PHASE 1)
- * South Brunswick High School Chapter | React 18 + Three.js
- * Designed & Developed by Aakshat Hariharan
+ * CODEPATCH STEM — NORSE VIKING EDITION (PHASE 1 BUNDLED FRONTEND)
+ * South Brunswick High School Vikings Chapter | React 18 + Three.js
+ * Based on Original Site Data | Designed & Developed by Aakshat Hariharan
  * ============================================================================
  */
 
@@ -21,7 +21,7 @@
   const THREE = THREEMod;
 
   /* ==========================================================================
-     1. TYPED DOMAIN DATA & PHASE-2 READY SERVICE LAYER
+     1. EXACT DATA FROM ORIGINAL CODEPATCH STEM SITE
      ========================================================================== */
 
   const SOCIAL_LINKS = {
@@ -39,299 +39,284 @@
     { id: 'contact', label: 'Contact' },
   ];
 
+  // Exact 5 STEM dimensions from the original site
   const STEM_DISCIPLINES = [
     {
       id: 'cs',
-      code: '01 // COMPUTER SCIENCE',
+      code: 'RUNE 01 // COMPUTER SCIENCE',
+      rune: 'ᚲ',
       name: 'Computer Science',
       short: 'Computer Science',
-      tagline: 'Algorithms, full-stack systems, and artificial intelligence built from first principles.',
+      tagline: 'Programming, computational thinking, and software development.',
       description:
-        'Students master data structures, Python & TypeScript development, machine learning fundamentals, and collaborative software engineering through live coding labs and civic tech builds.',
-      topics: ['Python & TypeScript', 'Algorithms & Data Structures', 'Applied AI / ML', 'Web Systems', 'Open-Source Labs'],
+        'Think in steps, write them down, and watch a machine follow them. Students build algorithmic fluency, write clean code, and forge practical software tools together.',
+      topics: ['Programming', 'Computational Thinking', 'Software Development', 'Algorithms', 'Student Projects'],
       diagramType: 'cs',
     },
     {
       id: 'math',
-      code: '02 // MATHEMATICS',
+      code: 'RUNE 02 // MATHEMATICS',
+      rune: 'ᛗ',
       name: 'Mathematics',
       short: 'Mathematics',
-      tagline: 'Discrete logic, linear algebra, and quantitative modeling powering modern discovery.',
+      tagline: 'Mathematical reasoning, problem-solving, and mathematical exploration.',
       description:
-        'From combinatorics and probability theory to multivariable optimization and competition problem-solving, our math tracks bridge pure reasoning with computational simulation.',
-      topics: ['Discrete Mathematics', 'Linear Algebra', 'Probability & Statistics', 'Mathematical Modeling', 'AMC / AIME Prep'],
+        'Find the pattern, test whether it holds, then look for where it breaks. Our mathematics track sharpens proof-based reasoning and collaborative problem-solving.',
+      topics: ['Mathematical Reasoning', 'Problem-Solving', 'Pattern Exploration', 'Quantitative Logic', 'Peer Practice'],
       diagramType: 'math',
     },
     {
       id: 'eng',
-      code: '03 // ENGINEERING',
+      code: 'RUNE 03 // ENGINEERING',
+      rune: 'ᛖ',
       name: 'Engineering',
       short: 'Engineering',
-      tagline: 'CAD prototyping, embedded microcontrollers, and hardware-software integration.',
+      tagline: 'Design thinking, technical problem-solving, and practical experimentation.',
       description:
-        'Members design, simulate, and fabricate physical mechanisms using CAD modeling, Arduino/ESP32 microcontrollers, sensor arrays, and iterative rapid prototyping.',
-      topics: ['CAD & 3D Prototyping', 'Embedded Systems', 'Circuit Design', 'Robotics Kinematics', 'Systems Testing'],
+        'Sketch it, build it, test it, and fix what fails. Members apply iterative engineering design to turn raw concepts into resilient, working prototypes.',
+      topics: ['Design Thinking', 'Technical Problem-Solving', 'Practical Experimentation', 'Prototyping', 'Iteration'],
       diagramType: 'eng',
     },
     {
-      id: 'sci',
-      code: '04 // SCIENCE',
-      name: 'Science',
-      short: 'Science',
-      tagline: 'Experimental inquiry, computational biology, and physics simulation.',
-      description:
-        'We pair rigorous scientific method with data-driven lab instrumentation, exploring computational physics, environmental telemetry, and bioinformatics.',
-      topics: ['Computational Physics', 'Bioinformatics', 'Environmental Sensors', 'Experimental Design', 'Data Visualization'],
-      diagramType: 'sci',
-    },
-    {
       id: 'tech',
-      code: '05 // TECHNOLOGY',
+      code: 'RUNE 04 // TECHNOLOGY',
+      rune: 'ᛏ',
       name: 'Technology',
       short: 'Technology',
-      tagline: 'Cloud infrastructure, cybersecurity, and accessible digital tools for communities.',
+      tagline: 'Exploring emerging technologies and digital innovation.',
       description:
-        'Focused on real-world deployment, digital literacy workshops, cybersecurity hygiene, and youth STEM outreach across South Brunswick and partner schools.',
-      topics: ['Cybersecurity Basics', 'Cloud & DevOps', 'UI/UX Engineering', 'Youth Tech Workshops', 'Digital Accessibility'],
+        'Look at what is new, ask what it is good for, and try it. Students investigate modern tools, digital platforms, and emerging technical workflows.',
+      topics: ['Emerging Technologies', 'Digital Innovation', 'Hands-On Trials', 'Modern Tooling', 'Applied Systems'],
       diagramType: 'tech',
+    },
+    {
+      id: 'sci',
+      code: 'RUNE 05 // SCIENCE',
+      rune: 'ᛊ',
+      name: 'Science',
+      short: 'Science',
+      tagline: 'Exploring the natural world through scientific discovery, experimentation, and critical thinking.',
+      description:
+        'Ask questions, investigate the unknown, and turn curiosity into scientific understanding through structured inquiry and experimental rigor.',
+      topics: ['Scientific Discovery', 'Experimentation', 'Critical Thinking', 'Empirical Inquiry', 'Natural Systems'],
+      diagramType: 'sci',
     },
   ];
 
-  const CHAPTER_STATS = [
-    { value: 14, suffix: '', label: 'Student Officers', sub: 'Dedicated SBHS leadership team' },
-    { value: 5, suffix: '', label: 'STEM Disciplines', sub: 'Integrated interdisciplinary tracks' },
-    { value: 100, suffix: '%', label: 'Student-Led', sub: 'Peer-mentored workshops & labs' },
-    { value: 24, suffix: '/7', label: 'Builder Mindset', sub: 'South Brunswick High School, NJ' },
+  // Exact 3-stage loop from original #path
+  const PATH_STAGES = [
+    {
+      num: '01',
+      rune: 'ᛚ',
+      title: 'LEARN',
+      desc: 'Develop technical knowledge and explore new concepts.',
+    },
+    {
+      num: '02',
+      rune: 'ᛒ',
+      title: 'BUILD',
+      desc: 'Apply knowledge through projects, coding, and hands-on activities.',
+    },
+    {
+      num: '03',
+      rune: 'ᚲ',
+      title: 'COLLABORATE',
+      desc: 'Exchange ideas, work together, and create educational opportunities.',
+    },
   ];
+
+  // Exact stats & 4 department descriptions from original #chapter and #team
+  const CHAPTER_STATS = [
+    { value: '14', label: 'Members', sub: 'Student innovators at SBHS' },
+    { value: '4', label: 'Departments', sub: 'Coding, Mathematics, Marketing & Science' },
+    { value: '1', label: 'Featured Chapter', sub: 'South Brunswick High School, NJ' },
+  ];
+
+  const DEPARTMENT_DESCRIPTIONS = {
+    All: 'Showing all fourteen members.',
+    Coding: 'Programming and software development.',
+    Mathematics: 'Mathematical reasoning and problem-solving.',
+    Marketing: 'Brand, social media, and chapter photography.',
+    Science: 'Scientific discovery, experimentation, and critical thinking.',
+  };
 
   const CHAPTER_DEPARTMENTS = [
     {
-      tag: 'DEPT // 01',
-      title: 'Executive Leadership',
-      desc: 'Guides chapter vision, school administration coordination, inter-chapter partnerships, and strategic growth at SBHS.',
+      tag: 'DEPT 01 // ᚲ',
+      title: 'Coding',
+      desc: 'Programming and software development.',
     },
     {
-      tag: 'DEPT // 02',
-      title: 'Computer Science & Web',
-      desc: 'Builds curriculum repositories, interactive coding labs, and the digital infrastructure powering CodePatch STEM.',
+      tag: 'DEPT 02 // ᛗ',
+      title: 'Mathematics',
+      desc: 'Mathematical reasoning and problem-solving.',
     },
     {
-      tag: 'DEPT // 03',
-      title: 'Engineering & Hardware',
-      desc: 'Leads hands-on maker workshops, electronics kits, CAD challenges, and applied engineering demonstrations.',
+      tag: 'DEPT 03 // ᚨ',
+      title: 'Marketing',
+      desc: 'Brand, social media, and chapter photography.',
     },
     {
-      tag: 'DEPT // 04',
-      title: 'Mathematics & Research',
-      desc: 'Develops algorithmic problem sets, quantitative modeling sessions, and peer tutoring modules.',
-    },
-    {
-      tag: 'DEPT // 05',
-      title: 'Outreach & Workshops',
-      desc: 'Organizes community STEM events for younger students across South Brunswick Township and local libraries.',
-    },
-    {
-      tag: 'DEPT // 06',
-      title: 'Operations & Media',
-      desc: 'Manages event logistics, visual storytelling, social media communications, and member onboarding.',
+      tag: 'DEPT 04 // ᛊ',
+      title: 'Science',
+      desc: 'Scientific discovery, experimentation, and critical thinking.',
     },
   ];
 
-  // Exact 14-member roster structure (centralized for instant Phase 2 API hydration)
+  // EXACT 14-MEMBER ROSTER FROM ORIGINAL SITE (names, roles, and department tags preserved 1:1)
   const TEAM_ROSTER = [
     {
       id: 'member-01',
-      name: 'Aakshat Hariharan',
-      role: 'Chapter President & Lead Developer',
-      department: 'Executive Board',
+      name: 'Srijeet Ghosh',
+      roles: ['Chapter President'],
+      departments: [],
       isPresident: true,
-      grade: 'South Brunswick High School',
-      bio: 'Leads the SBHS CodePatch STEM chapter, architecting interactive STEM curricula, community coding initiatives, and full-stack web platforms.',
-      avatarUrl: null,
     },
     {
       id: 'member-02',
-      name: 'Rohan Kulkarni',
-      role: 'Vice President of Operations',
-      department: 'Executive Board',
+      name: 'Tejas Kaikala',
+      roles: ['Marketing Lead', 'Social Media Coordinator'],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Executive Board',
-      bio: 'Oversees chapter logistics, workshop scheduling, and cross-departmental coordination across South Brunswick High School.',
-      avatarUrl: null,
     },
     {
       id: 'member-03',
-      name: 'Ananya Sharma',
-      role: 'Vice President of Curriculum',
-      department: 'Executive Board',
+      name: 'Akshaj Priyadarshan',
+      roles: ['Math Department Lead'],
+      departments: ['Mathematics'],
       isPresident: false,
-      grade: 'Executive Board',
-      bio: 'Designs structured lesson modules and hands-on lab guides tailored for middle and high school learners.',
-      avatarUrl: null,
     },
     {
       id: 'member-04',
-      name: 'Vikram Patel',
-      role: 'Director of Computer Science',
-      department: 'Computer Science',
+      name: 'Nirbhay Kandale',
+      roles: ['Chapter Photographer', 'Engineering Department Lead'],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Computer Science',
-      bio: 'Leads Python, web development, and algorithmic problem-solving tracks for chapter members and workshop attendees.',
-      avatarUrl: null,
     },
     {
       id: 'member-05',
-      name: 'Meera Krishnan',
-      role: 'Lead Software & AI Mentor',
-      department: 'Computer Science',
+      name: 'Adithya Kolluri',
+      roles: ['Marketing Department Lead'],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Computer Science',
-      bio: 'Mentors student teams building machine learning prototypes and open-source educational tools.',
-      avatarUrl: null,
     },
     {
       id: 'member-06',
-      name: 'Ethan Chen',
-      role: 'Systems & Web Coordinator',
-      department: 'Computer Science',
+      name: 'Satvik Pandey',
+      roles: [],
+      departments: ['Coding'],
       isPresident: false,
-      grade: 'Computer Science',
-      bio: 'Maintains workshop sandboxes, version-control workflows, and interactive coding demos.',
-      avatarUrl: null,
     },
     {
       id: 'member-07',
-      name: 'Arjun Nair',
-      role: 'Director of Engineering',
-      department: 'Engineering & Robotics',
+      name: 'Sathvik Ippagunta',
+      roles: ['Coding Department Lead'],
+      departments: ['Coding', 'Mathematics'],
       isPresident: false,
-      grade: 'Engineering & Robotics',
-      bio: 'Coordinates CAD design challenges, microcontroller labs, and rapid hardware prototyping sessions.',
-      avatarUrl: null,
     },
     {
       id: 'member-08',
-      name: 'Sophia Martinez',
-      role: 'Hardware & Prototyping Lead',
-      department: 'Engineering & Robotics',
+      name: 'Almeir Rahman',
+      roles: [],
+      departments: ['Mathematics'],
       isPresident: false,
-      grade: 'Engineering & Robotics',
-      bio: 'Develops beginner-friendly electronics and sensor kits for hands-on community STEM workshops.',
-      avatarUrl: null,
     },
     {
       id: 'member-09',
-      name: 'Devansh Shah',
-      role: 'Director of Mathematics',
-      department: 'Mathematics & Science',
+      name: 'Mayank Bhoyar',
+      roles: [],
+      departments: ['Mathematics'],
       isPresident: false,
-      grade: 'Mathematics & Science',
-      bio: 'Facilitates discrete mathematics seminars, mathematical modeling labs, and competition prep.',
-      avatarUrl: null,
     },
     {
       id: 'member-10',
-      name: 'Priya Venkatesh',
-      role: 'Science & Research Lead',
-      department: 'Mathematics & Science',
+      name: 'Oliver Merrill',
+      roles: [],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Mathematics & Science',
-      bio: 'Connects computational data analysis with physics, biology, and environmental science investigations.',
-      avatarUrl: null,
     },
     {
       id: 'member-11',
-      name: 'Lucas Kim',
-      role: 'Quantitative Workshop Coordinator',
-      department: 'Mathematics & Science',
+      name: 'Kyrus Estafanous',
+      roles: [],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Mathematics & Science',
-      bio: 'Crafts interactive visual proofs and applied statistics exercises for student cohorts.',
-      avatarUrl: null,
     },
     {
       id: 'member-12',
-      name: 'Neha Deshmukh',
-      role: 'Director of Community Outreach',
-      department: 'Outreach & Operations',
+      name: 'Mridul Boddu',
+      roles: [],
+      departments: ['Marketing'],
       isPresident: false,
-      grade: 'Outreach & Operations',
-      bio: 'Builds partnerships with local schools and libraries to expand equitable STEM workshop access.',
-      avatarUrl: null,
     },
     {
       id: 'member-13',
-      name: 'Zara Siddiqui',
-      role: 'Creative & Media Lead',
-      department: 'Outreach & Operations',
+      name: 'Zaid Khan',
+      roles: [],
+      departments: [],
       isPresident: false,
-      grade: 'Outreach & Operations',
-      bio: 'Produces visual communications, workshop recaps, and digital media for @sbcodepatch.',
-      avatarUrl: null,
     },
     {
       id: 'member-14',
-      name: 'Kabir Mehta',
-      role: 'Secretary & Treasurer',
-      department: 'Outreach & Operations',
+      name: 'Aadhyanth Sathish Kumar',
+      roles: [],
+      departments: ['Science'],
       isPresident: false,
-      grade: 'Outreach & Operations',
-      bio: 'Manages chapter documentation, attendance records, materials budgeting, and event readiness.',
-      avatarUrl: null,
     },
   ];
 
+  // Exact Meetings & Events data from original #meetings and #events (preserving TBD values)
   const EVENTS_DATA = [
     {
-      id: 'evt-01',
-      category: 'Chapter Meeting',
-      title: 'SBHS General Chapter Kickoff & Lab Orientation',
-      description:
-        'Meet the 14-member officer board, explore the five STEM tracks, and sign up for upcoming project squads and youth workshop teams.',
-      date: 'TBD',
-      time: 'After School — TBD',
-      location: 'South Brunswick High School (Room TBD)',
-      status: 'Upcoming',
+      id: 'meeting-tbd',
+      category: 'Upcoming Meetings',
+      title: 'Meeting Schedule — TBD',
+      description: 'Upcoming meeting dates and times are to be determined.',
+      date: 'TBD (To Be Determined)',
+      time: 'TBD (To Be Determined)',
+      location: 'TBD (To Be Determined)',
+      note: 'Check back soon or follow @sbcodepatch on Instagram for room updates.',
     },
     {
-      id: 'evt-02',
-      category: 'Workshop',
-      title: 'Intro to Python & Interactive Web Creation',
-      description:
-        'Hands-on coding workshop introducing foundational programming logic, visual problem-solving, and live web building for students.',
-      date: 'TBD',
-      time: 'TBD',
-      location: 'South Brunswick Township / SBHS Lab (TBD)',
-      status: 'Planning',
+      id: 'events-tbd',
+      category: 'Events and Workshops',
+      title: 'Upcoming Events and Workshops — TBD',
+      description: 'Upcoming event and workshop details are to be determined.',
+      date: 'TBD (To Be Determined)',
+      time: 'TBD (To Be Determined)',
+      location: 'TBD (To Be Determined)',
+      note: 'Follow Instagram (@sbcodepatch) for dynamic room reminders.',
+    },
+  ];
+
+  // Exact FAQ items from original #faq
+  const FAQ_ITEMS = [
+    {
+      q: 'What is CodePatch STEM?',
+      a: 'An organization that promotes accessible STEM education through computer science, mathematics, engineering, technology, student collaboration, workshops, and educational initiatives.',
     },
     {
-      id: 'evt-03',
-      category: 'Engineering Lab',
-      title: 'Applied CAD & Microcontroller Prototyping Sprint',
-      description:
-        'Collaborative build session pairing 3D mechanical modeling with real-time sensor circuits and team design reviews.',
-      date: 'TBD',
-      time: 'TBD',
-      location: 'SBHS Innovation Space (TBD)',
-      status: 'Planning',
+      q: 'What is a chapter?',
+      a: 'A school-based group of CodePatch STEM members. South Brunswick High School is our featured chapter.',
     },
     {
-      id: 'evt-04',
-      category: 'Community Outreach',
-      title: 'Youth STEM Discovery Showcase',
-      description:
-        'Student-led interactive stations in computer science, math puzzles, and engineering demos designed for younger learners.',
-      date: 'TBD',
-      time: 'TBD',
-      location: 'South Brunswick Community Venue (TBD)',
-      status: 'TBD',
+      q: 'Do you run workshops?',
+      a: 'Workshops are part of our mission. Confirmed dates will appear in the events section, and Instagram carries announcements.',
+    },
+    {
+      q: 'How do I take part?',
+      a: 'Use the interest wizard below. You can explore coding, join mathematics activities, or help organize events.',
+    },
+    {
+      q: 'Can I start a chapter at my school?',
+      a: 'The chapter directory is built to grow. Use the interest wizard, mention your school, and say you want to start a chapter.',
     },
   ];
 
   /**
    * Phase-2 Ready Service Layer
-   * Swap internal mock resolvers with fetch('/api/...') endpoints in Phase 2
-   * without changing any React components.
+   * Connects the frontend cleanly to mock data in Phase 1; swap these methods
+   * to fetch('/api/...') in Phase 2 without changing UI components.
    */
   const CodePatchService = {
     async getTeamRoster() {
@@ -360,8 +345,46 @@
   };
 
   /* ==========================================================================
-     2. HOOKS & UTILITIES
+     2. HOOKS & NORSE CRUMBLE SVG FILTER INJECTION
      ========================================================================== */
+
+  function ensureVikingSvgFilters() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('cp-viking-svg-defs')) return;
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('id', 'cp-viking-svg-defs');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.style.position = 'fixed';
+    svg.style.width = '0';
+    svg.style.height = '0';
+    svg.style.pointerEvents = 'none';
+
+    svg.innerHTML = `
+      <defs>
+        <!-- Powerful Norse Stone-Carved Crumbling Headline Filter -->
+        <filter id="cp-viking-crumble" x="-6%" y="-10%" width="112%" height="120%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.065 0.11" numOctaves="4" seed="14" result="stoneNoise" />
+          <feDisplacementMap in="SourceGraphic" in2="stoneNoise" scale="3.4" xChannelSelector="R" yChannelSelector="G" result="chiseledText" />
+          <feTurbulence type="turbulence" baseFrequency="0.28" numOctaves="2" seed="7" result="crumblePits" />
+          <feColorMatrix in="crumblePits" type="matrix"
+            values="0 0 0 0 0
+                    0 0 0 0 0
+                    0 0 0 0 0
+                    3.2 0 0 0 -1.35" result="pitMask" />
+          <feComposite in="chiseledText" in2="pitMask" operator="out" result="crumbledFinal" />
+        </filter>
+
+        <!-- Subtle Weathered Rune Filter for Section Headings -->
+        <filter id="cp-viking-crumble-soft" x="-4%" y="-8%" width="108%" height="116%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.08 0.13" numOctaves="3" seed="9" result="softStone" />
+          <feDisplacementMap in="SourceGraphic" in2="softStone" scale="1.9" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </defs>
+    `;
+    document.body.appendChild(svg);
+  }
 
   function usePrefersReducedMotion() {
     const [reduced, setReduced] = useState(() =>
@@ -397,7 +420,7 @@
             }
           });
         },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        { threshold: 0.1, rootMargin: '0px 0px -36px 0px' }
       );
       elements.forEach((el) => observer.observe(el));
       return () => observer.disconnect();
@@ -408,14 +431,39 @@
     return name
       .split(/\s+/)
       .filter(Boolean)
-      .slice(0, 2)
       .map((part) => part[0].toUpperCase())
       .join('');
   }
 
   /* ==========================================================================
-     3. THREE.JS CINEMATIC HERO ENVIRONMENT
+     3. THREE.JS NORSE VIKING RUNIC ASTROLABE & GOLD FORGE HERO
      ========================================================================== */
+
+  function createRuneRingTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return null;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(229, 184, 63, 0.75)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(4, 14, canvas.width - 8, canvas.height - 28);
+
+    const runes = 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ';
+    ctx.font = 'bold 44px "Cinzel", serif';
+    ctx.fillStyle = '#FFD84D';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(runes, canvas.width / 2, canvas.height / 2 + 2);
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.repeat.set(2, 1);
+    return tex;
+  }
 
   function HeroThreeCanvas({ reducedMotion }) {
     const mountRef = useRef(null);
@@ -443,93 +491,104 @@
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
-      camera.position.set(0, 0, 11.5);
+      camera.position.set(0, 0, 11.8);
 
-      // Interactive Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
+      // Forged Gold & Obsidian Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.42);
       scene.add(ambientLight);
 
-      const goldKeyLight = new THREE.PointLight(0xffd84d, 3.2, 30);
-      goldKeyLight.position.set(5, 4, 6);
-      scene.add(goldKeyLight);
+      const forgeKeyLight = new THREE.PointLight(0xffd84d, 3.6, 32);
+      forgeKeyLight.position.set(5, 4, 6);
+      scene.add(forgeKeyLight);
 
-      const warmRimLight = new THREE.PointLight(0xe5b83f, 2.4, 28);
-      warmRimLight.position.set(-6, -4, 4);
-      scene.add(warmRimLight);
+      const amberRimLight = new THREE.PointLight(0xe5b83f, 2.5, 28);
+      amberRimLight.position.set(-6, -4, 4);
+      scene.add(amberRimLight);
 
-      // Centerpiece Group (positioned right of hero copy on desktop)
-      const centerpiece = new THREE.Group();
-      centerpiece.position.set(width > 920 ? 3.1 : 0, 0.1, 0);
-      scene.add(centerpiece);
+      // Centerpiece Norse Relic Group
+      const relicGroup = new THREE.Group();
+      relicGroup.position.set(width > 940 ? 3.2 : 0, 0.1, 0);
+      scene.add(relicGroup);
 
-      // 1. Outer Wireframe Icosahedron
-      const icoGeo = new THREE.IcosahedronGeometry(2.35, 1);
-      const icoMat = new THREE.MeshStandardMaterial({
+      // 1. Outer Chiseled Icosahedral Shield Cage
+      const cageGeo = new THREE.IcosahedronGeometry(2.45, 1);
+      const cageMat = new THREE.MeshStandardMaterial({
         color: 0xe5b83f,
-        emissive: 0x3b2b05,
+        emissive: 0x3d2a04,
         wireframe: true,
         transparent: true,
-        opacity: 0.58,
+        opacity: 0.55,
       });
-      const icoMesh = new THREE.Mesh(icoGeo, icoMat);
-      centerpiece.add(icoMesh);
+      const cageMesh = new THREE.Mesh(cageGeo, cageMat);
+      relicGroup.add(cageMesh);
 
-      // 2. Inner Faceted Octahedron Core
-      const coreGeo = new THREE.OctahedronGeometry(1.15, 0);
+      // 2. Inner Forged Gold Runestone Core (Octahedron + Crossbar Prism)
+      const coreGeo = new THREE.OctahedronGeometry(1.12, 0);
       const coreMat = new THREE.MeshStandardMaterial({
         color: 0xffd84d,
-        emissive: 0x6b4d08,
-        metalness: 0.78,
-        roughness: 0.22,
+        emissive: 0x6b4b06,
+        metalness: 0.82,
+        roughness: 0.2,
       });
       const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-      centerpiece.add(coreMesh);
+      relicGroup.add(coreMesh);
 
-      // 3. Interlocking Golden Orbital Rings
-      const ringMat = new THREE.MeshBasicMaterial({
-        color: 0xe5b83f,
+      // 3. Carved Elder Futhark Runic Band Cylinder
+      const runeTex = createRuneRingTexture();
+      const runeBandGeo = new THREE.CylinderGeometry(3.15, 3.15, 0.48, 64, 1, true);
+      const runeBandMat = new THREE.MeshBasicMaterial({
+        map: runeTex,
         transparent: true,
-        opacity: 0.34,
+        opacity: 0.78,
+        side: THREE.DoubleSide,
       });
-      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(3.2, 0.018, 12, 120), ringMat);
-      ring1.rotation.set(Math.PI / 3, 0.25, 0);
-      centerpiece.add(ring1);
+      const runeBand = new THREE.Mesh(runeBandGeo, runeBandMat);
+      runeBand.rotation.set(0.38, 0, -0.22);
+      relicGroup.add(runeBand);
 
-      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(3.75, 0.014, 12, 120), ringMat);
-      ring2.rotation.set(-Math.PI / 4, -0.45, 0.3);
-      centerpiece.add(ring2);
+      // 4. Outer Hammered Gold Astrolabe Ring
+      const outerRingGeo = new THREE.TorusGeometry(3.75, 0.022, 12, 120);
+      const outerRingMat = new THREE.MeshStandardMaterial({
+        color: 0xe5b83f,
+        emissive: 0x4d3605,
+        metalness: 0.75,
+        roughness: 0.28,
+      });
+      const outerRing = new THREE.Mesh(outerRingGeo, outerRingMat);
+      outerRing.rotation.set(-Math.PI / 3.2, 0.4, 0.2);
+      relicGroup.add(outerRing);
 
-      // 4. Floating Geometric Nodes
-      const nodeGeo = new THREE.OctahedronGeometry(0.14, 0);
-      const nodeMat = new THREE.MeshStandardMaterial({
+      // 5. Orbiting Obsidian & Gold Monolith Shards
+      const shardGeo = new THREE.ConeGeometry(0.16, 0.46, 4);
+      const shardMat = new THREE.MeshStandardMaterial({
         color: 0xffd84d,
-        emissive: 0x8a6508,
-        metalness: 0.6,
+        emissive: 0x7c5808,
+        metalness: 0.7,
         roughness: 0.25,
       });
-      const nodes = [];
-      for (let i = 0; i < 14; i++) {
-        const node = new THREE.Mesh(nodeGeo, nodeMat);
-        const angle = (i / 14) * Math.PI * 2;
-        const radius = 3.1 + (i % 3) * 0.45;
-        node.userData = {
+      const shards = [];
+      for (let i = 0; i < 12; i++) {
+        const shard = new THREE.Mesh(shardGeo, shardMat);
+        const angle = (i / 12) * Math.PI * 2;
+        const radius = 3.25 + (i % 3) * 0.42;
+        shard.userData = {
           angle,
           radius,
-          speed: 0.18 + (i % 4) * 0.05,
+          speed: 0.16 + (i % 4) * 0.045,
           yOffset: ((i % 5) - 2) * 0.55,
         };
-        node.position.set(Math.cos(angle) * radius, node.userData.yOffset, Math.sin(angle) * radius);
-        centerpiece.add(node);
-        nodes.push(node);
+        shard.position.set(Math.cos(angle) * radius, shard.userData.yOffset, Math.sin(angle) * radius);
+        relicGroup.add(shard);
+        shards.push(shard);
       }
 
-      // 5. Golden Particle Field
-      const particleCount = 620;
+      // 6. Golden Ember & Ash Particle Field
+      const particleCount = 640;
       const positions = new Float32Array(particleCount * 3);
       const colors = new Float32Array(particleCount * 3);
       const cGold = new THREE.Color(0xe5b83f);
       const cYellow = new THREE.Color(0xffd84d);
-      const cWhite = new THREE.Color(0xffffff);
+      const cWhite = new THREE.Color(0xfff4d2);
 
       for (let i = 0; i < particleCount; i++) {
         const i3 = i * 3;
@@ -548,15 +607,14 @@
       particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       const particleMat = new THREE.PointsMaterial({
-        size: 0.055,
+        size: 0.058,
         vertexColors: true,
         transparent: true,
-        opacity: 0.82,
+        opacity: 0.85,
       });
       const particles = new THREE.Points(particleGeo, particleMat);
       scene.add(particles);
 
-      // Mouse & Scroll Interaction
       const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
       const onPointerMove = (e) => {
         pointer.targetX = (e.clientX / window.innerWidth) * 2 - 1;
@@ -571,7 +629,7 @@
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
-        centerpiece.position.x = w > 920 ? 3.1 : 0;
+        relicGroup.position.x = w > 940 ? 3.2 : 0;
       };
       window.addEventListener('resize', onResize);
 
@@ -584,28 +642,28 @@
         pointer.x += (pointer.targetX - pointer.x) * 0.05;
         pointer.y += (pointer.targetY - pointer.y) * 0.05;
 
-        // Interactive light tracking
-        goldKeyLight.position.x = 5 + pointer.x * 3.5;
-        goldKeyLight.position.y = 4 + pointer.y * 3.0;
+        forgeKeyLight.position.x = 5 + pointer.x * 3.6;
+        forgeKeyLight.position.y = 4 + pointer.y * 3.0;
 
         if (!reducedMotion) {
           const scrollRatio = Math.min(window.scrollY / (window.innerHeight || 1), 1.5);
-          icoMesh.rotation.y = elapsed * 0.16 + pointer.x * 0.45;
-          icoMesh.rotation.x = elapsed * 0.11 - pointer.y * 0.35;
+          cageMesh.rotation.y = elapsed * 0.15 + pointer.x * 0.45;
+          cageMesh.rotation.x = elapsed * 0.1 - pointer.y * 0.35;
 
-          coreMesh.rotation.y = -elapsed * 0.32;
-          coreMesh.rotation.z = elapsed * 0.2;
+          coreMesh.rotation.y = -elapsed * 0.34;
+          coreMesh.rotation.z = elapsed * 0.18;
 
-          ring1.rotation.z = elapsed * 0.14;
-          ring2.rotation.z = -elapsed * 0.11;
+          runeBand.rotation.y = elapsed * 0.22;
+          outerRing.rotation.z = -elapsed * 0.12;
 
-          centerpiece.position.y = 0.1 - scrollRatio * 1.4 + Math.sin(elapsed * 0.9) * 0.14;
+          relicGroup.position.y = 0.1 - scrollRatio * 1.4 + Math.sin(elapsed * 0.9) * 0.14;
 
-          nodes.forEach((node) => {
-            const a = node.userData.angle + elapsed * node.userData.speed;
-            node.position.x = Math.cos(a) * node.userData.radius;
-            node.position.z = Math.sin(a) * node.userData.radius;
-            node.rotation.y = elapsed * 0.8;
+          shards.forEach((shard, idx) => {
+            const a = shard.userData.angle + elapsed * shard.userData.speed;
+            shard.position.x = Math.cos(a) * shard.userData.radius;
+            shard.position.z = Math.sin(a) * shard.userData.radius;
+            shard.rotation.z = elapsed * 0.7 + idx;
+            shard.rotation.x = elapsed * 0.5;
           });
 
           particles.rotation.y = elapsed * 0.025 + pointer.x * 0.08;
@@ -624,13 +682,17 @@
         if (frameId) cancelAnimationFrame(frameId);
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('resize', onResize);
-        icoGeo.dispose();
-        icoMat.dispose();
+        cageGeo.dispose();
+        cageMat.dispose();
         coreGeo.dispose();
         coreMat.dispose();
-        ringMat.dispose();
-        nodeGeo.dispose();
-        nodeMat.dispose();
+        runeBandGeo.dispose();
+        runeBandMat.dispose();
+        if (runeTex) runeTex.dispose();
+        outerRingGeo.dispose();
+        outerRingMat.dispose();
+        shardGeo.dispose();
+        shardMat.dispose();
         particleGeo.dispose();
         particleMat.dispose();
         renderer.dispose();
@@ -644,26 +706,27 @@
   }
 
   /* ==========================================================================
-     4. ORIGINAL SVG TECHNICAL ILLUSTRATIONS FOR STEM & ABOUT
+     4. VIKING SHIELD EMBLEM & TECHNICAL RUNE ILLUSTRATIONS
      ========================================================================== */
 
-  function BrandLogoMark() {
+  function VikingShieldLogo() {
     return h(
       'div',
       { className: 'cp-brand__mark', 'aria-hidden': 'true' },
       h(
         'svg',
-        { width: 22, height: 22, viewBox: '0 0 24 24', fill: 'none' },
+        { width: 24, height: 24, viewBox: '0 0 24 24', fill: 'none' },
+        // Viking Shield Hexagon + Runic Bind-Code
         h('polygon', {
-          points: '12,2 21,7 21,17 12,22 3,17 3,7',
+          points: '12,1.8 21,6.8 21,17.2 12,22.2 3,17.2 3,6.8',
           stroke: '#FFD84D',
           strokeWidth: '1.8',
-          fill: 'rgba(229,184,63,0.12)',
+          fill: 'rgba(229,184,63,0.14)',
         }),
         h('path', {
-          d: 'M9 9.5L6.5 12L9 14.5M15 9.5L17.5 12L15 14.5M13 8.5L11 15.5',
+          d: 'M12 4.5V19.5M8.5 8.5L12 12L15.5 8.5M8.5 15.5L12 12L15.5 15.5',
           stroke: '#FFFFFF',
-          strokeWidth: '1.7',
+          strokeWidth: '1.6',
           strokeLinecap: 'round',
           strokeLinejoin: 'round',
         })
@@ -671,7 +734,7 @@
     );
   }
 
-  function AboutSchematicGraphic() {
+  function AboutVegvisirSchematic() {
     return h(
       'div',
       { className: 'cp-schematic-box' },
@@ -682,62 +745,71 @@
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '18px',
+            marginBottom: '16px',
             fontFamily: 'var(--cp-font-mono)',
             fontSize: '0.72rem',
             color: 'var(--cp-gold)',
           },
         },
-        h('span', null, 'SYS // CODEPATCH_ARCH_V2.6'),
-        h('span', null, 'SBHS • NJ')
+        h('span', null, 'VEGVÍSIR // CODEPATCH FORGE'),
+        h('span', null, 'SBHS VIKINGS • NJ')
       ),
       h(
         'svg',
-        { viewBox: '0 0 420 290', width: '100%', height: 'auto', role: 'img', 'aria-label': 'CodePatch STEM Interdisciplinary Architecture Diagram' },
+        {
+          viewBox: '0 0 420 290',
+          width: '100%',
+          height: 'auto',
+          role: 'img',
+          'aria-label': 'Norse Vegvisir STEM Compass Architecture Diagram',
+        },
         h(
           'defs',
           null,
           h(
             'linearGradient',
-            { id: 'cpGoldGrad', x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
-            h('stop', { offset: '0%', stopColor: '#E5B83F' }),
-            h('stop', { offset: '100%', stopColor: '#FFD84D' })
+            { id: 'cpVikingGold', x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
+            h('stop', { offset: '0%', stopColor: '#C89624' }),
+            h('stop', { offset: '50%', stopColor: '#FFD84D' }),
+            h('stop', { offset: '100%', stopColor: '#E5B83F' })
           )
         ),
-        // Orbiting rings
-        h('circle', { cx: 210, cy: 145, r: 108, stroke: 'rgba(229,184,63,0.22)', strokeWidth: 1, strokeDasharray: '4 4', fill: 'none' }),
-        h('circle', { cx: 210, cy: 145, r: 72, stroke: 'rgba(255,255,255,0.14)', strokeWidth: 1, fill: 'none' }),
-        // Connecting spokes
-        h('line', { x1: 210, y1: 37, x2: 210, y2: 253, stroke: 'rgba(229,184,63,0.2)', strokeWidth: 1 }),
-        h('line', { x1: 102, y1: 145, x2: 318, y2: 145, stroke: 'rgba(229,184,63,0.2)', strokeWidth: 1 }),
-        // Center Core
+        // Outer Runic Compass Circles
+        h('circle', { cx: 210, cy: 145, r: 112, stroke: 'rgba(229,184,63,0.3)', strokeWidth: 1.2, strokeDasharray: '6 4', fill: 'none' }),
+        h('circle', { cx: 210, cy: 145, r: 76, stroke: 'rgba(255,216,77,0.2)', strokeWidth: 1, fill: 'none' }),
+        // 8-Point Norse Compass Spokes
+        h('line', { x1: 210, y1: 33, x2: 210, y2: 257, stroke: 'rgba(229,184,63,0.35)', strokeWidth: 1.4 }),
+        h('line', { x1: 98, y1: 145, x2: 322, y2: 145, stroke: 'rgba(229,184,63,0.35)', strokeWidth: 1.4 }),
+        h('line', { x1: 132, y1: 67, x2: 288, y2: 223, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1.1 }),
+        h('line', { x1: 288, y1: 67, x2: 132, y2: 223, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1.1 }),
+        // Center Shield Crest
         h('polygon', {
-          points: '210,104 245,124.5 245,165.5 210,186 175,165.5 175,124.5',
-          fill: 'rgba(229,184,63,0.16)',
-          stroke: 'url(#cpGoldGrad)',
+          points: '210,102 248,123.5 248,166.5 210,188 172,166.5 172,123.5',
+          fill: 'rgba(229,184,63,0.18)',
+          stroke: 'url(#cpVikingGold)',
           strokeWidth: 2,
         }),
-        h('text', { x: 210, y: 142, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 11, fontFamily: 'JetBrains Mono', fontWeight: 600 }, 'CODEPATCH'),
-        h('text', { x: 210, y: 157, textAnchor: 'middle', fill: '#FFD84D', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'STEM CORE'),
-        // Satellite Nodes
+        h('text', { x: 210, y: 141, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 10.5, fontFamily: 'Cinzel', fontWeight: 900 }, 'CODEPATCH'),
+        h('text', { x: 210, y: 157, textAnchor: 'middle', fill: '#FFD84D', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'SBHS • STEM'),
+        // Cardinal Rune Nodes
         [
-          { x: 210, y: 37, label: 'CS // AI' },
-          { x: 318, y: 145, label: 'ENG // LAB' },
-          { x: 210, y: 253, label: 'MATH // MOD' },
-          { x: 102, y: 145, label: 'OUTREACH' },
+          { x: 210, y: 33, label: 'ᚲ CODING' },
+          { x: 322, y: 145, label: 'ᛖ ENG // LAB' },
+          { x: 210, y: 257, label: 'ᛗ MATH' },
+          { x: 98, y: 145, label: 'ᛊ SCIENCE' },
         ].map((node, idx) =>
           h(
             'g',
             { key: idx },
             h('rect', {
-              x: node.x - 42,
+              x: node.x - 46,
               y: node.y - 14,
-              width: 84,
+              width: 92,
               height: 28,
-              rx: 14,
-              fill: '#141414',
+              rx: 6,
+              fill: '#12100C',
               stroke: '#E5B83F',
-              strokeWidth: 1.2,
+              strokeWidth: 1.3,
             }),
             h(
               'text',
@@ -748,6 +820,7 @@
                 fill: '#FFD84D',
                 fontSize: 9.5,
                 fontFamily: 'JetBrains Mono',
+                fontWeight: 600,
               },
               node.label
             )
@@ -767,8 +840,8 @@
             color: 'var(--cp-muted)',
           },
         },
-        h('span', null, 'Curiosity → Prototype → Impact'),
-        h('span', { style: { color: 'var(--cp-yellow)', fontFamily: 'var(--cp-font-mono)' } }, 'ACTIVE CHAPTER')
+        h('span', null, 'Learn → Build → Collaborate'),
+        h('span', { style: { color: 'var(--cp-yellow)', fontFamily: 'var(--cp-font-mono)' } }, 'ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ')
       )
     );
   }
@@ -778,16 +851,14 @@
       return h(
         'svg',
         { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
-        h('rect', { x: 20, y: 20, width: 280, height: 180, rx: 14, fill: '#121212', stroke: 'rgba(229,184,63,0.4)' }),
-        h('circle', { cx: 40, cy: 38, r: 4, fill: '#E5B83F' }),
-        h('circle', { cx: 54, cy: 38, r: 4, fill: '#555' }),
-        h('circle', { cx: 68, cy: 38, r: 4, fill: '#555' }),
-        h('text', { x: 38, y: 74, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'function buildFuture(curiosity) {'),
-        h('text', { x: 54, y: 98, fill: '#FFFFFF', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'const model = train(curiosity);'),
-        h('text', { x: 54, y: 122, fill: '#A5A5A5', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'return deployToCommunity(model);'),
-        h('text', { x: 38, y: 146, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, '}'),
-        h('rect', { x: 38, y: 164, width: 120, height: 18, rx: 4, fill: 'rgba(229,184,63,0.18)' }),
-        h('text', { x: 46, y: 177, fill: '#FFD84D', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'BUILD: PASSING ✓')
+        h('rect', { x: 20, y: 20, width: 280, height: 180, rx: 12, fill: '#11100D', stroke: 'rgba(229,184,63,0.45)' }),
+        h('text', { x: 38, y: 46, fill: '#E5B83F', fontSize: 11, fontFamily: 'JetBrains Mono' }, '// ᚲ RUNESTONE COMPILER'),
+        h('text', { x: 38, y: 78, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'function forgeCode(steps) {'),
+        h('text', { x: 54, y: 102, fill: '#FFFFFF', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'const program = compile(steps);'),
+        h('text', { x: 54, y: 126, fill: '#A5A5A5', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'return execute(program);'),
+        h('text', { x: 38, y: 150, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, '}'),
+        h('rect', { x: 38, y: 166, width: 136, height: 18, rx: 4, fill: 'rgba(229,184,63,0.18)' }),
+        h('text', { x: 46, y: 179, fill: '#FFD84D', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'STATUS: FORGED ✓')
       );
     }
     if (type === 'math') {
@@ -802,31 +873,20 @@
           stroke: '#FFD84D',
           strokeWidth: 2.5,
         }),
-        h('path', {
-          d: 'M 30 155 C 100 155, 130 55, 290 45',
-          fill: 'none',
-          stroke: 'rgba(229,184,63,0.45)',
-          strokeWidth: 1.6,
-          strokeDasharray: '5 4',
-        }),
-        h('text', { x: 175, y: 38, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, '∑ f(x) dx = ∞ Insight')
+        h('circle', { cx: 160, cy: 110, r: 58, fill: 'none', stroke: 'rgba(229,184,63,0.45)', strokeWidth: 1.6, strokeDasharray: '5 4' }),
+        h('text', { x: 175, y: 38, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'ᛗ // PATTERN & PROOF')
       );
     }
     if (type === 'eng') {
       return h(
         'svg',
         { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
-        h('rect', { x: 75, y: 55, width: 170, height: 110, rx: 14, fill: 'none', stroke: '#E5B83F', strokeWidth: 2 }),
-        h('rect', { x: 115, y: 82, width: 90, height: 56, rx: 8, fill: 'rgba(229,184,63,0.14)', stroke: '#FFD84D' }),
-        [95, 130, 160, 190, 225].map((x, idx) =>
-          h(
-            Fragment,
-            { key: idx },
-            h('line', { x1: x, y1: 32, x2: x, y2: 55, stroke: '#E5B83F', strokeWidth: 2 }),
-            h('line', { x1: x, y1: 165, x2: x, y2: 188, stroke: '#E5B83F', strokeWidth: 2 })
-          )
-        ),
-        h('text', { x: 160, y: 114, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 11, fontFamily: 'JetBrains Mono' }, 'MCU // CAD')
+        h('polygon', { points: '160,34 226,72 226,148 160,186 94,148 94,72', fill: 'none', stroke: '#E5B83F', strokeWidth: 2 }),
+        h('line', { x1: 94, y1: 72, x2: 226, y2: 148, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
+        h('line', { x1: 226, y1: 72, x2: 94, y2: 148, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
+        h('line', { x1: 160, y1: 34, x2: 160, y2: 186, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
+        h('circle', { cx: 160, cy: 110, r: 18, fill: 'rgba(229,184,63,0.2)', stroke: '#FFD84D', strokeWidth: 2 }),
+        h('text', { x: 160, y: 208, textAnchor: 'middle', fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛖ // SKETCH • BUILD • TEST')
       );
     }
     if (type === 'sci') {
@@ -842,20 +902,18 @@
     return h(
       'svg',
       { viewBox: '0 0 320 220', width: '100%', height: 'auto' },
-      [
-        [70, 60],
-        [250, 60],
-        [160, 110],
-        [70, 165],
-        [250, 165],
-      ].map(([x, y], idx) =>
+      h('rect', { x: 105, y: 55, width: 110, height: 110, rx: 10, fill: 'rgba(229,184,63,0.12)', stroke: '#E5B83F', strokeWidth: 2 }),
+      [130, 160, 190].map((pos, idx) =>
         h(
           Fragment,
           { key: idx },
-          h('line', { x1: 160, y1: 110, x2: x, y2: y, stroke: 'rgba(229,184,63,0.45)', strokeWidth: 1.6 }),
-          h('circle', { cx: x, cy: y, r: idx === 2 ? 16 : 10, fill: idx === 2 ? '#FFD84D' : '#171717', stroke: '#E5B83F', strokeWidth: 2 })
+          h('line', { x1: pos, y1: 28, x2: pos, y2: 55, stroke: '#FFD84D', strokeWidth: 2 }),
+          h('line', { x1: pos, y1: 165, x2: pos, y2: 192, stroke: '#FFD84D', strokeWidth: 2 }),
+          h('line', { x1: 78, y1: pos - 50, x2: 105, y2: pos - 50, stroke: '#FFD84D', strokeWidth: 2 }),
+          h('line', { x1: 215, y1: pos - 50, x2: 242, y2: pos - 50, stroke: '#FFD84D', strokeWidth: 2 })
         )
-      )
+      ),
+      h('circle', { cx: 160, cy: 110, r: 16, fill: 'none', stroke: '#FFD84D', strokeWidth: 2 })
     );
   }
 
@@ -896,13 +954,13 @@
               className: 'cp-brand',
               onClick: (e) => handleLinkClick(e, 'home'),
             },
-            h(BrandLogoMark),
+            h(VikingShieldLogo),
             h(
               'span',
               null,
               'CODEPATCH ',
               h('span', { style: { color: 'var(--cp-gold)' } }, 'STEM'),
-              h('span', { className: 'cp-brand__sub' }, 'SBHS Chapter • NJ')
+              h('span', { className: 'cp-brand__sub' }, 'SBHS Vikings • NJ')
             )
           ),
           h(
@@ -929,7 +987,7 @@
               {
                 type: 'button',
                 className: 'cp-btn cp-btn--primary cp-btn--sm',
-                onClick: () => onNavigate('contact', 'Join SBHS Chapter'),
+                onClick: () => onNavigate('contact', 'Join a chapter'),
               },
               'Get Involved'
             ),
@@ -944,7 +1002,7 @@
               },
               h(
                 'svg',
-                { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: '#FFFFFF', strokeWidth: 2 },
+                { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: '#FFD84D', strokeWidth: 2 },
                 menuOpen
                   ? h('path', { d: 'M18 6L6 18M6 6l12 12', strokeLinecap: 'round' })
                   : h('path', { d: 'M4 7h16M4 12h16M4 17h16', strokeLinecap: 'round' })
@@ -976,7 +1034,7 @@
             style: { marginTop: '16px' },
             onClick: () => {
               setMenuOpen(false);
-              onNavigate('contact', 'Join SBHS Chapter');
+              onNavigate('contact', 'Join a chapter');
             },
           },
           'Get Involved →'
@@ -1001,7 +1059,7 @@
             'div',
             { className: 'cp-hero__pill' },
             h('span', { className: 'cp-hero__dot' }),
-            'South Brunswick High School Chapter • Monmouth Junction, NJ'
+            'ᚠ South Brunswick High School Chapter • New Jersey ᛟ'
           ),
           h(
             'h1',
@@ -1012,7 +1070,7 @@
           h(
             'p',
             { className: 'cp-hero__subtitle' },
-            'Building the next generation of innovation through computer science, mathematics, engineering, and technology.'
+            'Building the next generation of innovation — where code meets creativity, mathematics meets possibility, and students build the future.'
           ),
           h(
             'div',
@@ -1022,7 +1080,7 @@
               {
                 type: 'button',
                 className: 'cp-btn cp-btn--primary',
-                onClick: () => onNavigate('contact', 'Join SBHS Chapter'),
+                onClick: () => onNavigate('contact', 'Join a chapter'),
               },
               'Get Involved →'
             ),
@@ -1033,7 +1091,7 @@
                 className: 'cp-btn cp-btn--secondary',
                 onClick: () => onNavigate('stem'),
               },
-              'Explore STEM Tracks'
+              'Explore CodePatch STEM'
             )
           ),
           h(
@@ -1042,20 +1100,20 @@
             h(
               'div',
               null,
-              h('div', { className: 'cp-telemetry__val' }, '05', h('span', null, '+')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'STEM Core Tracks')
+              h('div', { className: 'cp-telemetry__val' }, '14', h('span', null, '')),
+              h('div', { className: 'cp-telemetry__lbl' }, 'Chapter Members')
             ),
             h(
               'div',
               null,
-              h('div', { className: 'cp-telemetry__val' }, '14', h('span', null, '')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'Student Leaders')
+              h('div', { className: 'cp-telemetry__val' }, '04', h('span', null, '')),
+              h('div', { className: 'cp-telemetry__lbl' }, 'SBHS Departments')
             ),
             h(
               'div',
               null,
               h('div', { className: 'cp-telemetry__val' }, 'SBHS', h('span', null, '.NJ')),
-              h('div', { className: 'cp-telemetry__lbl' }, 'Official Chapter')
+              h('div', { className: 'cp-telemetry__lbl' }, 'South Brunswick Vikings')
             )
           )
         )
@@ -1066,24 +1124,24 @@
   function AboutSection() {
     const pillars = [
       {
-        num: '01',
-        title: 'Accessible STEM Labs',
-        desc: 'Breaking barriers with hands-on coding, engineering, and math workshops open to every curious learner.',
+        num: '01 // ᚲ',
+        title: 'Accessible STEM Education',
+        desc: 'Promoting computer science, mathematics, engineering, and technology for every student.',
       },
       {
-        num: '02',
-        title: 'Peer-Driven Mentorship',
-        desc: 'High school builders guiding younger students from foundational syntax to working prototypes.',
+        num: '02 // ᛗ',
+        title: 'Student Collaboration',
+        desc: 'Encouraging students to explore technology, develop technical knowledge, and build together.',
       },
       {
-        num: '03',
-        title: 'Community Workshops',
-        desc: 'Partnering with schools and local spaces across South Brunswick to spark early technical confidence.',
+        num: '03 // ᛖ',
+        title: 'Hands-On Workshops',
+        desc: 'Applying classroom concepts through practical activities, coding labs, and educational initiatives.',
       },
       {
-        num: '04',
-        title: 'Real-World Creation',
-        desc: 'Moving beyond passive lectures—every track culminates in tangible software, hardware, or research.',
+        num: '04 // ᛟ',
+        title: 'Viking Builder Spirit',
+        desc: 'Forging resilient problem-solvers at South Brunswick High School and beyond.',
       },
     ];
 
@@ -1096,17 +1154,17 @@
         h(
           'div',
           { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'About & Mission'),
-          h('h2', { className: 'cp-h2' }, 'Engineered to Turn ', h('span', { className: 'cp-gold' }, 'Questions into Systems.')),
+          h('div', { className: 'cp-eyebrow' }, 'Our Mission'),
+          h('h2', { className: 'cp-h2' }, 'Forged to Build ', h('span', { className: 'cp-gold' }, 'The Future Together.')),
           h(
             'blockquote',
             { className: 'cp-about__manifesto' },
-            '“Talent is everywhere, but hands-on opportunity is not. CodePatch STEM bridges that gap through student-led engineering and accessible workshops.”'
+            '“CodePatch STEM promotes accessible STEM education through computer science, mathematics, engineering, technology, student collaboration, workshops, and educational initiatives.”'
           ),
           h(
             'p',
             { className: 'cp-lead' },
-            'At the South Brunswick High School chapter of CodePatch STEM, we unite student programmers, mathematicians, engineers, and designers to build technical literacy and create high-impact educational experiences.'
+            'The organization encourages students to explore technology, develop technical knowledge, collaborate with others, and apply their learning through practical activities.'
           ),
           h(
             'div',
@@ -1115,24 +1173,78 @@
               h(
                 'div',
                 { key: p.num, className: 'cp-mini-card' },
-                h('div', { className: 'cp-mini-card__num' }, `PILLAR // ${p.num}`),
+                h('div', { className: 'cp-mini-card__num' }, p.num),
                 h('div', { className: 'cp-mini-card__title' }, p.title),
                 h('div', { className: 'cp-mini-card__desc' }, p.desc)
               )
             )
           )
         ),
-        h('div', { className: 'cp-reveal' }, h(AboutSchematicGraphic))
+        h('div', { className: 'cp-reveal' }, h(AboutVegvisirSchematic))
       )
     );
   }
 
-  function StemSection({ disciplines }) {
+  function StemSection({ disciplines, reducedMotion }) {
     const [activeId, setActiveId] = useState('cs');
+    const [forgeProgress, setForgeProgress] = useState(0);
+    const [forging, setForging] = useState(false);
+    const [forgedComplete, setForgedComplete] = useState(false);
+    const rafRef = useRef(null);
+    const lastTimeRef = useRef(0);
+
     const active = useMemo(
       () => disciplines.find((d) => d.id === activeId) || disciplines[0],
       [disciplines, activeId]
     );
+
+    useEffect(() => {
+      const step = (now) => {
+        const dt = Math.min(60, now - (lastTimeRef.current || now));
+        lastTimeRef.current = now;
+
+        setForgeProgress((prev) => {
+          const next = Math.min(1, Math.max(0, prev + (forging ? dt / 1500 : -dt / 700)));
+          if (next >= 1) {
+            setForgedComplete(true);
+            setForging(false);
+            return 1;
+          }
+          if (next > 0 && !forgedComplete) {
+            rafRef.current = requestAnimationFrame(step);
+          }
+          return next;
+        });
+      };
+
+      if (forging || (forgeProgress > 0 && !forgedComplete)) {
+        lastTimeRef.current = performance.now();
+        rafRef.current = requestAnimationFrame(step);
+      }
+
+      return () => {
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      };
+    }, [forging, forgedComplete]);
+
+    const startForge = () => {
+      if (reducedMotion) {
+        setForgeProgress(1);
+        setForgedComplete(true);
+        return;
+      }
+      if (forgedComplete) {
+        setForgedComplete(false);
+        setForgeProgress(0);
+      }
+      setForging(true);
+    };
+
+    const stopForge = () => {
+      setForging(false);
+    };
+
+    const activeStageCount = Math.min(3, Math.floor(forgeProgress * 3.0001));
 
     return h(
       'section',
@@ -1143,12 +1255,12 @@
         h(
           'div',
           { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Interdisciplinary Curriculum'),
-          h('h2', { className: 'cp-h2' }, 'Five Pillars of ', h('span', { className: 'cp-gold' }, 'Modern Innovation.')),
+          h('div', { className: 'cp-eyebrow' }, 'Dimensions of STEM'),
+          h('h2', { className: 'cp-h2' }, 'Explore ', h('span', { className: 'cp-gold' }, 'CodePatch STEM.')),
           h(
             'p',
             { className: 'cp-lead' },
-            'Select a discipline below to explore how our chapter integrates theory, software, and physical prototyping.'
+            'Accessible STEM education, built by students — computer science, mathematics, engineering, technology, and science explored together.'
           )
         ),
         h(
@@ -1165,6 +1277,7 @@
                 className: `cp-stem__tab ${activeId === d.id ? 'is-active' : ''}`,
                 onClick: () => setActiveId(d.id),
               },
+              h('span', { style: { color: 'var(--cp-gold)' } }, d.rune),
               d.short
             )
           )
@@ -1180,7 +1293,7 @@
               h('h3', { className: 'cp-stem__title' }, active.name),
               h(
                 'p',
-                { style: { color: 'var(--cp-yellow)', fontWeight: 500, marginBottom: '12px' } },
+                { style: { color: 'var(--cp-yellow)', fontWeight: 600, marginBottom: '12px' } },
                 active.tagline
               ),
               h('p', { className: 'cp-stem__desc' }, active.description),
@@ -1191,12 +1304,80 @@
               )
             ),
             h('div', { className: 'cp-stem__visual' }, h(StemIllustration, { type: active.diagramType }))
+          ),
+        // Interactive 3-Stage Loop preserved from original #path
+        h(
+          'div',
+          { className: 'cp-forge-panel cp-reveal' },
+          h(
+            'div',
+            { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
+            h(
+              'div',
+              null,
+              h('div', { className: 'cp-eyebrow', style: { marginBottom: '6px' } }, 'Three Stages, One Loop'),
+              h(
+                'h3',
+                { style: { fontFamily: 'var(--cp-font-norse)', fontSize: '1.6rem', fontWeight: 900, textTransform: 'uppercase' } },
+                'Forge the CodePatch Loop'
+              )
+            ),
+            h('span', { className: 'cp-rune-strip' }, 'ᛚ • ᛒ • ᚲ')
+          ),
+          h(
+            'div',
+            { className: 'cp-stage-grid' },
+            PATH_STAGES.map((st, idx) => {
+              const done = idx < activeStageCount;
+              return h(
+                'article',
+                { key: st.num, className: `cp-stage-card ${done ? 'is-forged' : ''}` },
+                h(
+                  'div',
+                  { style: { display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--cp-font-mono)', fontSize: '0.75rem', color: 'var(--cp-gold)' } },
+                  h('span', null, `${st.num} // ${st.rune}`),
+                  h('span', null, done ? 'FORGED ✓' : 'QUEUED')
+                ),
+                h('h4', null, st.title),
+                h('p', { style: { fontSize: '0.9rem', color: 'var(--cp-muted)' } }, st.desc)
+              );
+            })
+          ),
+          h('div', { className: 'cp-forge-bar' }, h('div', { className: 'cp-forge-bar__fill', style: { width: `${Math.round(forgeProgress * 100)}%` } })),
+          h(
+            'div',
+            { style: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px' } },
+            h(
+              'button',
+              {
+                type: 'button',
+                className: 'cp-btn cp-btn--primary cp-btn--sm',
+                onPointerDown: startForge,
+                onPointerUp: stopForge,
+                onPointerLeave: stopForge,
+                onPointerCancel: stopForge,
+                onClick: () => {
+                  if (reducedMotion) startForge();
+                },
+              },
+              forgedComplete ? 'Patch Forged ✓ (Hold Again)' : 'Hold to Forge the Patch'
+            ),
+            h(
+              'span',
+              { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.82rem', color: 'var(--cp-muted)' }, role: 'status' },
+              forgedComplete
+                ? 'All three stages complete. Built together.'
+                : forging
+                ? 'Forging the patch...'
+                : 'Idle. Press and hold the button to ignite all three stages.'
+            )
           )
+        )
       )
     );
   }
 
-  function ChapterSection({ stats }) {
+  function ChapterSection({ stats, onNavigate }) {
     return h(
       'section',
       { id: 'chapter', className: 'cp-section' },
@@ -1206,12 +1387,12 @@
         h(
           'div',
           { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Our Chapter • New Jersey'),
-          h('h2', { className: 'cp-h2' }, 'South Brunswick ', h('span', { className: 'cp-gold' }, 'High School Chapter.')),
+          h('div', { className: 'cp-eyebrow' }, 'Featured Chapter • South Brunswick, NJ'),
+          h('h2', { className: 'cp-h2' }, 'South Brunswick ', h('span', { className: 'cp-gold' }, 'High School Vikings.')),
           h(
             'p',
             { className: 'cp-lead' },
-            'Rooted in Monmouth Junction, New Jersey, the SBHS chapter brings together student innovators across six specialized departments to run workshops, mentor peers, and engineer community solutions.'
+            'Our featured chapter, based in South Brunswick, New Jersey, USA. Students run it, and it is organized into Coding, Mathematics, Marketing, and Science departments.'
           )
         ),
         h(
@@ -1221,7 +1402,7 @@
             h(
               'div',
               { key: idx, className: 'cp-stat-card' },
-              h('div', { className: 'cp-stat-card__num' }, `${st.value}${st.suffix}`),
+              h('div', { className: 'cp-stat-card__num' }, st.value),
               h('div', { className: 'cp-stat-card__label' }, st.label),
               h('div', { className: 'cp-stat-card__sub' }, st.sub)
             )
@@ -1239,22 +1420,43 @@
               h('p', { className: 'cp-dept-card__desc' }, dept.desc)
             )
           )
+        ),
+        h(
+          'div',
+          {
+            className: 'cp-stone-card cp-reveal',
+            style: {
+              marginTop: '24px',
+              padding: '24px 28px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '16px',
+              borderColor: 'var(--cp-border-gold)',
+            },
+          },
+          h(
+            'div',
+            null,
+            h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, color: 'var(--cp-yellow)' } }, 'SBHS Chapter • Chapter President: Srijeet Ghosh'),
+            h('div', { style: { fontSize: '0.92rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Want to start a chapter at your school? This directory is built to add more chapters.')
+          ),
+          h(
+            'button',
+            {
+              type: 'button',
+              className: 'cp-btn cp-btn--secondary cp-btn--sm',
+              onClick: () => onNavigate('contact', 'Start a chapter at my school'),
+            },
+            'Tell Us About Your School →'
+          )
         )
       )
     );
   }
 
   function MemberAvatar({ member, large }) {
-    const [imgFailed, setImgFailed] = useState(false);
-    if (member.avatarUrl && !imgFailed) {
-      return h('img', {
-        src: member.avatarUrl,
-        alt: member.name,
-        className: `cp-avatar ${large ? 'cp-avatar--lg' : ''}`,
-        style: { objectFit: 'cover' },
-        onError: () => setImgFailed(true),
-      });
-    }
     return h(
       'div',
       { className: `cp-avatar ${large ? 'cp-avatar--lg' : ''}`, 'aria-hidden': 'true' },
@@ -1268,23 +1470,30 @@
 
     const president = useMemo(() => roster.find((m) => m.isPresident) || roster[0], [roster]);
 
-    const departments = useMemo(() => {
-      const unique = Array.from(new Set(roster.map((m) => m.department)));
-      return ['All', ...unique];
-    }, [roster]);
+    const filterTabs = ['All', 'Coding', 'Mathematics', 'Marketing', 'Science'];
 
     const filteredMembers = useMemo(() => {
       const q = query.trim().toLowerCase();
       return roster.filter((member) => {
-        const matchesDept = selectedDept === 'All' || member.department === selectedDept;
+        const matchesDept = selectedDept === 'All' || member.departments.includes(selectedDept);
         const matchesQuery =
           !q ||
           member.name.toLowerCase().includes(q) ||
-          member.role.toLowerCase().includes(q) ||
-          member.department.toLowerCase().includes(q);
+          member.roles.some((r) => r.toLowerCase().includes(q)) ||
+          member.departments.some((d) => d.toLowerCase().includes(q)) ||
+          (member.departments.length === 0 && 'leadership'.includes(q));
         return matchesDept && matchesQuery;
       });
     }, [roster, selectedDept, query]);
+
+    const liveStatusText = useMemo(() => {
+      if (selectedDept === 'All' && !query.trim()) {
+        return DEPARTMENT_DESCRIPTIONS.All;
+      }
+      const base = DEPARTMENT_DESCRIPTIONS[selectedDept] || '';
+      const countLabel = filteredMembers.length === 1 ? '1 member.' : `${filteredMembers.length} members.`;
+      return `${base} Showing ${countLabel}`.trim();
+    }, [selectedDept, query, filteredMembers.length]);
 
     return h(
       'section',
@@ -1295,12 +1504,12 @@
         h(
           'div',
           { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, `Chapter Leadership • ${roster.length} Members`),
-          h('h2', { className: 'cp-h2' }, 'Meet the ', h('span', { className: 'cp-gold' }, 'SBHS Officer Board.')),
+          h('div', { className: 'cp-eyebrow' }, 'The People Behind The Chapter'),
+          h('h2', { className: 'cp-h2' }, 'Fourteen Members, ', h('span', { className: 'cp-gold' }, 'Four Departments.')),
           h(
             'p',
             { className: 'cp-lead' },
-            'A multidisciplinary team of 14 student leaders driving curriculum design, engineering labs, mathematics seminars, and community outreach.'
+            'Meet the student leaders and builders of the South Brunswick High School CodePatch STEM chapter. Filter by department or search by name and role.'
           )
         ),
         president &&
@@ -1311,24 +1520,28 @@
             h(
               'div',
               null,
-              h('div', { className: 'cp-badge-gold', style: { marginBottom: '12px' } }, '★ Featured Chapter President'),
+              h('div', { className: 'cp-badge-gold', style: { marginBottom: '12px' } }, 'ᛟ Featured Chapter President'),
               h(
                 'h3',
-                { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.75rem', fontWeight: 800 } },
+                { className: 'cp-crumble-subtle', style: { fontSize: '1.8rem', fontWeight: 900 } },
                 president.name
               ),
               h(
                 'div',
-                { style: { color: 'var(--cp-gold)', fontWeight: 600, margin: '4px 0 10px' } },
-                `${president.role} • ${president.department}`
+                { style: { color: 'var(--cp-gold)', fontWeight: 600, margin: '6px 0 8px' } },
+                `${president.roles.join(' • ')} — South Brunswick High School Chapter`
               ),
-              h('p', { style: { color: 'var(--cp-muted)', maxWidth: '640px' } }, president.bio)
+              h(
+                'p',
+                { style: { color: 'var(--cp-muted)', maxWidth: '640px', fontSize: '0.95rem' } },
+                'Leading the SBHS chapter across Coding, Mathematics, Marketing, and Science initiatives.'
+              )
             ),
             h(
               'div',
               { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.76rem', color: 'var(--cp-muted)' } },
-              'SOUTH BRUNSWICK HS',
-              h('div', { style: { color: 'var(--cp-yellow)', marginTop: '4px' } }, 'EXECUTIVE LEAD')
+              'SOUTH BRUNSWICK, NJ',
+              h('div', { style: { color: 'var(--cp-yellow)', marginTop: '4px' } }, 'LEADERSHIP')
             )
           ),
         h(
@@ -1336,9 +1549,12 @@
           { className: 'cp-team-controls cp-reveal' },
           h(
             'div',
-            { className: 'cp-filter-pills', role: 'group', 'aria-label': 'Filter team by department' },
-            departments.map((dept) => {
-              const count = dept === 'All' ? roster.length : roster.filter((m) => m.department === dept).length;
+            { className: 'cp-filter-pills', role: 'group', 'aria-label': 'Filter by department' },
+            filterTabs.map((dept) => {
+              const count =
+                dept === 'All'
+                  ? roster.length
+                  : roster.filter((m) => m.departments.includes(dept)).length;
               return h(
                 'button',
                 {
@@ -1364,11 +1580,12 @@
               type: 'search',
               value: query,
               onChange: (e) => setQuery(e.target.value),
-              placeholder: 'Search name, role, or department...',
-              'aria-label': 'Search team members',
+              placeholder: 'Search member, role, or department...',
+              'aria-label': 'Search chapter members',
             })
           )
         ),
+        h('div', { className: 'cp-dept-caption', 'aria-live': 'polite' }, liveStatusText),
         filteredMembers.length === 0
           ? h(
               'div',
@@ -1377,12 +1594,12 @@
                   textAlign: 'center',
                   padding: '48px 20px',
                   background: 'var(--cp-card)',
-                  borderRadius: '20px',
+                  borderRadius: '16px',
                   border: '1px solid var(--cp-border)',
                   color: 'var(--cp-muted)',
                 },
               },
-              'No team members match that filter. ',
+              'No members match that search. ',
               h(
                 'button',
                 {
@@ -1405,8 +1622,10 @@
           : h(
               'div',
               { className: 'cp-team-grid' },
-              filteredMembers.map((member) =>
-                h(
+              filteredMembers.map((member) => {
+                const displayRoles = member.roles.length ? member.roles : ['Member'];
+                const displayTags = member.departments.length ? member.departments : ['Leadership'];
+                return h(
                   'article',
                   { key: member.id, className: 'cp-member-card' },
                   h(
@@ -1417,13 +1636,20 @@
                       'div',
                       null,
                       h('h3', { className: 'cp-member-card__name' }, member.name),
-                      h('div', { className: 'cp-member-card__role' }, member.role)
+                      h(
+                        'div',
+                        { className: 'cp-member-card__roles' },
+                        displayRoles.map((r) => h('div', { key: r, className: 'cp-member-card__role' }, r))
+                      )
                     )
                   ),
-                  h('span', { className: 'cp-member-card__dept' }, member.department),
-                  h('p', { className: 'cp-member-card__bio' }, member.bio)
-                )
-              )
+                  h(
+                    'div',
+                    { className: 'cp-member-card__tags' },
+                    displayTags.map((tag) => h('span', { key: tag, className: 'cp-member-card__dept' }, tag))
+                  )
+                );
+              })
             )
       )
     );
@@ -1439,12 +1665,12 @@
         h(
           'div',
           { className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Schedule & Workshops'),
-          h('h2', { className: 'cp-h2' }, 'Chapter Meetings & ', h('span', { className: 'cp-gold' }, 'Upcoming Events.')),
+          h('div', { className: 'cp-eyebrow' }, 'Meetings, Workshops & Socials'),
+          h('h2', { className: 'cp-h2' }, 'Meetings & ', h('span', { className: 'cp-gold' }, 'Upcoming Events.')),
           h(
             'p',
             { className: 'cp-lead' },
-            'Stay up to date with SBHS chapter meetings, technical workshops, and outreach builds. Items marked TBD will be announced via chapter channels.'
+            'Confirmed dates and room assignments will appear here as they are finalized. Follow our official Instagram for dynamic room reminders.'
           )
         ),
         h(
@@ -1461,12 +1687,12 @@
                   'div',
                   { className: 'cp-event-card__meta' },
                   h('span', { style: { color: 'var(--cp-gold)' } }, evt.category.toUpperCase()),
-                  h('span', { className: 'cp-tbd' }, `DATE: ${evt.date}`)
+                  h('span', { className: 'cp-tbd' }, 'UPCOMING // TBD')
                 ),
                 h('h3', { className: 'cp-event-card__title' }, evt.title),
                 h(
                   'p',
-                  { style: { color: 'var(--cp-muted)', fontSize: '0.92rem', marginTop: '10px' } },
+                  { style: { color: 'var(--cp-muted)', fontSize: '0.93rem', marginTop: '10px' } },
                   evt.description
                 )
               ),
@@ -1476,26 +1702,20 @@
                 h(
                   'div',
                   { className: 'cp-event-card__details' },
+                  h('div', null, h('strong', { style: { color: '#fff' } }, 'Date: '), evt.date),
                   h('div', null, h('strong', { style: { color: '#fff' } }, 'Time: '), evt.time),
-                  h('div', null, h('strong', { style: { color: '#fff' } }, 'Location: '), evt.location)
+                  h('div', { style: { gridColumn: '1 / -1' } }, h('strong', { style: { color: '#fff' } }, 'Location: '), evt.location)
                 ),
                 h(
-                  'div',
-                  { style: { marginTop: '16px' } },
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      className: 'cp-btn cp-btn--secondary cp-btn--sm',
-                      onClick: () => onNavigate('contact', 'Request / RSVP Event Info'),
-                    },
-                    'Get Event Updates'
-                  )
+                  'p',
+                  { style: { fontSize: '0.84rem', color: 'var(--cp-gold)', marginTop: '14px' } },
+                  evt.note
                 )
               )
             )
           )
         ),
+        // Preserved Social Media Links
         h(
           'div',
           { className: 'cp-social-grid cp-reveal' },
@@ -1510,9 +1730,9 @@
             h(
               'div',
               null,
-              h('div', { style: { fontFamily: 'var(--cp-font-heading)', fontWeight: 700, fontSize: '1.15rem' } }, 'Instagram — @sbcodepatch'),
-              h('div', { className: 'cp-social-card__handle' }, 'instagram.com/sbcodepatch'),
-              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Meeting reminders, workshop recaps, and chapter announcements.')
+              h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, fontSize: '1.12rem' } }, 'Instagram — @sbcodepatch'),
+              h('div', { className: 'cp-social-card__handle' }, 'https://www.instagram.com/sbcodepatch/'),
+              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Chapter updates, photographs, activities, and announcements.')
             ),
             h('span', { style: { color: 'var(--cp-yellow)', fontSize: '1.4rem' } }, '↗')
           ),
@@ -1527,11 +1747,34 @@
             h(
               'div',
               null,
-              h('div', { style: { fontFamily: 'var(--cp-font-heading)', fontWeight: 700, fontSize: '1.15rem' } }, 'YouTube — @SBCPS-Chapter'),
-              h('div', { className: 'cp-social-card__handle' }, 'youtube.com/@SBCPS-Chapter'),
-              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Recorded STEM tutorials, coding walkthroughs, and project showcases.')
+              h('div', { style: { fontFamily: 'var(--cp-font-norse)', fontWeight: 800, fontSize: '1.12rem' } }, 'YouTube — @SBCPS-Chapter'),
+              h('div', { className: 'cp-social-card__handle' }, 'https://www.youtube.com/@SBCPS-Chapter'),
+              h('div', { style: { fontSize: '0.86rem', color: 'var(--cp-muted)', marginTop: '4px' } }, 'Educational videos, coding demonstrations, and workshop content.')
             ),
             h('span', { style: { color: 'var(--cp-yellow)', fontSize: '1.4rem' } }, '↗')
+          )
+        ),
+        // Preserved FAQ section from original site
+        h(
+          'div',
+          { style: { marginTop: '72px' }, className: 'cp-reveal' },
+          h(
+            'div',
+            { style: { textAlign: 'center' } },
+            h('div', { className: 'cp-eyebrow' }, 'Questions & Answers'),
+            h('h3', { className: 'cp-crumble-subtle', style: { fontSize: '1.85rem', fontWeight: 900 } }, 'Frequently Asked Questions')
+          ),
+          h(
+            'div',
+            { className: 'cp-faq-list' },
+            FAQ_ITEMS.map((item) =>
+              h(
+                'details',
+                { key: item.q, className: 'cp-faq-item' },
+                h('summary', null, item.q),
+                h('p', null, item.a)
+              )
+            )
           )
         )
       )
@@ -1539,7 +1782,7 @@
   }
 
   /* ==========================================================================
-     6. CONTACT — 6-STEP INTERACTIVE WIZARD
+     6. CONTACT — 6-STEP INTERACTIVE WIZARD (ALIGNED WITH ORIGINAL JOIN FIELDS)
      ========================================================================== */
 
   const WIZARD_STEPS = [
@@ -1553,20 +1796,20 @@
 
   const CONTACT_REASONS = [
     {
-      title: 'Join SBHS Chapter',
-      desc: 'Become a member, join a STEM track, or apply to assist with workshops.',
+      title: 'Join a chapter',
+      desc: 'Join South Brunswick High School CodePatch STEM and explore coding, math, science, or marketing.',
     },
     {
-      title: 'Request a STEM Workshop',
-      desc: 'Host a student-led coding, math, or engineering workshop at your school or library.',
+      title: 'Participate in workshops',
+      desc: 'Take part in student-led STEM workshops, hands-on activities, and coding sessions.',
     },
     {
-      title: 'Partnership / Sponsorship',
-      desc: 'Collaborate with CodePatch STEM on educational resources, mentors, or hardware kits.',
+      title: 'Start a chapter at my school',
+      desc: 'Tell us about your school and bring CodePatch STEM to your student community.',
     },
     {
-      title: 'General Inquiry',
-      desc: 'Ask a question about meetings, leadership, or upcoming SBHS chapter activities.',
+      title: 'Help organize educational events',
+      desc: 'Collaborate on projects, outreach events, and educational initiatives.',
     },
   ];
 
@@ -1574,9 +1817,9 @@
     'Computer Science',
     'Mathematics',
     'Engineering',
-    'Science',
     'Technology',
-    'Youth Workshop Volunteering',
+    'Science',
+    'Marketing',
   ];
 
   function ContactWizardSection({ preselectedReason }) {
@@ -1586,12 +1829,11 @@
     const [receipt, setReceipt] = useState(null);
 
     const [form, setForm] = useState({
-      reason: 'Join SBHS Chapter',
+      reason: 'Join a chapter',
       fullName: '',
       email: '',
-      handle: '',
       school: 'South Brunswick High School',
-      grade: '10th Grade (Sophomore)',
+      grade: '10',
       interests: ['Computer Science'],
       message: '',
     });
@@ -1626,27 +1868,27 @@
           setError('Please enter your full name.');
           return false;
         }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-          setError('Please enter a valid email address.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(form.email.trim())) {
+          setError('Enter a valid email, like name@example.com.');
           return false;
         }
       }
       if (step === 2) {
         if (!form.school.trim()) {
-          setError('Please enter your school or organization name.');
+          setError('Please enter your school name.');
           return false;
         }
         if (!form.grade.trim()) {
-          setError('Please select your grade or role.');
+          setError('Please select your grade level.');
           return false;
         }
       }
       if (step === 3 && form.interests.length === 0) {
-        setError('Please select at least one STEM interest.');
+        setError('Please select at least one area of interest.');
         return false;
       }
       if (step === 4 && form.message.trim().length < 10) {
-        setError('Please write a brief message (at least 10 characters).');
+        setError('Please share your interests, participation goals, and STEM background (at least 10 characters).');
         return false;
       }
       return true;
@@ -1689,13 +1931,13 @@
         { className: 'cp-container' },
         h(
           'div',
-          { style: { textAlign: 'center', maxWidth: '680px', margin: '0 auto' }, className: 'cp-reveal' },
-          h('div', { className: 'cp-eyebrow' }, 'Get In Touch'),
-          h('h2', { className: 'cp-h2' }, 'Connect With ', h('span', { className: 'cp-gold' }, 'CodePatch STEM.')),
+          { style: { textAlign: 'center', maxWidth: '700px', margin: '0 auto' }, className: 'cp-reveal' },
+          h('div', { className: 'cp-eyebrow' }, 'Find Your Way In'),
+          h('h2', { className: 'cp-h2' }, 'Send A ', h('span', { className: 'cp-gold' }, 'Transmission.')),
           h(
             'p',
             { className: 'cp-lead', style: { margin: '0 auto' } },
-            'Complete our interactive 6-step inquiry wizard to join the SBHS chapter, request a workshop, or collaborate with our team.'
+            'Join a chapter, participate in workshops, explore coding, join mathematics activities, contribute to projects, or help organize educational events.'
           )
         ),
         h(
@@ -1704,7 +1946,7 @@
           h(
             'div',
             { className: 'cp-wizard__notice' },
-            'PHASE 1 PREVIEW // Frontend-only mock submission (Phase 2 connects live backend)'
+            'PHASE 1 PREVIEW // Frontend-only mock simulation (Phase 2 connects live backend)'
           ),
           receipt
             ? h(
@@ -1721,13 +1963,13 @@
                 ),
                 h(
                   'h3',
-                  { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.8rem', fontWeight: 800, marginBottom: '10px' } },
-                  'Inquiry Simulated Successfully!'
+                  { className: 'cp-crumble-subtle', style: { fontSize: '1.85rem', fontWeight: 900, marginBottom: '10px', color: 'var(--cp-yellow)' } },
+                  'TRANSMISSION SECURED'
                 ),
                 h(
                   'p',
                   { style: { color: 'var(--cp-muted)', maxWidth: '500px', margin: '0 auto 18px' } },
-                  `Thank you, ${form.fullName}. Your ${form.reason} submission has been validated in Phase 1 preview mode.`
+                  `Thank you, ${form.fullName}. Your "${form.reason}" application log has been validated in Phase 1 frontend simulation mode.`
                 ),
                 h(
                   'div',
@@ -1735,8 +1977,8 @@
                     style: {
                       display: 'inline-block',
                       padding: '8px 16px',
-                      borderRadius: '10px',
-                      background: '#101010',
+                      borderRadius: '8px',
+                      background: '#0d0d0d',
                       border: '1px solid var(--cp-border-gold)',
                       fontFamily: 'var(--cp-font-mono)',
                       fontSize: '0.82rem',
@@ -1744,7 +1986,7 @@
                       marginBottom: '26px',
                     },
                   },
-                  `PREVIEW REF // ${receipt.ticketId}`
+                  `SIMULATED REF // ${receipt.ticketId}`
                 ),
                 h(
                   'div',
@@ -1779,7 +2021,7 @@
                     Fragment,
                     null,
                     h('h3', { className: 'cp-wizard__title' }, 'Step 1: Reason for Contacting Us'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Choose the option that best matches your inquiry.'),
+                    h('p', { className: 'cp-wizard__hint' }, 'Select how you want to participate in CodePatch STEM.'),
                     h(
                       'div',
                       { className: 'cp-choice-grid' },
@@ -1803,7 +2045,7 @@
                     Fragment,
                     null,
                     h('h3', { className: 'cp-wizard__title' }, 'Step 2: Personal Information'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Let us know who you are and how our chapter can reply.'),
+                    h('p', { className: 'cp-wizard__hint' }, 'Enter your full name and email address.'),
                     h(
                       'div',
                       { className: 'cp-field-group' },
@@ -1816,7 +2058,7 @@
                           type: 'text',
                           className: 'cp-input',
                           value: form.fullName,
-                          placeholder: 'e.g., Jordan Lee',
+                          placeholder: 'Enter your full name',
                           onChange: (e) => setForm((prev) => ({ ...prev, fullName: e.target.value })),
                         })
                       ),
@@ -1829,21 +2071,8 @@
                           type: 'email',
                           className: 'cp-input',
                           value: form.email,
-                          placeholder: 'jordan.lee@example.com',
+                          placeholder: 'name@example.com',
                           onChange: (e) => setForm((prev) => ({ ...prev, email: e.target.value })),
-                        })
-                      ),
-                      h(
-                        'div',
-                        { className: 'cp-field' },
-                        h('label', { htmlFor: 'cp-handle' }, 'Discord / Phone (Optional)'),
-                        h('input', {
-                          id: 'cp-handle',
-                          type: 'text',
-                          className: 'cp-input',
-                          value: form.handle,
-                          placeholder: 'Optional contact handle',
-                          onChange: (e) => setForm((prev) => ({ ...prev, handle: e.target.value })),
                         })
                       )
                     )
@@ -1853,343 +2082,7 @@
                     Fragment,
                     null,
                     h('h3', { className: 'cp-wizard__title' }, 'Step 3: School and Grade'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Tell us your school affiliation and current grade level.'),
+                    h('p', { className: 'cp-wizard__hint' }, 'Provide your school name and grade level.'),
                     h(
                       'div',
-                      { className: 'cp-field-group' },
-                      h(
-                        'div',
-                        { className: 'cp-field' },
-                        h('label', { htmlFor: 'cp-school' }, 'School / Organization *'),
-                        h('input', {
-                          id: 'cp-school',
-                          type: 'text',
-                          className: 'cp-input',
-                          value: form.school,
-                          onChange: (e) => setForm((prev) => ({ ...prev, school: e.target.value })),
-                        })
-                      ),
-                      h(
-                        'div',
-                        { className: 'cp-field' },
-                        h('label', { htmlFor: 'cp-grade' }, 'Grade Level / Role *'),
-                        h(
-                          'select',
-                          {
-                            id: 'cp-grade',
-                            className: 'cp-select',
-                            value: form.grade,
-                            onChange: (e) => setForm((prev) => ({ ...prev, grade: e.target.value })),
-                          },
-                          [
-                            '9th Grade (Freshman)',
-                            '10th Grade (Sophomore)',
-                            '11th Grade (Junior)',
-                            '12th Grade (Senior)',
-                            'Middle School Student (6th–8th)',
-                            'Educator / Faculty Advisor',
-                            'Parent / Community Partner',
-                          ].map((opt) => h('option', { key: opt, value: opt }, opt))
-                        )
-                      )
-                    )
-                  ),
-                step === 3 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 4: STEM Interests'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Select one or more STEM disciplines or activities you are excited about.'),
-                    h(
-                      'div',
-                      { className: 'cp-choice-grid' },
-                      INTEREST_OPTIONS.map((item) => {
-                        const selected = form.interests.includes(item);
-                        return h(
-                          'button',
-                          {
-                            key: item,
-                            type: 'button',
-                            className: `cp-choice-btn ${selected ? 'is-selected' : ''}`,
-                            onClick: () => toggleInterest(item),
-                          },
-                          h('div', { className: 'cp-choice-btn__title' }, `${selected ? '✓ ' : ''}${item}`),
-                          h('div', { className: 'cp-choice-btn__desc' }, selected ? 'Selected track' : 'Click to include')
-                        );
-                      })
-                    )
-                  ),
-                step === 4 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 5: Your Message'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Share any details, project ideas, or questions for our officer team.'),
-                    h(
-                      'div',
-                      { className: 'cp-field' },
-                      h('label', { htmlFor: 'cp-message' }, `Message * (${form.message.trim().length} chars)`),
-                      h('textarea', {
-                        id: 'cp-message',
-                        className: 'cp-textarea',
-                        value: form.message,
-                        placeholder: 'Tell us what you would like to build, learn, or organize with CodePatch STEM...',
-                        onChange: (e) => setForm((prev) => ({ ...prev, message: e.target.value })),
-                      })
-                    )
-                  ),
-                step === 5 &&
-                  h(
-                    Fragment,
-                    null,
-                    h('h3', { className: 'cp-wizard__title' }, 'Step 6: Review & Submit'),
-                    h('p', { className: 'cp-wizard__hint' }, 'Verify your details below before simulating your submission.'),
-                    h(
-                      'div',
-                      { className: 'cp-review-box' },
-                      [
-                        ['Reason', form.reason],
-                        ['Name', form.fullName],
-                        ['Email', form.email],
-                        ['School & Grade', `${form.school} • ${form.grade}`],
-                        ['STEM Interests', form.interests.join(', ')],
-                        ['Message', form.message],
-                      ].map(([k, v]) =>
-                        h(
-                          'div',
-                          { key: k, className: 'cp-review-row' },
-                          h('span', null, k),
-                          h('span', { style: { textAlign: 'right', color: '#fff', maxWidth: '68%' } }, v)
-                        )
-                      )
-                    )
-                  ),
-                error && h('div', { className: 'cp-error', role: 'alert' }, error),
-                h(
-                  'div',
-                  { className: 'cp-wizard__footer' },
-                  step > 0
-                    ? h(
-                        'button',
-                        { type: 'button', className: 'cp-btn cp-btn--secondary cp-btn--sm', onClick: handleBack },
-                        '← Back'
-                      )
-                    : h('span', { style: { fontFamily: 'var(--cp-font-mono)', fontSize: '0.76rem', color: 'var(--cp-muted)' } }, `STEP ${step + 1} OF 6`),
-                  step < 5
-                    ? h(
-                        'button',
-                        { type: 'button', className: 'cp-btn cp-btn--primary cp-btn--sm', onClick: handleNext },
-                        'Continue →'
-                      )
-                    : h(
-                        'button',
-                        {
-                          type: 'button',
-                          className: 'cp-btn cp-btn--primary cp-btn--sm',
-                          disabled: submitting,
-                          onClick: handleSubmit,
-                        },
-                        submitting ? 'Simulating Submit...' : 'Submit Inquiry ✓'
-                      )
-                )
-              )
-        )
-      )
-    );
-  }
-
-  function Footer({ onNavigate }) {
-    return h(
-      'footer',
-      { className: 'cp-footer' },
-      h(
-        'div',
-        { className: 'cp-container' },
-        h(
-          'div',
-          { className: 'cp-footer__top' },
-          h(
-            'div',
-            null,
-            h(
-              'div',
-              { className: 'cp-brand', style: { marginBottom: '16px' } },
-              h(BrandLogoMark),
-              h('span', null, 'CODEPATCH ', h('span', { style: { color: 'var(--cp-gold)' } }, 'STEM'))
-            ),
-            h(
-              'p',
-              { style: { color: 'var(--cp-muted)', fontSize: '0.92rem', maxWidth: '380px', lineHeight: 1.65 } },
-              'South Brunswick High School Chapter — empowering the next generation of builders through computer science, mathematics, engineering, science, and technology.'
-            )
-          ),
-          h(
-            'div',
-            null,
-            h('div', { className: 'cp-footer__col-title' }, 'Navigation'),
-            h(
-              'div',
-              { className: 'cp-footer__links' },
-              NAV_ITEMS.map((item) =>
-                h(
-                  'a',
-                  {
-                    key: item.id,
-                    href: `#${item.id}`,
-                    onClick: (e) => {
-                      e.preventDefault();
-                      onNavigate(item.id);
-                    },
-                  },
-                  item.label
-                )
-              )
-            )
-          ),
-          h(
-            'div',
-            null,
-            h('div', { className: 'cp-footer__col-title' }, 'Chapter & Socials'),
-            h(
-              'div',
-              { className: 'cp-footer__links' },
-              h('span', null, 'South Brunswick High School, NJ'),
-              h(
-                'a',
-                { href: SOCIAL_LINKS.instagram, target: '_blank', rel: 'noopener noreferrer' },
-                'Instagram (@sbcodepatch) ↗'
-              ),
-              h(
-                'a',
-                { href: SOCIAL_LINKS.youtube, target: '_blank', rel: 'noopener noreferrer' },
-                'YouTube (@SBCPS-Chapter) ↗'
-              )
-            )
-          )
-        ),
-        h(
-          'div',
-          { className: 'cp-footer__bottom' },
-          h('span', null, `© ${new Date().getFullYear()} CodePatch STEM — South Brunswick High School Chapter.`),
-          h('span', { className: 'cp-footer__credit' }, 'Designed & Developed by Aakshat Hariharan')
-        )
-      )
-    );
-  }
-
-  /* ==========================================================================
-     7. ROOT APPLICATION SHELL
-     ========================================================================== */
-
-  function CodePatchApp() {
-    const reducedMotion = usePrefersReducedMotion();
-    useRevealOnScroll();
-
-    const [activeSection, setActiveSection] = useState('home');
-    const [roster, setRoster] = useState(TEAM_ROSTER);
-    const [disciplines, setDisciplines] = useState(STEM_DISCIPLINES);
-    const [stats, setStats] = useState(CHAPTER_STATS);
-    const [events, setEvents] = useState(EVENTS_DATA);
-    const [wizardReason, setWizardReason] = useState('');
-
-    useEffect(() => {
-      let mounted = true;
-      Promise.all([
-        CodePatchService.getTeamRoster(),
-        CodePatchService.getStemDisciplines(),
-        CodePatchService.getChapterStats(),
-        CodePatchService.getEvents(),
-      ]).then(([r, d, s, e]) => {
-        if (!mounted) return;
-        setRoster(r);
-        setDisciplines(d);
-        setStats(s);
-        setEvents(e);
-      });
-      return () => {
-        mounted = false;
-      };
-    }, []);
-
-    useEffect(() => {
-      if (!('IntersectionObserver' in window)) return;
-      const sections = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(Boolean);
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSection(entry.target.id);
-            }
-          });
-        },
-        { rootMargin: '-35% 0px -50% 0px', threshold: 0.05 }
-      );
-      sections.forEach((sec) => observer.observe(sec));
-      return () => observer.disconnect();
-    }, []);
-
-    const handleNavigate = useCallback((sectionId, optionalReason) => {
-      if (optionalReason) {
-        setWizardReason(optionalReason);
-      }
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, []);
-
-    return h(
-      'div',
-      { className: 'cp-app' },
-      h(Header, { activeSection, onNavigate: handleNavigate }),
-      h(
-        'main',
-        null,
-        h(HeroSection, { reducedMotion, onNavigate: handleNavigate }),
-        h(AboutSection),
-        h(StemSection, { disciplines }),
-        h(ChapterSection, { stats }),
-        h(TeamSection, { roster }),
-        h(EventsSection, { events, onNavigate: handleNavigate }),
-        h(ContactWizardSection, { preselectedReason: wizardReason })
-      ),
-      h(Footer, { onNavigate: handleNavigate })
-    );
-  }
-
-  /* ==========================================================================
-     8. AUTO-MOUNT & PUBLIC GLOBAL API
-     ========================================================================== */
-
-  function mount(targetSelector = '#root') {
-    let container =
-      typeof targetSelector === 'string'
-        ? document.querySelector(targetSelector)
-        : targetSelector;
-
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'root';
-      document.body.appendChild(container);
-    }
-
-    const root = createRoot(container);
-    root.render(h(CodePatchApp));
-    return root;
-  }
-
-  window.CodePatchSTEM = {
-    mount,
-    CodePatchService,
-    TEAM_ROSTER,
-    STEM_DISCIPLINES,
-    EVENTS_DATA,
-    SOCIAL_LINKS,
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => mount('#root'), { once: true });
-  } else {
-    mount('#root');
-  }
-})();
+                      { className: 'cp
