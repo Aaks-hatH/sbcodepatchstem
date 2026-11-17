@@ -9,29 +9,63 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- id matches what the bundle checks for, so it will not add its own font link -->
-    <link id="cp-viking-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Uncial+Antiqua&display=swap" />
+    <link id="cp-viking-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Noto+Sans+Runic&family=Uncial+Antiqua&display=swap" />
     <link rel="stylesheet" href="./norse-theme.css" />
-    <!-- Draws the tab icon with canvas, runs the intro loader and scroll effects -->
+    <!-- Tab icon, cinematic loader, scroll + cursor effects. Runs before the React bundle. -->
     <script src="./norse-fx.js"></script>
   </head>
   <body class="nx-loading">
+    <!-- ========== Cinematic intro: the hall doors ========== -->
     <div id="nx-intro" role="status" aria-live="polite">
+      <canvas id="nx-intro-fx" aria-hidden="true"></canvas>
+
+      <!-- Letterbox bars, like the opening of a film -->
+      <div class="nx-lb nx-lb--t">
+        <span>CodePatch STEM</span>
+        <span>South Brunswick · New Jersey</span>
+        <button type="button" class="nx-skip">Skip</button>
+      </div>
+      <div class="nx-lb nx-lb--b" aria-hidden="true">
+        <span class="nx-chap">Chapter I &mdash; The Forge</span>
+        <span class="nx-pct"><b>000</b><i>%</i></span>
+      </div>
+
       <div class="nx-gate nx-gate--l"></div>
       <div class="nx-gate nx-gate--r"></div>
+      <div class="nx-beam" aria-hidden="true"></div>
+
       <div class="nx-core">
         <div class="nx-ring">
           <svg viewBox="-158 -158 316 316" aria-hidden="true">
+            <defs>
+              <filter id="nx-glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3.2" result="b" />
+                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+              </filter>
+            </defs>
             <circle class="nx-orbit" r="138" stroke-dasharray="867" stroke-dashoffset="867" />
-            <path class="nx-kenaz" d="M14 -44 L-18 0 L14 44" />
-            <circle class="nx-ember" cx="34" cy="0" r="5" />
+            <circle class="nx-dash" r="108" />
+            <!-- Kenaz (the torch rune) inside a diamond frame, drawn stroke by stroke -->
+            <g class="nx-rose">
+              <line x1="0" y1="-100" x2="0" y2="100" /><line x1="-100" y1="0" x2="100" y2="0" />
+              <line x1="-70" y1="-70" x2="70" y2="70" /><line x1="70" y1="-70" x2="-70" y2="70" />
+            </g>
+            <g class="nx-valknut" filter="url(#nx-glow)">
+              <path class="nx-stroke nx-stroke--k" pathLength="1" d="M22 -64 L-28 0 L22 64" />
+              <path class="nx-stroke nx-stroke--d" pathLength="1" d="M0 -88 L88 0 L0 88 L-88 0 Z" />
+            </g>
+            <circle class="nx-ember" cx="46" cy="0" r="5" />
           </svg>
         </div>
-        <h1 class="nx-word">CodePatch STEM</h1>
+        <div class="nx-word" aria-label="CodePatch STEM">CodePatch STEM</div>
         <div class="nx-bar"><i></i></div>
         <p class="nx-status">Kindling the forge…</p>
         <button type="button" class="cp-btn cp-btn--gold nx-retry">Try again</button>
       </div>
+
+      <div class="nx-flash" aria-hidden="true"></div>
     </div>
+
     <canvas id="nx-sky" aria-hidden="true"></canvas>
     <div id="root"></div>
     <noscript>CodePatch STEM needs JavaScript to run.</noscript>
