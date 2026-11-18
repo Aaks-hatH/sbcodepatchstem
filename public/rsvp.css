@@ -1,0 +1,64 @@
+/* Events, RSVP dialog and form-validation styles. Loaded after norse-theme.css. */
+.ev-filters { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.4rem 0 .4rem; }
+.ev-filter { font: inherit; font-size: 1rem; padding: .45rem 1rem; min-height: 40px; border-radius: 3px 12px 3px 12px; border: 1px solid rgba(229,184,63,.3); background: rgba(229,184,63,.05); color: var(--nx-mist, #9fb0c1); cursor: pointer; transition: .25s; }
+.ev-filter:hover { color: var(--nx-frost, #e8eff6); border-color: rgba(229,184,63,.6); }
+.ev-filter.is-on { background: rgba(229,184,63,.18); color: #ffd84d; border-color: #e5b83f; }
+.ev-grid { align-items: stretch; margin-top: 1.4rem; }
+.ev-card { display: flex; flex-direction: column; gap: .2rem; }
+.ev-card.is-past { opacity: .62; }
+.ev-head { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: .6rem; }
+.ev-head__txt { flex: 1; min-width: 0; }
+.ev-tags { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .35rem; }
+.ev-title { font-family: var(--cp-font-display); font-size: 1.4rem; margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
+.ev-chip { flex: none; width: 62px; text-align: center; border: 1px solid rgba(229,184,63,.5); border-radius: 4px 14px 4px 14px; background: rgba(229,184,63,.08); padding: .35rem 0 .45rem; line-height: 1; }
+.ev-chip b { display: block; font-size: .78rem; letter-spacing: .14em; color: #e5b83f; margin-bottom: .2rem; }
+.ev-chip span { font-family: var(--cp-font-display); font-size: 1.7rem; color: #fff; }
+.ev-badge--past { background: rgba(159,176,193,.15) !important; color: #9fb0c1 !important; }
+.ev-desc { color: var(--cp-muted); margin: 0 0 1rem; }
+.ev-facts { display: grid; gap: .45rem; margin: 0 0 1rem; padding: .9rem 1rem; border-radius: .65rem; background: rgba(10,9,8,.55); border: 1px solid rgba(229,184,63,.16); }
+.ev-facts div { display: flex; gap: .8rem; }
+.ev-facts dt { flex: none; width: 5.2rem; color: var(--cp-muted); font-size: .9rem; text-transform: uppercase; letter-spacing: .08em; }
+.ev-facts dd { margin: 0; color: #ffd84d; overflow-wrap: anywhere; }
+.ev-note { margin: 0 0 .4rem; font-size: .95rem; color: var(--cp-muted); }
+.ev-rsvp { margin-top: auto; padding-top: 1rem; border-top: 1px dashed rgba(229,184,63,.25); display: grid; gap: .8rem; }
+.ev-meter__bar { height: 8px; border-radius: 99px; background: rgba(159,176,193,.18); overflow: hidden; }
+.ev-meter__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3fe0c0, #7cc4ff); transition: width .6s var(--nx-ease, ease); }
+.ev-meter__bar i.is-low { background: linear-gradient(90deg, #ffb347, #ff9a3c); }
+.ev-meter__bar i.is-full { background: #ff7b7b; }
+.ev-meter__txt { display: block; margin-top: .4rem; font-size: .95rem; color: var(--cp-muted); }
+.ev-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.ev-cal { color: var(--nx-aurora, #3fe0c0); font-size: 1rem; text-underline-offset: 3px; }
+.ev-empty { margin-top: 1.5rem; padding: 2rem; text-align: center; color: var(--cp-muted); border: 1px dashed rgba(229,184,63,.3); border-radius: 10px; }
+
+/* Dialog. The site hides the system cursor for its ember cursor, which cannot draw above a dialog, so restore it here. */
+body.nx-cursor dialog.rsvp-dialog, body.nx-cursor dialog.rsvp-dialog * { cursor: auto; }
+body.nx-cursor dialog.rsvp-dialog button, body.nx-cursor dialog.rsvp-dialog a, body.nx-cursor dialog.rsvp-dialog select { cursor: pointer; }
+body:has(dialog.rsvp-dialog[open]) { overflow: hidden; }
+.rsvp-dialog { width: min(520px, 100% - 1.5rem); max-height: 92dvh; padding: 0; border: 0; background: none; color: var(--cp-text, #e8eff6); overflow: visible; margin: auto; }
+.rsvp-dialog::backdrop { background: rgba(3,5,9,.82); backdrop-filter: blur(5px); }
+.rsvp-dialog[open] .rsvp-panel { animation: rsvpIn .35s var(--nx-ease, ease) both; }
+@keyframes rsvpIn { from { opacity: 0; transform: translateY(18px) scale(.97); } }
+.rsvp-panel { position: relative; max-height: 92dvh; overflow: auto; padding: 1.8rem; background: #0e1520; border: 1px solid rgba(229,184,63,.45); border-radius: 6px 22px 6px 22px; box-shadow: 0 40px 80px -20px #000; }
+.rsvp-panel h3 { font-family: var(--cp-font-display); font-weight: 400; font-size: 1.6rem; margin: .1rem 0 .3rem; line-height: 1.2; }
+.rsvp-panel form { display: grid; gap: 1rem; }
+.rsvp-x { position: absolute; top: .6rem; right: .7rem; width: 44px; height: 44px; font-size: 1.8rem; line-height: 1; background: none; border: 0; color: var(--cp-muted); border-radius: 50%; }
+.rsvp-x:hover { color: #ffd84d; background: rgba(229,184,63,.1); }
+.rsvp-meta { margin: 0; color: var(--cp-muted); font-size: .98rem; }
+.rsvp-banner { margin: 0; padding: .7rem .9rem; border-radius: 8px; background: rgba(255,154,60,.1); border: 1px solid rgba(255,154,60,.4); color: #ffcf9a; font-size: .98rem; }
+.rsvp-field { display: grid; gap: .1rem; font-size: 1rem; color: var(--cp-muted); }
+.rsvp-field i { opacity: .7; }
+.rsvp-err { color: #ff9d9d; font-size: .92rem; margin-top: .25rem; display: block; }
+.rsvp-err--form { margin: 0; padding: .6rem .8rem; border: 1px solid rgba(255,157,157,.4); border-radius: 8px; background: rgba(255,123,123,.08); }
+.cp-input[aria-invalid="true"] { border-color: #ff7b7b; }
+.rsvp-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.rsvp-actions { display: flex; justify-content: flex-end; gap: .7rem; flex-wrap: wrap; }
+.rsvp-actions .cp-btn { min-height: 46px; }
+.rsvp-muted { color: var(--cp-muted); font-size: .98rem; margin: 0; }
+.rsvp-fine { font-size: .88rem; text-align: center; }
+.rsvp-done { text-align: center; display: grid; gap: .8rem; justify-items: center; padding: .6rem 0; }
+.rsvp-done p { margin: 0; }
+.rsvp-done .rsvp-actions { justify-content: center; margin-top: .6rem; }
+.rsvp-check { width: 68px; height: 68px; border-radius: 50%; display: grid; place-items: center; font-size: 2rem; color: #0b1219; background: linear-gradient(135deg, #3fe0c0, #7cc4ff); box-shadow: 0 0 40px -6px #3fe0c0; animation: rsvpPop .55s var(--nx-ease, ease) both; }
+@keyframes rsvpPop { from { transform: scale(.4); opacity: 0; } }
+@media (max-width: 520px) { .rsvp-panel { padding: 1.3rem 1.1rem; } .ev-facts div { flex-direction: column; gap: 0; } .ev-actions .cp-btn { flex: 1; } }
+@media (prefers-reduced-motion: reduce) { .rsvp-dialog[open] .rsvp-panel, .rsvp-check { animation: none; } .ev-meter__bar i { transition: none; } }
