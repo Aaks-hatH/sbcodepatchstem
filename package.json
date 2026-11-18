@@ -1,0 +1,17 @@
+{
+  "name": "codepatch-stem",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CodePatch STEM site with a small Express + MongoDB server and admin page",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node --watch server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.12.0"
+  }
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>CodePatch admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<main id="login" class="login" hidden>
+  <form id="loginForm" class="panel">
+    <h1>CodePatch admin</h1>
+    <label>Password<input id="pw" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn" type="submit">Sign in</button>
+  </form>
+</main>
+
+<div id="app" hidden>
+  <header class="top">
+    <h1>CodePatch admin</h1>
+    <nav id="tabs" aria-label="Sections"></nav>
+    <span class="grow"></span>
+    <a class="link" href="/" target="_blank" rel="noopener">View site</a>
+    <button class="btn btn--ghost" id="logout" type="button">Sign out</button>
+  </header>
+  <main class="content">
+    <div class="bar"><h2 id="viewTitle"></h2><span class="grow"></span><button class="btn btn--ghost" id="exportBtn" type="button" hidden>Export CSV</button><button class="btn" id="addBtn" type="button">Add new</button></div>
+    <p class="hint" id="viewHint"></p>
+    <ul id="items" class="items"></ul>
+  </main>
+</div>
+
+<dialog id="dlg"><form id="editForm" class="panel"><h2 id="dlgTitle"></h2><div id="fields"></div><p class="err" id="editErr" role="alert"></p>
+  <div class="actions"><button class="btn btn--ghost" type="button" id="cancel">Cancel</button><button class="btn" type="submit">Save</button></div></form></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="admin.js"></script>
+</body>
+</html>
