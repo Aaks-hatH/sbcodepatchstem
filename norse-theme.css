@@ -406,3 +406,38 @@ body.nx-loading .nx-c, body.nx-loading [class*='cp-hero__stagger'], body.nx-load
   .cp-btn { translate: none; }
   html { scroll-behavior: auto; }
 }
+
+
+/* ==========================================================================
+   READABILITY PASS (text only; layout, colors and animations are unchanged)
+   Body: Atkinson Hyperlegible. Headings: Cinzel (carved-stone feel, far easier to read than Uncial).
+   ========================================================================== */
+:root {
+  --nx-mist: #c6d2de;
+  --cp-muted: #c6d2de;
+  --cp-font-display: 'Cinzel', Georgia, serif;
+  --cp-font-sans: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
+  --cp-font-mono: 'Atkinson Hyperlegible', system-ui, sans-serif;
+}
+body { font-size: 1.15rem; line-height: 1.7; }
+h1, h2, .cp-hero__title, .cp-heading, .nx-word, .nx-foot__name, .nx-credit__name, .nx-mq__g span, .nx-giant span { font-weight: 800; }
+.cp-hero__title { letter-spacing: 0.005em; line-height: 1.08; }
+.cp-heading { letter-spacing: 0.01em; line-height: 1.15; }
+.cp-card h3, .cp-card h4, .cp-member-card h3 { font-family: var(--cp-font-sans) !important; font-weight: 700; font-size: 1.3rem !important; letter-spacing: 0; line-height: 1.3; }
+.cp-brand__title { font-family: var(--cp-font-display); font-weight: 800; font-size: 1.05rem; }
+.cp-brand__sub { font-size: 0.9rem; }
+.cp-nav__link { font-size: 1.1rem; font-weight: 700; }
+.cp-card [style*="font-size: 3.1rem"] { font-weight: 800 !important; }
+[style*="font-size: 0.7"], [style*="font-size: 0.8"], [style*="font-size: 0.9"] { font-size: 1rem !important; }
+.cp-card p, .cp-card li { font-size: 1.05rem; line-height: 1.65; }
+.cp-lead { font-size: 1.28rem; line-height: 1.7; max-width: 62ch; }
+.cp-hero__desc { font-size: 1.32rem; line-height: 1.65; color: #e1e9f1; }
+.cp-eyebrow { font-size: 1.1rem; font-weight: 700; }
+.cp-chip { font-size: 1rem; }
+.cp-badge-gold { font-size: 0.95rem; font-weight: 700; }
+.cp-tab, .cp-btn, .cp-faq-btn { font-weight: 700; }
+.cp-input, .cp-select, .cp-textarea { font-size: 1.1rem; min-height: 48px; }
+label { font-size: 1rem !important; font-weight: 700; color: var(--nx-frost) !important; }
+.nx-foot__sub, .nx-foot__links a, .nx-credit__label { font-size: 1.1rem; }
+.nx-foot__bottom { font-size: 1rem; }
+.nx-lb { font-size: 0.95rem; }
