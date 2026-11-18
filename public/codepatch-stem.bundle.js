@@ -2321,7 +2321,7 @@
           'div',
           { className: 'nx-credit' },
           h('span', { className: 'nx-credit__label' }, 'Designed and developed by'),
-          h('strong', { className: 'nx-credit__name' }, 'Aakshat Hariharan')
+          h('strong', { className: 'nx-credit__name' }, 'SBCPS Coding Department')
         ),
         h(
           'div',
