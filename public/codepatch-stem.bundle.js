@@ -348,6 +348,16 @@
       const c = await loadContent();
       return c && Array.isArray(c.events) ? c.events : EVENTS_DATA;
     },
+    async rsvp(eventId, payload) {
+      const r = await fetch(API_BASE + '/api/events/' + encodeURIComponent(eventId) + '/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || 'Could not send your RSVP.');
+      return data;
+    },
     async submitContactWizard(payload) {
       const r = await fetch(API_BASE + '/api/interest', {
         method: 'POST',
@@ -2036,7 +2046,117 @@
     );
   }
 
+  /* ---------- Events: date chip, filters, live spots, RSVP dialog ---------- */
+  const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const parseLocal = (s) => { const m = /^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)$/.exec(s || ''); return m ? { y: +m[1], mo: +m[2], d: +m[3], h: +m[4], mi: +m[5] } : null; };
+  const pad2 = (n) => String(n).padStart(2, '0');
+  function googleCalUrl(ev) {
+    const p = parseLocal(ev.startsAt); if (!p) return null;
+    const end = new Date(Date.UTC(p.y, p.mo - 1, p.d, p.h, p.mi + (ev.durationMins || 60)));
+    const fmt = (y, mo, d, h, mi) => '' + y + pad2(mo) + pad2(d) + 'T' + pad2(h) + pad2(mi) + '00';
+    const dates = fmt(p.y, p.mo, p.d, p.h, p.mi) + '/' + fmt(end.getUTCFullYear(), end.getUTCMonth() + 1, end.getUTCDate(), end.getUTCHours(), end.getUTCMinutes());
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&ctz=America%2FNew_York&text=' + encodeURIComponent(ev.title) + '&dates=' + dates + '&location=' + encodeURIComponent(ev.location || '') + '&details=' + encodeURIComponent(ev.description || '');
+  }
+
+  function RsvpDialog({ ev, onClose, onDone }) {
+    const ref = useRef(null);
+    const [form, setForm] = useState({ name: '', email: '', guests: 0, note: '', website: '' });
+    const [errors, setErrors] = useState({});
+    const [busy, setBusy] = useState(false);
+    const [formError, setFormError] = useState('');
+    const [result, setResult] = useState(null);
+
+    useEffect(() => {
+      const d = ref.current;
+      if (d && !d.open) d.showModal();
+      return () => { if (d && d.open) d.close(); };
+    }, []);
+
+    const set = (k) => (e) => { setForm({ ...form, [k]: e.target.value }); if (errors[k]) setErrors({ ...errors, [k]: '' }); };
+    const submit = async (e) => {
+      e.preventDefault();
+      const errs = {};
+      if (!form.name.trim()) errs.name = 'Please enter your name.';
+      if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) errs.email = 'Please enter a valid email address.';
+      setErrors(errs);
+      if (Object.keys(errs).length) {  setTimeout(() => ref.current.querySelector('[data-bad="1"]')?.focus(), 0); return; }
+      setBusy(true); setFormError('');
+      try { const r = await CodePatchService.rsvp(ev.id, form); setResult(r); onDone && onDone(); }
+      catch (err) { setFormError(err && err.message ? err.message : 'Could not send your RSVP. Please try again.'); }
+      finally { setBusy(false); }
+    };
+    const cal = googleCalUrl(ev);
+    const field = (k, label, props) => h('label', { className: 'rsvp-field' }, h('span', null, label),
+      h('input', { className: 'cp-input', value: form[k], onChange: set(k), 'aria-invalid': errors[k] ? 'true' : 'false', 'data-bad': errors[k] ? '1' : undefined, 'aria-describedby': errors[k] ? 'rsvp-err-' + k : undefined, ...props }),
+      errors[k] ? h('span', { className: 'rsvp-err', id: 'rsvp-err-' + k, role: 'alert' }, errors[k]) : null);
+
+    return h('dialog', { ref, className: 'rsvp-dialog', 'aria-labelledby': 'rsvp-title', onClose, onClick: (e) => { if (e.target === ref.current) onClose(); } },
+      h('div', { className: 'rsvp-panel' },
+        h('button', { type: 'button', className: 'rsvp-x', 'aria-label': 'Close', onClick: onClose }, '×'),
+        result ? h('div', { className: 'rsvp-done' },
+          h('div', { className: 'rsvp-check', 'aria-hidden': 'true' }, result.status === 'waitlist' ? '⏳' : '✓'),
+          h('h3', { id: 'rsvp-title' }, result.status === 'waitlist' ? 'You’re on the waitlist' : 'You’re in!'),
+          h('p', null, result.status === 'waitlist' ? 'This event is full, so we saved your spot in line. We’ll email you the moment one opens up.' : 'Your RSVP for ' + ev.title + ' is confirmed.'),
+          h('p', { className: 'rsvp-muted' }, result.emailSent ? 'A confirmation email is on its way to ' + form.email.trim() + '. Check spam if you don’t see it.' : 'We saved your RSVP, but the confirmation email could not be sent. An officer will follow up if needed.'),
+          h('div', { className: 'rsvp-actions' },
+            cal && result.status !== 'waitlist' ? h('a', { className: 'cp-btn cp-btn--outline', href: cal, target: '_blank', rel: 'noopener noreferrer' }, 'Add to calendar') : null,
+            h('button', { type: 'button', className: 'cp-btn cp-btn--gold', onClick: onClose }, 'Done')))
+        : h('form', { onSubmit: submit, noValidate: true },
+          h('span', { className: 'cp-eyebrow' }, ev.full ? 'Join the waitlist' : 'Reserve your spot'),
+          h('h3', { id: 'rsvp-title' }, ev.title),
+          h('p', { className: 'rsvp-meta' }, [ev.date, ev.time, ev.location].filter(Boolean).join('  ·  ')),
+          ev.full ? h('p', { className: 'rsvp-banner' }, 'This event is full. Sign up and we’ll email you if a spot opens.') : null,
+          field('name', 'Full name', { type: 'text', autoComplete: 'name', maxLength: 100, placeholder: 'Your full name' }),
+          field('email', 'Email', { type: 'email', autoComplete: 'email', maxLength: 160, placeholder: 'you@example.com', inputMode: 'email' }),
+          h('label', { className: 'rsvp-field' }, h('span', null, 'Bringing anyone?'),
+            h('select', { className: 'cp-select', value: form.guests, onChange: (e) => setForm({ ...form, guests: +e.target.value }) },
+              [0, 1, 2, 3, 4, 5].map((n) => h('option', { key: n, value: n }, n === 0 ? 'Just me' : '+' + n + (n === 1 ? ' guest' : ' guests'))))),
+          h('label', { className: 'rsvp-field' }, h('span', null, 'Anything we should know? ', h('i', null, '(optional)')),
+            h('textarea', { className: 'cp-textarea', rows: 2, maxLength: 300, value: form.note, onChange: set('note'), placeholder: 'Questions, accessibility needs, what you want to learn...' })),
+          h('input', { type: 'text', name: 'website', tabIndex: -1, autoComplete: 'off', 'aria-hidden': 'true', className: 'rsvp-hp', value: form.website, onChange: set('website') }),
+          formError ? h('p', { className: 'rsvp-err rsvp-err--form', role: 'alert' }, formError) : null,
+          h('div', { className: 'rsvp-actions' },
+            h('button', { type: 'button', className: 'cp-btn cp-btn--outline', onClick: onClose }, 'Cancel'),
+            h('button', { type: 'submit', className: 'cp-btn cp-btn--gold', disabled: busy }, busy ? 'Sending...' : ev.full ? 'Join waitlist' : 'Confirm RSVP')),
+          h('p', { className: 'rsvp-muted rsvp-fine' }, 'We’ll email you a confirmation and a link to cancel. Your details are only used for this event.'))));
+  }
+
+  function EventCard({ ev, onRsvp }) {
+    const p = parseLocal(ev.startsAt);
+    const cal = googleCalUrl(ev);
+    const pct = ev.capacity ? Math.min(100, Math.round(((ev.capacity - ev.spotsLeft) / ev.capacity) * 100)) : 0;
+    return h(SpotlightCard, { className: 'ev-card' + (ev.past ? ' is-past' : '') },
+      h('div', { className: 'ev-head' },
+        p ? h('div', { className: 'ev-chip', 'aria-hidden': 'true' }, h('b', null, MONTHS[p.mo - 1]), h('span', null, p.d)) : null,
+        h('div', { className: 'ev-head__txt' },
+          h('div', { className: 'ev-tags' },
+            h('span', { className: 'cp-eyebrow', style: { marginBottom: 0 } }, ev.category),
+            ev.past ? h('span', { className: 'cp-badge-gold ev-badge--past' }, 'ENDED') : ev.status ? h('span', { className: 'cp-badge-gold' }, ev.status) : null),
+          h('h3', { className: 'ev-title' }, ev.title))),
+      ev.description ? h('p', { className: 'ev-desc' }, ev.description) : null,
+      h('dl', { className: 'ev-facts' },
+        [['Date', ev.date], ['Time', ev.time], ['Location', ev.location]].filter(([, v]) => v).map(([k, v]) => h('div', { key: k }, h('dt', null, k), h('dd', null, v)))),
+      ev.note ? h('p', { className: 'ev-note' }, ev.note) : null,
+      ev.rsvpEnabled && !ev.past ? h('div', { className: 'ev-rsvp' },
+        ev.capacity && !ev.past ? h('div', { className: 'ev-meter' },
+          h('div', { className: 'ev-meter__bar', role: 'progressbar', 'aria-valuemin': 0, 'aria-valuemax': ev.capacity, 'aria-valuenow': ev.capacity - ev.spotsLeft, 'aria-label': 'Spots filled' }, h('i', { style: { width: pct + '%' }, className: ev.full ? 'is-full' : pct >= 80 ? 'is-low' : '' })),
+          h('span', { className: 'ev-meter__txt' }, ev.full ? 'Full · waitlist open' : ev.spotsLeft + (ev.spotsLeft === 1 ? ' spot left' : ' spots left'))) : null,
+        h('div', { className: 'ev-actions' },
+          !ev.past ? h('button', { type: 'button', className: 'cp-btn ' + (ev.full ? 'cp-btn--outline' : 'cp-btn--gold'), onClick: () => onRsvp(ev) }, ev.full ? 'Join waitlist' : 'RSVP') : null,
+          cal && !ev.past ? h('a', { className: 'ev-cal', href: cal, target: '_blank', rel: 'noopener noreferrer' }, 'Add to calendar') : null)) : null);
+  }
+
   function EventsSection({ events }) {
+    const [list, setList] = useState(events);
+    const [filter, setFilter] = useState('All');
+    const [rsvpFor, setRsvpFor] = useState(null);
+    useEffect(() => { setList(events); }, [events]);
+    const reload = useCallback(() => {
+      fetch(API_BASE + '/api/content', { headers: { Accept: 'application/json' } }).then((r) => r.json()).then((c) => { if (Array.isArray(c.events)) setList(c.events); }).catch(() => {});
+    }, []);
+    const cats = ['All', ...new Set(list.map((e) => e.category).filter(Boolean))];
+    const shown = list.filter((e) => filter === 'All' || e.category === filter).sort((a, b) => (a.past ? 1 : 0) - (b.past ? 1 : 0));
+    const openEv = rsvpFor && list.find((e) => e.id === rsvpFor);
     return h(
       'section',
       { id: 'events', className: 'cp-section' },
@@ -2045,54 +2165,12 @@
         { className: 'cp-container cp-reveal' },
         h('span', { className: 'cp-eyebrow' }, 'Gatherings and workshops'),
         h('h2', { className: 'cp-heading' }, 'Meetings & Events'),
-        h(
-          'p',
-          { className: 'cp-lead' },
-          'Stay updated on upcoming South Brunswick High School chapter meetings, hands-on workshops, and announcements.'
-        ),
-        h(
-          'div',
-          { className: 'cp-grid-2' },
-          events.map((ev) =>
-            h(
-              SpotlightCard,
-              { key: ev.id },
-              h(
-                'div',
-                { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem', gap: '0.5rem', flexWrap: 'wrap' } },
-                h('span', { className: 'cp-eyebrow', style: { marginBottom: 0 } }, ev.category),
-                h('span', { className: 'cp-badge-gold' }, ev.status)
-              ),
-              h('h3', { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.35rem', margin: '0 0 0.65rem' } }, ev.title),
-              h('p', { style: { color: 'var(--cp-muted)', margin: '0 0 1.2rem' } }, ev.description),
-              h(
-                'div',
-                {
-                  style: {
-                    fontFamily: 'var(--cp-font-mono)',
-                    fontSize: '0.82rem',
-                    display: 'grid',
-                    gap: '0.45rem',
-                    marginBottom: '1.1rem',
-                    padding: '0.9rem',
-                    borderRadius: '0.65rem',
-                    background: 'rgba(10, 9, 8, 0.65)',
-                    border: '1px solid rgba(229, 184, 63, 0.16)',
-                  },
-                },
-                h('div', null, 'DATE: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.date)),
-                h('div', null, 'TIME: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.time)),
-                h('div', null, 'LOCATION: ', h('span', { style: { color: 'var(--cp-yellow)' } }, ev.location))
-              ),
-              h(
-                'p',
-                { style: { margin: 0, fontSize: '0.84rem', color: 'var(--cp-muted)' } },
-                ev.note
-              )
-            )
-          )
-        )
-      )
+        h('p', { className: 'cp-lead' }, 'Stay updated on upcoming South Brunswick High School chapter meetings, hands-on workshops, and announcements. RSVP below to hold your spot.'),
+        cats.length > 2 && list.length >= 3 ? h('div', { className: 'ev-filters', role: 'group', 'aria-label': 'Filter events' }, cats.map((c) => h('button', { key: c, type: 'button', className: 'ev-filter' + (c === filter ? ' is-on' : ''), 'aria-pressed': c === filter, onClick: () => setFilter(c) }, c))) : null,
+        shown.length ? h('div', { className: 'cp-grid-2 ev-grid' }, shown.map((ev) => h(EventCard, { key: ev.id, ev, onRsvp: (e) => setRsvpFor(e.id) })))
+          : h('p', { className: 'ev-empty' }, 'No events here yet. Follow @sbcodepatch on Instagram for updates.')
+      ),
+      openEv ? h(RsvpDialog, { ev: openEv, onClose: () => setRsvpFor(null), onDone: reload }) : null
     );
   }
 
@@ -2108,11 +2186,18 @@
     const [submitting, setSubmitting] = useState(false);
     const [receipt, setReceipt] = useState(null);
     const [errorMsg, setErrorMsg] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      if (!form.name.trim() || !form.email.trim()) {
-        setErrorMsg('Please enter your name and email address.');
+      const fe = {};
+      if (!form.name.trim()) fe.name = 'Please enter your name.';
+      if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) fe.email = 'Please enter a valid email address.';
+      setFieldErrors(fe);
+      if (fe.name || fe.email) {
+        setErrorMsg('');
+        const bad = document.querySelector('#contact [data-bad="1"]');
+        if (bad) bad.focus();
         return;
       }
       setErrorMsg('');
@@ -2210,30 +2295,38 @@
                 )
               : h(
                   'form',
-                  { onSubmit: handleSubmit, style: { display: 'grid', gap: '1rem' } },
+                  { onSubmit: handleSubmit, noValidate: true, style: { display: 'grid', gap: '1rem' } },
                   h(
                     'label',
                     { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'Full Name',
+                    'Full Name *',
                     h('input', {
                       className: 'cp-input',
                       type: 'text',
                       placeholder: 'Your full name',
+                      autoComplete: 'name',
+                      'aria-invalid': fieldErrors.name ? 'true' : 'false',
+                      'data-bad': fieldErrors.name ? '1' : undefined,
                       value: form.name,
-                      onChange: (e) => setForm({ ...form, name: e.target.value }),
-                    })
+                      onChange: (e) => { setForm({ ...form, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: '' }); },
+                    }),
+                    fieldErrors.name ? h('span', { className: 'rsvp-err', role: 'alert' }, fieldErrors.name) : null
                   ),
                   h(
                     'label',
                     { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'School or Personal Email',
+                    'School or Personal Email *',
                     h('input', {
                       className: 'cp-input',
                       type: 'email',
                       placeholder: 'student@example.com',
+                      autoComplete: 'email',
+                      'aria-invalid': fieldErrors.email ? 'true' : 'false',
+                      'data-bad': fieldErrors.email ? '1' : undefined,
                       value: form.email,
-                      onChange: (e) => setForm({ ...form, email: e.target.value }),
-                    })
+                      onChange: (e) => { setForm({ ...form, email: e.target.value }); if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: '' }); },
+                    }),
+                    fieldErrors.email ? h('span', { className: 'rsvp-err', role: 'alert' }, fieldErrors.email) : null
                   ),
                   h(
                     'label',
@@ -2275,6 +2368,7 @@
                     h('textarea', {
                       className: 'cp-textarea',
                       rows: 3,
+                      maxLength: 1500,
                       placeholder: 'Tell us what you want to build or mention your school...',
                       value: form.message,
                       onChange: (e) => setForm({ ...form, message: e.target.value }),
