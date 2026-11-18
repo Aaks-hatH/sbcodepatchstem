@@ -1,74 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>CodePatch STEM | South Brunswick High School</title>
-    <meta name="description" content="CodePatch STEM: accessible, student-led STEM education. Featured chapter: South Brunswick High School Vikings." />
-    <meta name="theme-color" content="#060a11" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- id matches what the bundle checks for, so it will not add its own font link -->
-    <link id="cp-viking-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700&family=Noto+Sans+Runic&family=Uncial+Antiqua&display=swap" />
-    <link rel="stylesheet" href="./norse-theme.css" />
-    <!-- Tab icon, cinematic loader, scroll + cursor effects. Runs before the React bundle. -->
-    <script src="./norse-fx.js"></script>
-  </head>
-  <body class="nx-loading">
-    <!-- ========== Cinematic intro: the hall doors ========== -->
-    <div id="nx-intro" role="status" aria-live="polite">
-      <canvas id="nx-intro-fx" aria-hidden="true"></canvas>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CodePatch STEM | South Brunswick High School</title>
+<meta name="description" content="CodePatch STEM: accessible, student-led STEM education. Featured chapter: South Brunswick High School Vikings.">
+<meta name="theme-color" content="#0a0f16">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cinzel:wght@600;800&family=Noto+Sans+Runic&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="bar" id="bar"></div>
+<header class="nav" id="nav"><div class="nav__in">
+  <a class="brand" href="#home"><span class="brand__r" aria-hidden="true">ᚲ</span><span><b>CodePatch STEM</b><small>SBHS Vikings chapter</small></span></a>
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="links" aria-label="Menu"><i></i><i></i></button>
+  <nav id="links" class="links" aria-label="Primary">
+    <a href="#about">About</a><a href="#stem">STEM</a><a href="#chapter">Chapter</a><a href="#team">Team</a><a href="#events">Events</a><a href="#contact">Contact</a>
+    <a class="btn btn--gold" href="#contact">Join us</a>
+  </nav>
+</div></header>
 
-      <!-- Letterbox bars, like the opening of a film -->
-      <div class="nx-lb nx-lb--t">
-        <span>CodePatch STEM</span>
-        <span>South Brunswick · New Jersey</span>
-        <button type="button" class="nx-skip">Skip</button>
-      </div>
-      <div class="nx-lb nx-lb--b" aria-hidden="true">
-        <span class="nx-chap">Chapter I &mdash; The Forge</span>
-        <span class="nx-pct"><b>000</b><i>%</i></span>
-      </div>
+<main id="main">
+<section class="hero" id="home">
+  <div class="aurora" aria-hidden="true"><i></i><i></i></div>
+  <div class="ridges" id="ridges" aria-hidden="true"></div>
+  <div class="wrap hero__in" id="heroIn">
+    <p class="hero__tag l1">South Brunswick High School, New Jersey</p>
+    <h1 class="l2">Forge your path in STEM</h1>
+    <p class="hero__lead l3">Accessible STEM education powered by student collaboration across computer science, mathematics, engineering, technology, and science.</p>
+    <div class="row l4"><a class="btn btn--gold" href="#stem">Explore the five disciplines</a><a class="btn btn--line" href="#contact">Join the chapter</a></div>
+  </div>
+  <a class="cue" href="#about" aria-label="Scroll to About"><span></span></a>
+</section>
 
-      <div class="nx-gate nx-gate--l"></div>
-      <div class="nx-gate nx-gate--r"></div>
-      <div class="nx-beam" aria-hidden="true"></div>
-
-      <div class="nx-core">
-        <div class="nx-ring">
-          <svg viewBox="-158 -158 316 316" aria-hidden="true">
-            <defs>
-              <filter id="nx-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="3.2" result="b" />
-                <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-              </filter>
-            </defs>
-            <circle class="nx-orbit" r="138" stroke-dasharray="867" stroke-dashoffset="867" />
-            <circle class="nx-dash" r="108" />
-            <!-- Kenaz (the torch rune) inside a diamond frame, drawn stroke by stroke -->
-            <g class="nx-rose">
-              <line x1="0" y1="-100" x2="0" y2="100" /><line x1="-100" y1="0" x2="100" y2="0" />
-              <line x1="-70" y1="-70" x2="70" y2="70" /><line x1="70" y1="-70" x2="-70" y2="70" />
-            </g>
-            <g class="nx-valknut" filter="url(#nx-glow)">
-              <path class="nx-stroke nx-stroke--k" pathLength="1" d="M22 -64 L-28 0 L22 64" />
-              <path class="nx-stroke nx-stroke--d" pathLength="1" d="M0 -88 L88 0 L0 88 L-88 0 Z" />
-            </g>
-            <circle class="nx-ember" cx="46" cy="0" r="5" />
-          </svg>
-        </div>
-        <div class="nx-word" aria-label="CodePatch STEM">CodePatch STEM</div>
-        <div class="nx-bar"><i></i></div>
-        <p class="nx-status">Kindling the forge…</p>
-        <button type="button" class="cp-btn cp-btn--gold nx-retry">Try again</button>
-      </div>
-
-      <div class="nx-flash" aria-hidden="true"></div>
+<section class="sec" id="about"><div class="wrap">
+  <div class="split">
+    <div class="rv">
+      <h2>Built by students, driven by curiosity</h2>
+      <p class="lead">CodePatch STEM helps high school students explore technical subjects hands-on, build real projects together, and widen educational opportunities across our school.</p>
+      <div class="row"><a class="btn btn--line" id="ig" target="_blank" rel="noopener">Instagram @sbcodepatch</a><a class="btn btn--line" id="yt" target="_blank" rel="noopener">YouTube @SBCPS-Chapter</a></div>
     </div>
+    <ol class="path rv" id="path">
+      <li><b>Learn</b><p>Build technical knowledge and explore new concepts.</p></li>
+      <li><b>Build</b><p>Apply it through projects, coding, and hands-on activities.</p></li>
+      <li><b>Collaborate</b><p>Exchange ideas, work together, and create opportunities for others.</p></li>
+    </ol>
+  </div>
+</div></section>
 
-    <canvas id="nx-sky" aria-hidden="true"></canvas>
-    <div id="root"></div>
-    <noscript>CodePatch STEM needs JavaScript to run.</noscript>
-    <script src="./codepatch-stem.bundle.js" charset="UTF-8"></script>
-  </body>
+<section class="stem" id="stem" aria-labelledby="stemH">
+  <div class="wrap rv"><h2 id="stemH">Five disciplines, one chapter</h2><p class="lead">Keep scrolling to move through each one, or pick one from the list.</p></div>
+  <div class="stem__track" id="stemTrack"><div class="stem__stick wrap"><ul class="stem__list" id="stemList"></ul><div class="stem__panels" id="stemPanels"></div></div></div>
+</section>
+
+<section class="sec" id="chapter"><div class="wrap">
+  <div class="rv"><h2>Our chapter and departments</h2><p class="lead">Four student departments working together at South Brunswick High School.</p></div>
+  <div class="stats rv">
+    <div><b data-n="14">0</b><span>Members</span></div><div><b data-n="4">0</b><span>Departments</span></div><div><b data-n="1">0</b><span>Featured chapter</span></div>
+  </div>
+  <div class="grid g4 rv" id="depts"></div>
+</div></section>
+
+<section class="sec" id="team"><div class="wrap">
+  <div class="rv"><h2>Our team</h2><p class="lead" id="teamLead">Showing all members.</p></div>
+  <div class="chips rv" id="filters" role="group" aria-label="Filter by department"></div>
+  <div class="grid g3" id="roster"></div>
+</div></section>
+
+<section class="sec" id="events"><div class="wrap">
+  <div class="rv"><h2>Meetings and events</h2><p class="lead">Upcoming chapter meetings, workshops, and announcements.</p></div>
+  <div class="grid g2 rv" id="eventList"></div>
+</div></section>
+
+<section class="sec" id="contact"><div class="wrap">
+  <div class="rv"><h2>Questions and interest</h2></div>
+  <div class="split split--top">
+    <div class="rv" id="faq"></div>
+    <div class="rv card" id="formBox">
+      <h3>Tell us what you want to do</h3>
+      <form id="form" novalidate>
+        <label>Full name<input name="name" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>What are you interested in?<select name="track"><option>Join the SBHS chapter</option><option>Attend workshops and events</option><option>Start a chapter at my school</option></select></label>
+        <label>Preferred department<select name="dept"><option>Coding</option><option>Mathematics</option><option>Marketing</option><option>Science</option></select></label>
+        <label>Notes or school name<textarea name="message" rows="3"></textarea></label>
+        <p class="err" id="err" role="alert"></p>
+        <button class="btn btn--gold" type="submit">Send interest</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+</main>
+
+<footer class="foot"><div class="wrap foot__in">
+  <div><b>CodePatch STEM</b><p>South Brunswick High School Vikings chapter</p></div>
+  <p>Designed and developed by <b>Aakshat Hariharan</b></p>
+  <p class="foot__s">&copy; <span id="yr"></span> CodePatch STEM. <a href="#home">Back to top</a></p>
+</div></footer>
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
 </html>
