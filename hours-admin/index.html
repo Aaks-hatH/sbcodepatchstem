@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>CodePatch hours admin</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<main id="login" class="login" hidden>
+  <form id="loginForm" class="panel">
+    <h1>CodePatch hours</h1>
+    <p class="hint">Sign in with the same admin password as the main CodePatch admin.</p>
+    <label>Password<input id="pw" type="password" autocomplete="current-password" required></label>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn" type="submit">Sign in</button>
+  </form>
+</main>
+
+<div id="app" class="shell" hidden>
+  <header class="top">
+    <h1>CodePatch <span>hours</span></h1>
+    <span class="grow"></span>
+    <a class="link" href="/hours/" target="_blank" rel="noopener">View leaderboard</a>
+    <a class="link" href="/admin/">Main admin</a>
+    <button class="btn btn--ghost btn--sm" id="logout" type="button">Sign out</button>
+  </header>
+  <nav id="tabs" class="side" aria-label="Sections"></nav>
+  <main class="content" id="view" tabindex="-1"></main>
+</div>
+
+<dialog id="dlg"><form id="editForm" class="panel"><h2 id="dlgTitle"></h2><p class="hint" id="dlgHint"></p><div id="fields"></div><p class="err" id="editErr" role="alert"></p>
+  <div class="actions"><button class="btn btn--ghost" type="button" id="cancel">Cancel</button><button class="btn" type="submit" id="dlgOk">Save</button></div></form></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="admin.js"></script>
+</body>
+</html>
