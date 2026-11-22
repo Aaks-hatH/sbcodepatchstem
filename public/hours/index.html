@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Every Hour Takes You Higher | CodePatch STEM, SBHS Chapter</title>
+<meta name="description" content="The South Brunswick High School chapter of CodePatch STEM volunteer leaderboard, told as a climb up a mountain.">
+<meta name="theme-color" content="#0b0722">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="mountain.jpg">
+<link rel="stylesheet" href="hours.css">
+</head><body>
+<nav><a class="brand" href="/" style="color:inherit;text-decoration:none">CODEPATCH <b>STEM</b> | SBHS</a><div><button class="nb hm" id="bs">STATS</button><button class="nb" id="bt">SUMMIT</button><button class="nb" id="br">ROSTER</button></div></nav>
+<div id="meter" aria-hidden="true"><span>SUMMIT</span><div id="trk"><div id="fill"></div><div id="dot"></div></div><span>BASE</span><span id="pct">0%</span></div>
+<button class="nb" id="top" aria-label="Back to top">BACK TO TOP ↑</button>
+<main>
+<ol class="sr" id="sr" aria-label="Volunteer leaderboard"></ol>
+<div id="empty"><h1 class="gd" id="et">Loading the mountain</h1><p id="em">Fetching the latest rankings.</p><button class="nb" id="er" hidden>TRY AGAIN</button></div>
+<div id="track" hidden><div id="stage">
+<div id="world"><img id="mt" src="mountain.jpg" alt="Snow-covered mountain peak at a purple sunset above clouds and dark pine forest" draggable="false" decoding="async"><svg id="route" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path id="rp"/></svg></div>
+<i class="fog" id="f1"></i><i class="fog" id="f2"></i><div id="mks"></div><canvas id="fx" aria-hidden="true"></canvas><i id="glow"></i><i id="fade"></i>
+<div id="beats"></div>
+</div></div>
+<section class="band" id="statsec" hidden><div class="wrap">
+<p class="kick">THE VIEW FROM THE SUMMIT</p><h2>Chapter statistics</h2>
+<p class="lead" id="slead"></p>
+<div class="stats" id="stiles"></div>
+<h3>Departments</h3><p class="lead">Total approved hours and the average per member.</p>
+<ul class="dept" id="dept"></ul>
+<h3>Month by month</h3><p class="lead">Approved volunteering hours over the last twelve months.</p>
+<div class="mchart" id="mchart" role="img" aria-label="Monthly volunteering hours"></div>
+</div></section>
+<section class="band" id="roster" hidden><div class="wrap">
+<p class="kick">BASE CAMP ROSTER</p><h2>Everyone on the mountain</h2>
+<p class="lead">Select anyone to see their profile and volunteering history.</p>
+<div class="rctl"><input id="rq" type="search" placeholder="Search by name" aria-label="Search by name" autocomplete="off"><select id="rd" aria-label="Filter by department"></select><a class="nb pl" href="/api/hours/leaderboard.csv" download>DOWNLOAD CSV</a></div>
+<ol class="rl" id="rl"></ol>
+</div></section>
+<section id="end"><div class="rv"><h2>THE CLIMB DOESN’T END HERE.</h2><p>Every volunteer contributes to something bigger than themselves. Every hour represents dedication, collaboration, and a commitment to making STEM education more accessible.</p><p>Thank you to every member of the SBHS Chapter of CodePatch STEM for making a difference.</p></div>
+<footer class="rv"><b>CODEPATCH STEM</b><span>South Brunswick High School Chapter</span><em>Celebrating innovation, leadership, and community impact.</em><a href="/hours/admin/" style="display:inline-block;margin-top:14px;color:var(--tx2);font:400 .62rem var(--mono);letter-spacing:.16em;text-decoration:none">ADMIN</a></footer></section>
+</main>
+<dialog id="pf" aria-label="Member profile"><button class="nb px" id="pc" aria-label="Close profile">CLOSE ✕</button><div class="pbody" id="pb"></div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="hours.js"></script>
+</body></html>
