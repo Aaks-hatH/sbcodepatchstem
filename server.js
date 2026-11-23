@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const { MongoClient, ObjectId } = require('mongodb');
 const seed = require('./seed');
 const mail = require('./mailer');
+const makeHours = require('./hours');
 
 const { MONGODB_URI, JWT_SECRET, ADMIN_PASSWORD, PORT = 3000, NODE_ENV } = process.env;
 const PROD = NODE_ENV === 'production';
@@ -57,6 +58,8 @@ async function main() {
   await C.rsvps.createIndex({ eventId: 1, emailKey: 1 }, { unique: true });
   await C.rsvps.createIndex({ token: 1 }, { unique: true });
   await C.rsvps.createIndex({ createdAt: -1 });
+  const hours = makeHours({ db, express, wrap, httpError, oid }); /* volunteering hours: see hours.js */
+  await hours.init();
 
   /* ---------- Helpers shared by the public and admin routes ---------- */
   const baseUrl = (req) => (process.env.BASE_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
@@ -202,6 +205,7 @@ async function main() {
     next();
   });
   admin.get('/me', (req, res) => res.json({ ok: true }));
+  admin.use('/hours', hours.admin); /* must come before the generic /:col routes below */
 
   /* ---------- Admin: dashboard, RSVPs, email tools, backup (declared before the generic /:col routes) ---------- */
   const STATUSES = ['going', 'waitlist', 'cancelled'];
@@ -284,7 +288,7 @@ async function main() {
     if (!o.ok) throw httpError(502, o.error); res.json({ ok: true, to });
   }));
   admin.get('/backup', wrap(async (req, res) => {
-    const data = {}; for (const k of Object.keys(C)) data[k] = (await C[k].find().toArray()).map(({ _id, ...r }) => ({ id: String(_id), ...r }));
+    const data = await hours.backup(); for (const k of Object.keys(C)) data[k] = (await C[k].find().toArray()).map(({ _id, ...r }) => ({ id: String(_id), ...r }));
     res.set('Content-Disposition', `attachment; filename="codepatch-backup-${new Date().toISOString().slice(0, 10)}.json"`).json({ exportedAt: new Date(), ...data });
   }));
 
@@ -322,12 +326,14 @@ async function main() {
     res.json({ ok: true });
   }));
   app.use('/api/admin', (req, res, next) => { res.set('Cache-Control', 'no-store'); next(); }, admin);
+  app.use('/api/hours', hours.public);
   app.use('/api', (req, res) => res.status(404).json({ error: 'Not found.' }));
 
   /* ---------- Static: site at /, admin at /admin (the server's own files are never served) ---------- */
   const adminCsp = helmet.contentSecurityPolicy({ useDefaults: false, directives: { defaultSrc: ["'self'"], scriptSrc: ["'self'"], styleSrc: ["'self'"], imgSrc: ["'self'", 'data:'], connectSrc: ["'self'"], formAction: ["'self'"], frameAncestors: ["'none'"] } });
   app.use('/admin', adminCsp, (req, res, next) => { res.set('X-Robots-Tag', 'noindex'); next(); }, express.static(path.join(__dirname, 'admin')));
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use('/hours/admin', adminCsp, (req, res, next) => { res.set('X-Robots-Tag', 'noindex'); next(); }, express.static(path.join(__dirname, 'hours-admin')));
+  app.use(express.static(path.join(__dirname, 'public'))); /* includes the public leaderboard at /hours */
 
   app.use((err, req, res, next) => {
     if (err.type === 'entity.parse.failed') err.status = 400;
