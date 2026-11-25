@@ -416,3 +416,27 @@ body.nx-loading .nx-c, body.nx-loading [class*='cp-hero__stagger'], body.nx-load
 [style*="font-size: 0.7"], [style*="font-size: 0.8"], [style*="font-size: 0.9"] { font-size: 1rem !important; }
 .cp-card p, .cp-card li { font-size: 1.05rem; }
 .cp-hero__desc { color: #e1e9f1; }
+
+/* ==========================================================================
+   PERFORMANCE LAYER (index): same look and animations, far cheaper to paint.
+   - no full-screen blend modes / backdrop blur / blurred filters
+   - blur() removed from reveal keyframes (opacity + transform only, GPU friendly)
+   - hero loops pause automatically when the hero is off screen (body.nx-offhero)
+   ========================================================================== */
+html::after { inset: -6%; mix-blend-mode: normal; opacity: 0.05; animation: nxGrain 0.9s steps(1) infinite; }
+@keyframes nxGrain { 0% { transform: translate(0, 0); } 17% { transform: translate(-2%, 1.5%); } 34% { transform: translate(1.5%, -2%); } 51% { transform: translate(-1.5%, -1%); } 68% { transform: translate(2%, 2%); } 85% { transform: translate(-1%, 1%); } 100% { transform: translate(0, 0); } }
+
+.cp-nav { background: rgba(8, 13, 21, 0.9); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.nx-aurora { filter: none; mix-blend-mode: normal; }
+.nx-aurora i { will-change: transform; }
+.nx-hglow, .nx-bolt { mix-blend-mode: normal; }
+
+@keyframes nxRise { from { opacity: 0; transform: translateY(34px); } }
+@keyframes nxCarve { from { opacity: 0; transform: translateY(0.8em) rotate(6deg) scale(1.3); } }
+@keyframes nxChar { from { opacity: 0; transform: translateY(0.7em) rotate(7deg) scale(1.2); } }
+@keyframes nxCardIn { from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(56px) rotateX(-14deg) scale(0.94); } to { clip-path: inset(0 0 0 0); } }
+
+body.nx-offhero .nx-aurora i, body.nx-offhero .nx-sea, body.nx-offhero .nx-ship, body.nx-offhero .nx-ship svg,
+body.nx-offhero .nx-cue::after, body.nx-offhero .nx-c, body.nx-offhero .cp-hero__actions .cp-btn--gold, body.nx-offhero .nx-bolt { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) { html::after { animation: none; } }
