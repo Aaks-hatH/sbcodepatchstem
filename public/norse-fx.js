@@ -161,9 +161,9 @@
     var sky = d.getElementById('nx-sky'), sx = sky && sky.getContext('2d'), W = 0, H = 0, stars = [], embers = [], shoot = null, nextShoot = 6000;
     var mx = innerWidth / 2, my = innerHeight / 2, pxT = 0, pyT = 0, pxS = 0, pyS = 0;
     function sizeSky() {
-      var dpr = Math.min(devicePixelRatio || 1, 1.5);
+      var dpr = 1;
       W = sky.width = innerWidth * dpr; H = sky.height = innerHeight * dpr; sky.__dpr = dpr;
-      var n = Math.round(innerWidth * innerHeight / 8000);
+      var n = Math.min(260, Math.round(innerWidth * innerHeight / 12000));
       stars = []; embers = [];
       for (var i = 0; i < n; i++) stars.push({ x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.1 + 0.3) * dpr, ph: Math.random() * 6.28, sp: 0.4 + Math.random() * 1.4, z: 0.02 + Math.random() * 0.08 });
       for (var j = 0; j < 34; j++) embers.push({ x: Math.random() * W, y: Math.random() * H, r: (Math.random() * 1.6 + 0.6) * dpr, v: 12 + Math.random() * 30, ph: Math.random() * 6.28 });
@@ -172,21 +172,28 @@
       var dpr = sky.__dpr || 1;
       sx.clearRect(0, 0, W, H);
       var sy = sm * dpr;
+      /* stars: tiny squares, batched into 4 alpha buckets (far fewer state changes than one arc per star) */
+      var buckets = [[], [], [], []];
       for (var i = 0; i < stars.length; i++) {
         var s = stars[i], y = ((s.y - sy * s.z) % H + H) % H, x = s.x + pxS * s.z * 260 * dpr;
-        var a = 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 0.001 * s.sp + s.ph));
-        sx.fillStyle = 'rgba(214,232,255,' + (a * 0.8).toFixed(2) + ')';
-        sx.beginPath(); sx.arc(x, y, s.r, 0, 6.283); sx.fill();
+        var a = 0.5 + 0.5 * Math.sin(t * 0.001 * s.sp + s.ph);
+        var bi = a > 0.75 ? 3 : a > 0.5 ? 2 : a > 0.25 ? 1 : 0;
+        buckets[bi].push(x, y, s.r * 2);
+      }
+      for (var bk = 0; bk < 4; bk++) {
+        var arr = buckets[bk]; if (!arr.length) continue;
+        sx.fillStyle = 'rgba(214,232,255,' + (0.3 + bk * 0.17).toFixed(2) + ')';
+        for (var q = 0; q < arr.length; q += 3) sx.fillRect(arr[q], arr[q + 1], arr[q + 2], arr[q + 2]);
       }
       for (var j = 0; j < embers.length; j++) {
         var e = embers[j], ey = ((e.y - t * 0.001 * e.v) % H + H) % H, ex = e.x + Math.sin(t * 0.0007 + e.ph) * 18 * dpr;
         sx.fillStyle = 'rgba(255,154,60,' + (0.22 + 0.3 * Math.sin(t * 0.002 + e.ph)).toFixed(2) + ')';
-        sx.beginPath(); sx.arc(ex, ey, e.r, 0, 6.283); sx.fill();
+        sx.fillRect(ex, ey, e.r * 2, e.r * 2);
       }
       if (!reduce) {
         if (!shoot && t > nextShoot) { shoot = { x: rand(0.1, 0.9) * W, y: rand(0, 0.35) * H, l: 0, v: rand(900, 1300) * dpr }; }
         if (shoot) {
-          shoot.l += 0.016; var k = shoot.l / 0.9, hx = shoot.x + shoot.v * shoot.l * 0.8, hy = shoot.y + shoot.v * shoot.l * 0.45;
+          shoot.l += 0.033; var k = shoot.l / 0.9, hx = shoot.x + shoot.v * shoot.l * 0.8, hy = shoot.y + shoot.v * shoot.l * 0.45;
           var g = sx.createLinearGradient(hx, hy, hx - 160 * dpr, hy - 90 * dpr);
           g.addColorStop(0, 'rgba(255,255,255,' + (1 - k).toFixed(2) + ')'); g.addColorStop(1, 'rgba(124,196,255,0)');
           sx.strokeStyle = g; sx.lineWidth = 1.6 * dpr; sx.beginPath(); sx.moveTo(hx, hy); sx.lineTo(hx - 160 * dpr, hy - 90 * dpr); sx.stroke();
@@ -257,6 +264,7 @@
 
     var hero, cue, sections = [], glyphs = [], mqs = [], rail = null, railDots = [], giant = null, footer = null, navEl = null;
     var watchers = []; // {node, seen, gate, fn, done}
+    var heroVis = true, bandVis = true, band = null, lastVelWrap = 0;
 
     function watch(node, fn) {
       var w = { node: node, seen: false, fn: fn, done: false, gate: node.closest ? node.closest('.cp-reveal') : null };
@@ -288,7 +296,7 @@
         var g = el('div', 'nx-mq__g');
         for (var k = 0; k < 3; k++) row.words.forEach(function (w) { g.appendChild(el('span', '', w)); g.appendChild(el('i', '', '✦')); });
         track.appendChild(g); track.appendChild(g.cloneNode(true)); r.appendChild(track); wrap.appendChild(r);
-        mqs.push({ track: track, g: g, dir: row.dir, pos: Math.random() * 400, half: 0, base: row.speed || 46 });
+        mqs.push({ track: track, g: g, wrap: wrap, vis: true, dir: row.dir, pos: Math.random() * 400, half: 0, base: row.speed || 46 });
       });
       return wrap;
     }
@@ -312,7 +320,7 @@
       cue = el('div', 'nx-cue', '<span>Scroll</span>'); cue.setAttribute('aria-hidden', 'true'); hero.appendChild(cue);
 
       /* Rune band under the hero (slides with scroll) */
-      var band = el('div', 'nx-runes'); band.setAttribute('aria-hidden', 'true');
+      band = el('div', 'nx-runes'); band.setAttribute('aria-hidden', 'true');
       var track = el('div', 'nx-runes__track');
       for (var i = 0; i < 170; i++) track.appendChild(el('span', '', RUNES[(i * 7) % RUNES.length]));
       band.appendChild(track); main.insertBefore(band, hero.nextSibling);
@@ -360,15 +368,30 @@
       footer = d.querySelector('.cp-footer');
       if (footer) { giant = el('div', 'nx-giant', '<span>CodePatch</span>'); giant.setAttribute('aria-hidden', 'true'); footer.parentNode.insertBefore(giant, footer); }
 
+      /* Only animate marquees that are on screen; pause hero loops when the hero is off screen */
+      if ('IntersectionObserver' in window) {
+        var seenWraps = [];
+        mqs.forEach(function (m) { if (seenWraps.indexOf(m.wrap) < 0) seenWraps.push(m.wrap); });
+        var mqIO = new IntersectionObserver(function (es) {
+          es.forEach(function (e) { mqs.forEach(function (m) { if (m.wrap === e.target) m.vis = e.isIntersecting; }); });
+        }, { rootMargin: '150px 0px' });
+        seenWraps.forEach(function (w) { mqIO.observe(w); });
+        new IntersectionObserver(function (es) {
+          heroVis = es[es.length - 1].isIntersecting;
+          body.classList.toggle('nx-offhero', !heroVis);
+        }, { rootMargin: '100px 0px' }).observe(hero);
+        if (band) new IntersectionObserver(function (es) { bandVis = es[es.length - 1].isIntersecting; }, { rootMargin: '100px 0px' }).observe(band);
+      }
+
       measureMq();
     }
     function measureMq() { mqs.forEach(function (m) { m.half = m.g.offsetWidth || 1; }); }
     addEventListener('resize', measureMq);
     if (d.fonts && d.fonts.ready) d.fonts.ready.then(measureMq);
 
-    var mo = new MutationObserver(function () { if (!built && d.querySelector('.cp-hero')) buildHero(); });
+    var mo = new MutationObserver(function () { if (!built && d.querySelector('.cp-hero')) { buildHero(); if (built) mo.disconnect(); } });
     mo.observe(d.getElementById('root') || body, { childList: true, subtree: true });
-    buildHero();
+    buildHero(); if (built) mo.disconnect();
 
     /* =====================================================================
        5. CURSOR, MAGNETIC BUTTONS, CARD TILT, LIGHTNING
@@ -449,7 +472,7 @@
     /* =====================================================================
        6. MASTER LOOP: smoothed scroll, parallax, marquees, rail, cursor, particles
        ===================================================================== */
-    var sm = scrollY, prevY = scrollY, vel = 0, lastSm = -1, lastVel = 0, lastT = performance.now(), activeId = '', lastPx = 9, lastPy = 9;
+    var skyTick = false, sm = scrollY, prevY = scrollY, vel = 0, lastSm = -1, lastVel = 0, lastT = performance.now(), activeId = '', lastPx = 9, lastPy = 9;
     function frame(t) {
       requestAnimationFrame(frame);
       if (d.hidden) { lastT = t; return; }
@@ -458,14 +481,26 @@
       vel += ((y - prevY) - vel) * 0.18; prevY = y;
       sm += (y - sm) * (reduce ? 1 : 0.13); if (Math.abs(y - sm) < 0.1) sm = y;
       var moved = Math.abs(sm - lastSm) > 0.02;
+      /* Reads first (layout), writes after, so nothing is forced to re-layout mid-frame */
+      var doSections = moved || t < 1200, secRead = null, docMax = 0, railRead = null, giantTop = 0, giantH = 0;
+      if (doSections && built) {
+        if (!reduce) { secRead = []; for (var ri = 0; ri < glyphs.length; ri++) { var g0 = glyphs[ri]; if (g0.vis) { var rr0 = g0.sec.getBoundingClientRect(); secRead.push(g0, (rr0.top + rr0.height / 2 - innerHeight / 2) / innerHeight); } } }
+        if (rail) {
+          docMax = d.documentElement.scrollHeight - innerHeight; railRead = [];
+          for (var di0 = 0; di0 < railDots.length; di0++) { var s0 = d.getElementById(railDots[di0].__id); railRead.push(s0 ? s0.getBoundingClientRect().top : 1e9); }
+        }
+        if (giant) { var gr0 = giant.getBoundingClientRect(); giantTop = gr0.top; giantH = gr0.height; }
+      }
       if (moved) {
         lastSm = sm;
-        root.style.setProperty('--sy', sm.toFixed(1));
-        root.style.setProperty('--sp', Math.min(sm / (innerHeight || 1), 1).toFixed(3));
+        /* Variables live on the hero / rune band only, so scrolling no longer restyles the whole document */
+        if (hero && heroVis) { hero.style.setProperty('--sy', sm.toFixed(1)); hero.style.setProperty('--sp', Math.min(sm / (innerHeight || 1), 1).toFixed(3)); }
+        if (band && bandVis) band.style.setProperty('--sy', sm.toFixed(1));
         navEl = navEl || d.querySelector('.cp-nav');
         if (navEl) navEl.classList.toggle('is-scrolled', y > 40);
       }
-      if (Math.abs(vel - lastVel) > 0.05) { lastVel = vel; root.style.setProperty('--vel', clamp(vel, -80, 80).toFixed(1)); }
+      var velChanged = Math.abs(vel - lastVel) > 0.05;
+      if (velChanged) lastVel = vel;
 
       /* Pointer easing for hero parallax */
       pxS += (pxT - pxS) * 0.06; pyS += (pyT - pyS) * 0.06;
@@ -475,7 +510,7 @@
         hero.style.setProperty('--hx', ((pxS + 1) * 50).toFixed(1) + '%'); hero.style.setProperty('--hy', ((pyS + 1) * 50).toFixed(1) + '%');
       }
 
-      if (sx) paintSky(t, sm);
+      skyTick = !skyTick; if (sx && (skyTick || t < 2500)) paintSky(t, sm);
       paintFx(dt);
 
       if (curRing) {
@@ -496,32 +531,29 @@
       if (!reduce) for (var mi = 0; mi < mqs.length; mi++) {
         var m = mqs[mi]; if (!m.half) continue;
         m.pos += (m.base * dt + Math.abs(vel) * 1.1) * 1;
+        if (!m.vis) continue;
         var ph = m.pos % m.half, tx = m.dir > 0 ? (ph - m.half) : -ph;
         m.track.style.transform = 'translate3d(' + tx.toFixed(1) + 'px,0,0)';
+        if (velChanged) m.wrap.style.setProperty('--vel', clamp(vel, -80, 80).toFixed(1));
       }
 
-      if (moved || t < 1200) {
+      if (doSections) {
         /* Section watermarks drift and turn */
-        if (!reduce) for (var gi = 0; gi < glyphs.length; gi++) {
-          var gl = glyphs[gi]; if (!gl.vis) continue;
-          var r = gl.sec.getBoundingClientRect(), k = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
-          gl.g.style.transform = 'translate3d(0,' + (k * -140).toFixed(1) + 'px,0) rotate(' + (k * 22).toFixed(1) + 'deg)';
+        if (secRead) for (var gi = 0; gi < secRead.length; gi += 2) {
+          var k = secRead[gi + 1];
+          secRead[gi].g.style.transform = 'translate3d(0,' + (k * -140).toFixed(1) + 'px,0) rotate(' + (k * 22).toFixed(1) + 'deg)';
         }
         /* Rail: active section + overall progress */
-        if (rail) {
-          var doc = d.documentElement.scrollHeight - innerHeight;
-          rail.style.setProperty('--rp', (doc > 0 ? clamp(y / doc, 0, 1) : 0).toFixed(3));
+        if (rail && railRead) {
+          rail.style.setProperty('--rp', (docMax > 0 ? clamp(y / docMax, 0, 1) : 0).toFixed(3));
           var cur = railDots.length ? railDots[0].__id : '';
-          for (var di = 0; di < railDots.length; di++) {
-            var s = d.getElementById(railDots[di].__id);
-            if (s && s.getBoundingClientRect().top <= innerHeight * 0.45) cur = railDots[di].__id;
-          }
+          for (var di = 0; di < railDots.length; di++) if (railRead[di] <= innerHeight * 0.45) cur = railDots[di].__id;
           if (cur !== activeId) { activeId = cur; railDots.forEach(function (a) { a.classList.toggle('is-active', a.__id === cur); }); }
           rail.classList.toggle('is-show', y > innerHeight * 0.35);
         }
-        /* Footer word fills with gold */
-        if (giant) {
-          var gr = giant.getBoundingClientRect(), fp = clamp((innerHeight - gr.top) / (innerHeight * 0.4 + gr.height * 0.25), 0, 1);
+        /* Footer word fills with gold (only touches the DOM near the footer) */
+        if (giant && giantTop < innerHeight * 1.5) {
+          var fp = clamp((innerHeight - giantTop) / (innerHeight * 0.4 + giantH * 0.25), 0, 1);
           giant.style.setProperty('--fp', fp.toFixed(3));
         }
       }
