@@ -1,0 +1,37 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="26" fill="#080808"/>
+
+  <!-- Orbital ring -->
+  <circle cx="64" cy="64" r="49"
+          fill="none" stroke="#FFD21A" stroke-width="2.5"
+          stroke-dasharray="210 35"/>
+
+  <!-- Telescope -->
+  <g fill="#FFD21A" stroke="#FFD21A" stroke-width="3"
+     stroke-linejoin="round">
+    <path d="M29 43 L82 25 L91 39 L37 57 Z"/>
+    <path d="M82 25 L95 21 L103 37 L91 39 Z"/>
+    <path d="M56 49 L62 77 M62 77 L43 99 M62 77 L81 99"/>
+    <circle cx="62" cy="49" r="5" fill="#080808"/>
+  </g>
+
+  <!-- Coding symbols -->
+  <g fill="none" stroke="#FFD21A"
+     stroke-width="3.5" stroke-linecap="round"
+     stroke-linejoin="round">
+    <path d="M29 75 L20 83 L29 91"/>
+    <path d="M43 75 L52 83 L43 91"/>
+  </g>
+
+  <!-- Mathematics -->
+  <text x="91" y="91" fill="#FFD21A"
+        font-size="18" font-weight="bold">∑</text>
+
+  <!-- Stars -->
+  <g fill="#FFD21A">
+    <circle cx="24" cy="27" r="2"/>
+    <circle cx="105" cy="65" r="2"/>
+    <circle cx="64" cy="111" r="2"/>
+  </g>
+</svg>
