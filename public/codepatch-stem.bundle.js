@@ -9,16 +9,21 @@
 (async function bootstrapCodePatchSTEM() {
   'use strict';
 
-  const [ReactMod, ReactDOMClientMod, THREEMod] = await Promise.all([
+  const [ReactMod, ReactDOMClientMod] = await Promise.all([
     import('https://esm.sh/react@18.3.1'),
     import('https://esm.sh/react-dom@18.3.1/client'),
-    import('https://esm.sh/three@0.169.0'),
   ]);
 
   const React = ReactMod.default || ReactMod;
   const { useState, useEffect, useRef, useMemo, useCallback, createElement: h, Fragment } = React;
   const { createRoot } = ReactDOMClientMod.default || ReactDOMClientMod;
-  const THREE = THREEMod;
+  /* three.js is lazy-loaded after first paint (it is the heaviest dependency and only the hero art needs it) */
+  let THREE = null;
+  let threePromise = null;
+  function loadThree() {
+    if (!threePromise) threePromise = import('https://esm.sh/three@0.169.0').then((m) => (THREE = m));
+    return threePromise;
+  }
 
   /* ==========================================================================
      1. EXACT DATA FROM ORIGINAL CODEPATCH STEM SITE
@@ -416,14 +421,14 @@
   }
 
   function useScrollProgress() {
-    const [progress, setProgress] = useState(0);
-
     useEffect(() => {
       let ticking = false;
+      let bar = null;
       const update = () => {
         const docHeight = document.documentElement.scrollHeight - window.innerHeight;
         const pct = docHeight > 0 ? Math.min(Math.max(window.scrollY / docHeight, 0), 1) : 0;
-        setProgress(pct);
+        bar = bar || document.querySelector('.cp-progress');
+        if (bar) bar.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
         ticking = false;
       };
       const onScroll = () => {
@@ -441,7 +446,7 @@
       };
     }, []);
 
-    return progress;
+    return 0;
   }
 
   function AnimatedStatCounter({ target, duration = 1200 }) {
@@ -590,13 +595,33 @@
     useEffect(() => {
       const container = mountRef.current;
       if (!container) return;
+      let cancelled = false;
+      let cleanup = null;
+      const start = () => {
+        loadThree().then(() => { if (!cancelled) cleanup = initScene(container); }).catch(() => {});
+      };
+      /* wait for the page to finish loading and the browser to go idle before touching WebGL */
+      let idleId, timerId;
+      const kick = () => {
+        if ('requestIdleCallback' in window) idleId = window.requestIdleCallback(start, { timeout: 2500 });
+        else timerId = setTimeout(start, 400);
+      };
+      if (document.readyState === 'complete') kick(); else window.addEventListener('load', kick, { once: true });
+      return () => {
+        cancelled = true;
+        window.removeEventListener('load', kick);
+        if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+        if (timerId) clearTimeout(timerId);
+        if (cleanup) cleanup();
+      };
 
+      function initScene(container) {
       let renderer;
       try {
         renderer = new THREE.WebGLRenderer({
-          antialias: true,
+          antialias: window.devicePixelRatio <= 1,
           alpha: true,
-          powerPreference: 'high-performance',
+          powerPreference: 'default',
         });
       } catch (err) {
         return;
@@ -605,7 +630,7 @@
       const width = container.clientWidth || window.innerWidth;
       const height = container.clientHeight || window.innerHeight;
       renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
       container.appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
@@ -765,9 +790,11 @@
       window.addEventListener('resize', onResize);
 
       let frameId = null;
+      let inView = true;
       const clock = new THREE.Clock();
 
       const renderFrame = () => {
+        frameId = null;
         const dt = Math.min(clock.getDelta(), 0.05);
         const elapsed = clock.elapsedTime;
 
@@ -822,15 +849,31 @@
         }
 
         renderer.render(scene, camera);
-        if (!reducedMotion) {
+        if (!reducedMotion && inView && !document.hidden) {
           frameId = requestAnimationFrame(renderFrame);
         }
       };
+
+      /* Only render while the hero is on screen and the tab is visible */
+      const wake = () => {
+        if (!reducedMotion && inView && !document.hidden && !frameId) {
+          clock.getDelta();
+          frameId = requestAnimationFrame(renderFrame);
+        }
+      };
+      let heroIO = null;
+      if ('IntersectionObserver' in window) {
+        heroIO = new IntersectionObserver((es) => { inView = es[es.length - 1].isIntersecting; wake(); }, { rootMargin: '80px' });
+        heroIO.observe(container);
+      }
+      document.addEventListener('visibilitychange', wake);
 
       renderFrame();
 
       return () => {
         if (frameId) cancelAnimationFrame(frameId);
+        if (heroIO) heroIO.disconnect();
+        document.removeEventListener('visibilitychange', wake);
         window.removeEventListener('pointermove', onPointerMove);
         window.removeEventListener('resize', onResize);
         coreGeo.dispose();
@@ -855,6 +898,7 @@
           container.removeChild(renderer.domElement);
         }
       };
+      }
     }, [reducedMotion]);
 
     return h('div', { ref: mountRef, className: 'cp-hero__canvas', 'aria-hidden': 'true' });
@@ -2459,7 +2503,9 @@
         setEvents(eventsData);
       });
 
-      const onScroll = () => {
+      let navTick = false;
+      const compute = () => {
+        navTick = false;
         const scrollPos = window.scrollY + 180;
         for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
           const el = document.getElementById(NAV_ITEMS[i].id);
@@ -2469,6 +2515,7 @@
           }
         }
       };
+      const onScroll = () => { if (!navTick) { navTick = true; requestAnimationFrame(compute); } };
 
       window.addEventListener('scroll', onScroll, { passive: true });
       return () => {
