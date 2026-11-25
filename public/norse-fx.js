@@ -6,6 +6,8 @@
   var d = document, root = d.documentElement;
   function mq(q) { return !!(window.matchMedia && matchMedia(q).matches); }
   var reduce = mq('(prefers-reduced-motion: reduce)');
+  /* Design pass 1: the sparkle layer (cursor ring, spark trail, click bursts, tilt, magnet, lightning, shooting star, rune-decode) is off. Flip to true to bring it back. */
+  var SPARKLE = false;
   var fine = mq('(hover: hover) and (pointer: fine)');
   var RUNES = 'ᚠᚢᚦᚨᚱᚲᚷᚹᚺᚾᛁᛃᛇᛈᛉᛊᛏᛒᛖᛗᛚᛜᛞᛟ';
   var NS = 'http://www.w3.org/2000/svg';
@@ -48,7 +50,7 @@
 
   /* Decode text from runes into letters. Edits the existing text node so React's reference stays valid. */
   function scramble(node, ms) {
-    if (reduce || !node || node.__nxScr) return;
+    if (reduce || !SPARKLE || !node || node.__nxScr) return;
     var tn = node.firstChild; if (!tn || tn.nodeType !== 3) return;
     var fin = tn.nodeValue, len = fin.length, t0 = performance.now();
     node.__nxScr = true;
@@ -190,7 +192,7 @@
         sx.fillStyle = 'rgba(255,154,60,' + (0.22 + 0.3 * Math.sin(t * 0.002 + e.ph)).toFixed(2) + ')';
         sx.fillRect(ex, ey, e.r * 2, e.r * 2);
       }
-      if (!reduce) {
+      if (!reduce && SPARKLE) {
         if (!shoot && t > nextShoot) { shoot = { x: rand(0.1, 0.9) * W, y: rand(0, 0.35) * H, l: 0, v: rand(900, 1300) * dpr }; }
         if (shoot) {
           shoot.l += 0.033; var k = shoot.l / 0.9, hx = shoot.x + shoot.v * shoot.l * 0.8, hy = shoot.y + shoot.v * shoot.l * 0.45;
@@ -205,7 +207,7 @@
 
     /* Top layer: cursor ember trail, click bursts, shockwave rings, rising runes */
     var fxc = null, fx = null, FW = 0, FH = 0, parts = [], rings = [];
-    if (!reduce) {
+    if (!reduce && SPARKLE) {
       fxc = el('canvas'); fxc.id = 'nx-fx'; fxc.setAttribute('aria-hidden', 'true'); body.appendChild(fxc); fx = fxc.getContext('2d');
       var sizeFx = function () { var dpr = Math.min(devicePixelRatio || 1, 1.5); FW = fxc.width = innerWidth * dpr; FH = fxc.height = innerHeight * dpr; fxc.__dpr = dpr; };
       sizeFx(); addEventListener('resize', sizeFx);
@@ -311,9 +313,9 @@
       var big = el('div', 'nx-bigrune', 'ᚲ'); big.setAttribute('aria-hidden', 'true'); hero.insertBefore(big, aur.nextSibling);
       hero.appendChild(el('div', 'nx-hglow'));
       var land = el('div', 'nx-land'); land.setAttribute('aria-hidden', 'true');
-      land.appendChild(ridge(190, 250, 7, 0.0042, 0.0113, '#0f1a2b', 'rgba(124,196,255,.3)'));
-      land.appendChild(ridge(130, 275, 31, 0.0061, 0.0172, '#0a121e', 'rgba(124,196,255,.2)'));
-      land.appendChild(ridge(70, 300, 83, 0.0097, 0.026, '#060a11', 'rgba(229,184,63,.22)'));
+      land.appendChild(ridge(190, 250, 7, 0.0042, 0.0113, '#201b16', 'rgba(236,228,210,.16)'));
+      land.appendChild(ridge(130, 275, 31, 0.0061, 0.0172, '#171310', 'rgba(236,228,210,.12)'));
+      land.appendChild(ridge(70, 300, 83, 0.0097, 0.026, '#100e0c', 'rgba(201,164,92,.22)'));
       hero.appendChild(land); hero.appendChild(el('div', 'nx-sea'));
       if (!reduce) { hero.appendChild(el('div', 'nx-ship', SHIP)); hero.appendChild(el('div', 'nx-bolt')); }
       var sideL = el('div', 'nx-side nx-side--l', 'South Brunswick, New Jersey'); sideL.setAttribute('aria-hidden', 'true'); hero.appendChild(sideL);
@@ -397,7 +399,7 @@
        5. CURSOR, MAGNETIC BUTTONS, CARD TILT, LIGHTNING
        ===================================================================== */
     var curRing = null, curDot = null, cx = mx, cy = my, tilted = null, mag = null;
-    if (fine && !reduce) {
+    if (fine && !reduce && SPARKLE) {
       curRing = el('div', 'nx-cur'); curDot = el('div', 'nx-dot'); curRing.setAttribute('aria-hidden', 'true'); curDot.setAttribute('aria-hidden', 'true');
       body.appendChild(curRing); body.appendChild(curDot); body.classList.add('nx-cursor');
       curRing.classList.add('is-hidden'); curDot.classList.add('is-hidden');
@@ -421,14 +423,14 @@
       var b = ct ? ct.closest('.cp-btn, .cp-nav__toggle, .nx-rail__dot') : null;
       if (mag && mag !== b) { mag.style.setProperty('--tx', '0px'); mag.style.setProperty('--ty', '0px'); }
       mag = b;
-      if (b && fine && !reduce) {
+      if (b && fine && !reduce && SPARKLE) {
         var r = b.getBoundingClientRect();
         b.style.setProperty('--tx', ((e.clientX - (r.left + r.width / 2)) * 0.26).toFixed(1) + 'px');
         b.style.setProperty('--ty', ((e.clientY - (r.top + r.height / 2)) * 0.4).toFixed(1) + 'px');
       }
 
       /* Card tilt */
-      if (!reduce && fine) {
+      if (!reduce && fine && SPARKLE) {
         var c = ct ? ct.closest('.cp-card') : null;
         if (tilted && tilted !== c) { tilted.style.setProperty('--rx', '0deg'); tilted.style.setProperty('--ry', '0deg'); }
         tilted = c;
@@ -459,7 +461,7 @@
 
     /* Lightning: a slow, soft flash across the hero, never a strobe */
     (function lightning() {
-      if (reduce) return;
+      if (reduce || !SPARKLE) return;
       setTimeout(function () {
         var b = hero && hero.querySelector('.nx-bolt');
         if (b && !d.hidden && scrollY < innerHeight * 0.8 && body.classList.contains('nx-ready')) {
