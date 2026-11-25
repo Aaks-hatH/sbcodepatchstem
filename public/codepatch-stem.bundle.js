@@ -640,7 +640,7 @@
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
       scene.add(ambientLight);
 
-      const forgeKeyLight = new THREE.PointLight(0xffd84d, 4.2, 34);
+      const forgeKeyLight = new THREE.PointLight(0xe0c58a, 4.2, 34);
       forgeKeyLight.position.set(5, 4, 6);
       scene.add(forgeKeyLight);
 
@@ -657,9 +657,9 @@
       const glowTex = createGlowTexture();
       const haloMat = new THREE.SpriteMaterial({
         map: glowTex,
-        color: 0xffd84d,
+        color: 0xe0c58a,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.14,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
@@ -682,7 +682,7 @@
       // 3. Precision Geodesic Energy Lattice
       const cageGeo = new THREE.IcosahedronGeometry(2.15, 1);
       const cageMat = new THREE.MeshBasicMaterial({
-        color: 0xe5b83f,
+        color: 0xc9a45c,
         wireframe: true,
         transparent: true,
         opacity: 0.24,
@@ -693,9 +693,9 @@
 
       // 4. Three Precision Gyroscopic Astrolabe Rings
       const ringSpecs = [
-        { radius: 2.75, tube: 0.026, rot: [0.65, 0.3, 0.1], color: 0xffd84d },
-        { radius: 3.35, tube: 0.022, rot: [-0.85, 0.5, -0.25], color: 0xe5b83f },
-        { radius: 3.95, tube: 0.018, rot: [0.25, -0.7, 0.55], color: 0xc89624 },
+        { radius: 2.75, tube: 0.026, rot: [0.65, 0.3, 0.1], color: 0xe0c58a },
+        { radius: 3.35, tube: 0.022, rot: [-0.85, 0.5, -0.25], color: 0xc9a45c },
+        { radius: 3.95, tube: 0.018, rot: [0.25, -0.7, 0.55], color: 0xa98745 },
       ];
       const gyroRings = ringSpecs.map((spec) => {
         const g = new THREE.TorusGeometry(spec.radius, spec.tube, 16, 140);
@@ -761,7 +761,7 @@
       const particleMat = new THREE.PointsMaterial({
         size: 0.16,
         map: glowTex,
-        color: 0xffd84d,
+        color: 0xe0c58a,
         transparent: true,
         opacity: 0.85,
         blending: THREE.AdditiveBlending,
@@ -917,9 +917,9 @@
         { width: 26, height: 26, viewBox: '0 0 24 24', fill: 'none' },
         h('polygon', {
           points: '12,1.6 21,6.7 21,17.3 12,22.4 3,17.3 3,6.7',
-          stroke: '#FFD84D',
+          stroke: '#E0C58A',
           strokeWidth: '1.7',
-          fill: 'rgba(229,184,63,0.16)',
+          fill: 'rgba(201,164,92,0.16)',
         }),
         h('path', {
           d: 'M12 4.5V19.5M8.5 8.5L12 12L15.5 8.5M8.5 15.5L12 12L15.5 15.5',
@@ -990,8 +990,8 @@
             'linearGradient',
             { id: 'cpVikingGold', x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
             h('stop', { offset: '0%', stopColor: '#C89624' }),
-            h('stop', { offset: '50%', stopColor: '#FFD84D' }),
-            h('stop', { offset: '100%', stopColor: '#E5B83F' })
+            h('stop', { offset: '50%', stopColor: '#E0C58A' }),
+            h('stop', { offset: '100%', stopColor: '#C9A45C' })
           )
         ),
         h('circle', { cx: 220, cy: 165, r: 150, fill: 'url(#cpCompassGlow)' }),
@@ -1003,7 +1003,7 @@
             cx: 220,
             cy: 165,
             r: 124,
-            stroke: 'rgba(229,184,63,0.34)',
+            stroke: 'rgba(201,164,92,0.34)',
             strokeWidth: 1.2,
             strokeDasharray: '8 6',
             fill: 'none',
@@ -1012,21 +1012,21 @@
             cx: 220,
             cy: 165,
             r: 92,
-            stroke: 'rgba(255,216,77,0.2)',
+            stroke: 'rgba(224,197,138,0.2)',
             strokeWidth: 1,
             strokeDasharray: '2 8',
             fill: 'none',
           })
         ),
         // Animated Energy Spokes
-        h('line', { x1: 220, y1: 42, x2: 220, y2: 288, stroke: 'rgba(229,184,63,0.25)', strokeWidth: 1.4 }),
-        h('line', { x1: 72, y1: 165, x2: 368, y2: 165, stroke: 'rgba(229,184,63,0.25)', strokeWidth: 1.4 }),
+        h('line', { x1: 220, y1: 42, x2: 220, y2: 288, stroke: 'rgba(201,164,92,0.25)', strokeWidth: 1.4 }),
+        h('line', { x1: 72, y1: 165, x2: 368, y2: 165, stroke: 'rgba(201,164,92,0.25)', strokeWidth: 1.4 }),
         h('line', {
           x1: 220,
           y1: 42,
           x2: 220,
           y2: 288,
-          stroke: '#FFD84D',
+          stroke: '#E0C58A',
           strokeWidth: 1.6,
           className: 'cp-svg-flow',
         }),
@@ -1035,7 +1035,7 @@
           y1: 165,
           x2: 368,
           y2: 165,
-          stroke: '#FFD84D',
+          stroke: '#E0C58A',
           strokeWidth: 1.6,
           className: 'cp-svg-flow',
         }),
@@ -1049,7 +1049,7 @@
           strokeWidth: 2.2,
         }),
         h('text', { x: 220, y: 161, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 11, fontFamily: 'Cinzel', fontWeight: 900 }, 'CODEPATCH'),
-        h('text', { x: 220, y: 178, textAnchor: 'middle', fill: '#FFD84D', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'SBHS • STEM'),
+        h('text', { x: 220, y: 178, textAnchor: 'middle', fill: '#E0C58A', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'SBHS • STEM'),
         // Interactive Cardinal Nodes
         nodes.map((node, idx) => {
           const isHot = idx === activeNode;
@@ -1068,7 +1068,7 @@
               height: 32,
               rx: 8,
               fill: isHot ? 'rgba(229, 184, 63, 0.24)' : '#0E0C09',
-              stroke: isHot ? '#FFD84D' : 'rgba(229,184,63,0.55)',
+              stroke: isHot ? '#E0C58A' : 'rgba(201,164,92,0.55)',
               strokeWidth: isHot ? 1.8 : 1.2,
             }),
             h(
@@ -1077,7 +1077,7 @@
                 x: node.x,
                 y: node.y + 4,
                 textAnchor: 'middle',
-                fill: isHot ? '#FFFFFF' : '#FFD84D',
+                fill: isHot ? '#FFFFFF' : '#E0C58A',
                 fontSize: 10,
                 fontFamily: 'JetBrains Mono',
                 fontWeight: 700,
@@ -1124,20 +1124,20 @@
               h('stop', { offset: '100%', stopColor: '#0A0907' })
             )
           ),
-          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: 'url(#csTermBg)', stroke: 'rgba(229,184,63,0.45)', strokeWidth: 1.4 }),
-          h('line', { x1: 16, y1: 48, x2: 344, y2: 48, stroke: 'rgba(229,184,63,0.2)' }),
-          h('circle', { cx: 34, cy: 32, r: 4.5, fill: '#E5B83F' }),
-          h('circle', { cx: 49, cy: 32, r: 4.5, fill: 'rgba(229,184,63,0.45)' }),
-          h('circle', { cx: 64, cy: 32, r: 4.5, fill: 'rgba(229,184,63,0.22)' }),
-          h('text', { x: 326, y: 36, textAnchor: 'end', fill: '#E5B83F', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'RUNE_01 // ALGO.JS'),
-          h('text', { x: 34, y: 78, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'async function forgeSolution(input) {'),
+          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: 'url(#csTermBg)', stroke: 'rgba(201,164,92,0.45)', strokeWidth: 1.4 }),
+          h('line', { x1: 16, y1: 48, x2: 344, y2: 48, stroke: 'rgba(201,164,92,0.2)' }),
+          h('circle', { cx: 34, cy: 32, r: 4.5, fill: '#C9A45C' }),
+          h('circle', { cx: 49, cy: 32, r: 4.5, fill: 'rgba(201,164,92,0.45)' }),
+          h('circle', { cx: 64, cy: 32, r: 4.5, fill: 'rgba(201,164,92,0.22)' }),
+          h('text', { x: 326, y: 36, textAnchor: 'end', fill: '#C9A45C', fontSize: 10, fontFamily: 'JetBrains Mono' }, 'RUNE_01 // ALGO.JS'),
+          h('text', { x: 34, y: 78, fill: '#E0C58A', fontSize: 12, fontFamily: 'JetBrains Mono' }, 'async function forgeSolution(input) {'),
           h('text', { x: 50, y: 103, fill: '#F5F2EB', fontSize: 11.5, fontFamily: 'JetBrains Mono' }, 'const ast = parseSteps(input);'),
           h('text', { x: 50, y: 127, fill: '#A8A194', fontSize: 11.5, fontFamily: 'JetBrains Mono' }, 'const optimized = reduceGraph(ast);'),
-          h('text', { x: 50, y: 151, fill: '#FFD84D', fontSize: 11.5, fontFamily: 'JetBrains Mono' }, 'return deployToChapter(optimized);'),
-          h('text', { x: 34, y: 175, fill: '#FFD84D', fontSize: 12, fontFamily: 'JetBrains Mono' }, '}'),
-          h('rect', { x: 34, y: 192, width: 292, height: 26, rx: 6, fill: 'rgba(229,184,63,0.12)', stroke: 'rgba(255,216,77,0.35)' }),
-          h('circle', { cx: 50, cy: 205, r: 4, fill: '#FFD84D', className: 'cp-svg-pulse' }),
-          h('text', { x: 62, y: 209, fill: '#FFD84D', fontSize: 10, fontFamily: 'JetBrains Mono', fontWeight: 700 }, 'BUILD PASSED • O(N LOG N) VERIFIED')
+          h('text', { x: 50, y: 151, fill: '#E0C58A', fontSize: 11.5, fontFamily: 'JetBrains Mono' }, 'return deployToChapter(optimized);'),
+          h('text', { x: 34, y: 175, fill: '#E0C58A', fontSize: 12, fontFamily: 'JetBrains Mono' }, '}'),
+          h('rect', { x: 34, y: 192, width: 292, height: 26, rx: 6, fill: 'rgba(201,164,92,0.12)', stroke: 'rgba(224,197,138,0.35)' }),
+          h('circle', { cx: 50, cy: 205, r: 4, fill: '#E0C58A', className: 'cp-svg-pulse' }),
+          h('text', { x: 62, y: 209, fill: '#E0C58A', fontSize: 10, fontFamily: 'JetBrains Mono', fontWeight: 700 }, 'BUILD PASSED • O(N LOG N) VERIFIED')
         )
       );
     }
@@ -1149,27 +1149,27 @@
         h(
           'svg',
           { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Mathematics Harmonic Geometry' },
-          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
+          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(201,164,92,0.4)', strokeWidth: 1.4 }),
           h('line', { x1: 36, y1: 125, x2: 324, y2: 125, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1 }),
           h('line', { x1: 180, y1: 32, x2: 180, y2: 218, stroke: 'rgba(255,255,255,0.16)', strokeWidth: 1 }),
-          h('circle', { cx: 180, cy: 125, r: 66, fill: 'none', stroke: 'rgba(229,184,63,0.3)', strokeWidth: 1.2, strokeDasharray: '4 4' }),
+          h('circle', { cx: 180, cy: 125, r: 66, fill: 'none', stroke: 'rgba(201,164,92,0.3)', strokeWidth: 1.2, strokeDasharray: '4 4' }),
           h('path', {
             d: 'M 36 125 C 84 35, 132 35, 180 125 C 228 215, 276 215, 324 125',
             fill: 'none',
-            stroke: 'rgba(229,184,63,0.35)',
+            stroke: 'rgba(201,164,92,0.35)',
             strokeWidth: 2,
           }),
           h('path', {
             d: 'M 36 125 C 84 35, 132 35, 180 125 C 228 215, 276 215, 324 125',
             fill: 'none',
-            stroke: '#FFD84D',
+            stroke: '#E0C58A',
             strokeWidth: 2.6,
             className: 'cp-svg-flow',
           }),
-          h('circle', { cx: 108, cy: 58, r: 5, fill: '#FFD84D', className: 'cp-svg-pulse' }),
+          h('circle', { cx: 108, cy: 58, r: 5, fill: '#E0C58A', className: 'cp-svg-pulse' }),
           h('circle', { cx: 180, cy: 125, r: 5, fill: '#FFFFFF' }),
-          h('circle', { cx: 252, cy: 192, r: 5, fill: '#FFD84D', className: 'cp-svg-pulse' }),
-          h('text', { x: 34, y: 40, fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛗ // HARMONIC PROOF & INVARIANTS')
+          h('circle', { cx: 252, cy: 192, r: 5, fill: '#E0C58A', className: 'cp-svg-pulse' }),
+          h('text', { x: 34, y: 40, fill: '#E0C58A', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛗ // HARMONIC PROOF & INVARIANTS')
         )
       );
     }
@@ -1181,24 +1181,24 @@
         h(
           'svg',
           { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Engineering Structural Truss Blueprint' },
-          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
+          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(201,164,92,0.4)', strokeWidth: 1.4 }),
           h(
             'g',
             { className: 'cp-svg-spin-slow', style: { transformOrigin: '180px 128px' } },
-            h('circle', { cx: 180, cy: 128, r: 78, fill: 'none', stroke: 'rgba(229,184,63,0.28)', strokeWidth: 1.2, strokeDasharray: '10 6' })
+            h('circle', { cx: 180, cy: 128, r: 78, fill: 'none', stroke: 'rgba(201,164,92,0.28)', strokeWidth: 1.2, strokeDasharray: '10 6' })
           ),
           h('polygon', {
             points: '180,52 246,90 246,166 180,204 114,166 114,90',
-            fill: 'rgba(229,184,63,0.08)',
-            stroke: '#E5B83F',
+            fill: 'rgba(201,164,92,0.08)',
+            stroke: '#C9A45C',
             strokeWidth: 2,
           }),
-          h('line', { x1: 114, y1: 90, x2: 246, y2: 166, stroke: '#FFD84D', strokeWidth: 1.5, className: 'cp-svg-flow' }),
-          h('line', { x1: 246, y1: 90, x2: 114, y2: 166, stroke: '#FFD84D', strokeWidth: 1.5, className: 'cp-svg-flow' }),
-          h('line', { x1: 180, y1: 52, x2: 180, y2: 204, stroke: 'rgba(255,216,77,0.5)', strokeWidth: 1.4 }),
-          h('circle', { cx: 180, cy: 128, r: 16, fill: '#12100C', stroke: '#FFD84D', strokeWidth: 2 }),
-          h('circle', { cx: 180, cy: 128, r: 5, fill: '#FFD84D', className: 'cp-svg-pulse' }),
-          h('text', { x: 34, y: 40, fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛖ // LOAD-BEARING PROTOTYPE CAD')
+          h('line', { x1: 114, y1: 90, x2: 246, y2: 166, stroke: '#E0C58A', strokeWidth: 1.5, className: 'cp-svg-flow' }),
+          h('line', { x1: 246, y1: 90, x2: 114, y2: 166, stroke: '#E0C58A', strokeWidth: 1.5, className: 'cp-svg-flow' }),
+          h('line', { x1: 180, y1: 52, x2: 180, y2: 204, stroke: 'rgba(224,197,138,0.5)', strokeWidth: 1.4 }),
+          h('circle', { cx: 180, cy: 128, r: 16, fill: '#12100C', stroke: '#E0C58A', strokeWidth: 2 }),
+          h('circle', { cx: 180, cy: 128, r: 5, fill: '#E0C58A', className: 'cp-svg-pulse' }),
+          h('text', { x: 34, y: 40, fill: '#E0C58A', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛖ // LOAD-BEARING PROTOTYPE CAD')
         )
       );
     }
@@ -1210,7 +1210,7 @@
         h(
           'svg',
           { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Technology Distributed Mesh' },
-          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
+          h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(201,164,92,0.4)', strokeWidth: 1.4 }),
           [
             { x1: 136, y1: 108, x2: 68, y2: 68 },
             { x1: 224, y1: 108, x2: 292, y2: 68 },
@@ -1220,16 +1220,16 @@
             h(
               Fragment,
               { key: i },
-              h('line', { x1: edge.x1, y1: edge.y1, x2: edge.x2, y2: edge.y2, stroke: 'rgba(229,184,63,0.28)', strokeWidth: 1.6 }),
-              h('line', { x1: edge.x1, y1: edge.y1, x2: edge.x2, y2: edge.y2, stroke: '#FFD84D', strokeWidth: 1.8, className: 'cp-svg-flow' }),
-              h('circle', { cx: edge.x2, cy: edge.y2, r: 12, fill: '#14110C', stroke: '#FFD84D', strokeWidth: 1.8 }),
-              h('circle', { cx: edge.x2, cy: edge.y2, r: 4, fill: '#FFD84D', className: 'cp-svg-pulse' })
+              h('line', { x1: edge.x1, y1: edge.y1, x2: edge.x2, y2: edge.y2, stroke: 'rgba(201,164,92,0.28)', strokeWidth: 1.6 }),
+              h('line', { x1: edge.x1, y1: edge.y1, x2: edge.x2, y2: edge.y2, stroke: '#E0C58A', strokeWidth: 1.8, className: 'cp-svg-flow' }),
+              h('circle', { cx: edge.x2, cy: edge.y2, r: 12, fill: '#14110C', stroke: '#E0C58A', strokeWidth: 1.8 }),
+              h('circle', { cx: edge.x2, cy: edge.y2, r: 4, fill: '#E0C58A', className: 'cp-svg-pulse' })
             )
           ),
-          h('rect', { x: 134, y: 94, width: 92, height: 68, rx: 12, fill: 'rgba(229,184,63,0.16)', stroke: '#FFD84D', strokeWidth: 2 }),
+          h('rect', { x: 134, y: 94, width: 92, height: 68, rx: 12, fill: 'rgba(201,164,92,0.16)', stroke: '#E0C58A', strokeWidth: 2 }),
           h('text', { x: 180, y: 125, textAnchor: 'middle', fill: '#FFFFFF', fontSize: 11, fontFamily: 'JetBrains Mono', fontWeight: 700 }, 'CORE // ᛏ'),
-          h('text', { x: 180, y: 143, textAnchor: 'middle', fill: '#FFD84D', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'ACTIVE MESH'),
-          h('text', { x: 34, y: 40, fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛏ // EMERGING SYSTEMS TOPOLOGY')
+          h('text', { x: 180, y: 143, textAnchor: 'middle', fill: '#E0C58A', fontSize: 9, fontFamily: 'JetBrains Mono' }, 'ACTIVE MESH'),
+          h('text', { x: 34, y: 40, fill: '#E0C58A', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛏ // EMERGING SYSTEMS TOPOLOGY')
         )
       );
     }
@@ -1240,13 +1240,13 @@
       h(
         'svg',
         { viewBox: '0 0 360 250', width: '100%', style: { height: 'auto' }, role: 'img', 'aria-label': 'Science Quantum Orbital Model' },
-        h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(229,184,63,0.4)', strokeWidth: 1.4 }),
-        h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(-26 180 130)', fill: 'none', stroke: '#E5B83F', strokeWidth: 1.6, className: 'cp-svg-flow' }),
-        h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(26 180 130)', fill: 'none', stroke: 'rgba(255,216,77,0.75)', strokeWidth: 1.6, className: 'cp-svg-flow' }),
+        h('rect', { x: 16, y: 16, width: 328, height: 218, rx: 14, fill: '#0D0B08', stroke: 'rgba(201,164,92,0.4)', strokeWidth: 1.4 }),
+        h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(-26 180 130)', fill: 'none', stroke: '#C9A45C', strokeWidth: 1.6, className: 'cp-svg-flow' }),
+        h('ellipse', { cx: 180, cy: 130, rx: 104, ry: 36, transform: 'rotate(26 180 130)', fill: 'none', stroke: 'rgba(224,197,138,0.75)', strokeWidth: 1.6, className: 'cp-svg-flow' }),
         h('ellipse', { cx: 180, cy: 130, rx: 36, ry: 92, fill: 'none', stroke: 'rgba(255,255,255,0.28)', strokeWidth: 1.3 }),
-        h('circle', { cx: 180, cy: 130, r: 22, fill: 'rgba(255,216,77,0.18)', className: 'cp-svg-pulse' }),
-        h('circle', { cx: 180, cy: 130, r: 11, fill: '#FFD84D' }),
-        h('text', { x: 34, y: 40, fill: '#FFD84D', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛊ // EMPIRICAL DISCOVERY LAB')
+        h('circle', { cx: 180, cy: 130, r: 22, fill: 'rgba(224,197,138,0.18)', className: 'cp-svg-pulse' }),
+        h('circle', { cx: 180, cy: 130, r: 11, fill: '#E0C58A' }),
+        h('text', { x: 34, y: 40, fill: '#E0C58A', fontSize: 10.5, fontFamily: 'JetBrains Mono' }, 'ᛊ // EMPIRICAL DISCOVERY LAB')
       )
     );
   }
@@ -1275,8 +1275,8 @@
         --cp-bg: #060608;
         --cp-bg-elev: #0E0D10;
         --cp-bg-card: rgba(17, 15, 13, 0.76);
-        --cp-gold: #E5B83F;
-        --cp-yellow: #FFD84D;
+        --cp-gold: #C9A45C;
+        --cp-yellow: #E0C58A;
         --cp-text: #F7F4ED;
         --cp-muted: #A69F92;
         --cp-border: rgba(229, 184, 63, 0.2);
@@ -1341,7 +1341,7 @@
         top: 0;
         left: 0;
         height: 2.5px;
-        background: linear-gradient(90deg, #C89624, #FFD84D, #FFF4D2);
+        background: linear-gradient(90deg, #C89624, #E0C58A, #FFF4D2);
         box-shadow: 0 0 12px rgba(255, 216, 77, 0.85);
         z-index: 100;
         transform-origin: left center;
@@ -1471,7 +1471,7 @@
       .cp-btn:hover { transform: translateY(-2px); }
       .cp-btn:active { transform: translateY(0); }
       .cp-btn--gold {
-        background: linear-gradient(135deg, #E5B83F 0%, #FFD84D 55%, #F0C44B 100%);
+        background: linear-gradient(135deg, #C9A45C 0%, #E0C58A 55%, #F0C44B 100%);
         color: #120E05;
         box-shadow: 0 10px 28px rgba(229, 184, 63, 0.3);
       }
@@ -1613,7 +1613,7 @@
         border-color: var(--cp-yellow);
         color: #120E05;
         font-weight: 700;
-        background: linear-gradient(135deg, #E5B83F 0%, #FFD84D 100%);
+        background: linear-gradient(135deg, #C9A45C 0%, #E0C58A 100%);
         box-shadow: 0 8px 22px rgba(229, 184, 63, 0.28);
       }
       .cp-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
@@ -1640,7 +1640,7 @@
         font-weight: 900;
         font-size: 0.96rem;
         color: #120E05;
-        background: linear-gradient(135deg, #E5B83F 0%, #FFD84D 100%);
+        background: linear-gradient(135deg, #C9A45C 0%, #E0C58A 100%);
         box-shadow: 0 6px 18px rgba(229, 184, 63, 0.28);
         flex-shrink: 0;
       }
@@ -1979,10 +1979,8 @@
                   style: {
                     fontFamily: 'var(--cp-font-display)',
                     fontSize: '3.1rem',
-                    fontWeight: 900,
-                    background: 'linear-gradient(180deg, #FFFFFF 15%, #FFD84D 85%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
+                    fontWeight: 400,
+                    color: 'var(--nx-frost)',
                     lineHeight: 1.08,
                   },
                 },
