@@ -162,11 +162,11 @@ module.exports = {
     },
     {
       "q": "How do I take part?",
-      "a": "Use the interest wizard below. You can explore coding, join mathematics activities, or help organize events."
+      "a": "Use the application form below. You can explore coding, join mathematics activities, or help organize events."
     },
     {
       "q": "Can I start a chapter at my school?",
-      "a": "The chapter directory is built to grow. Use the interest wizard, mention your school, and say you want to start a chapter."
+      "a": "The chapter directory is built to grow. Use the application form below and choose Start a chapter at my school."
     }
   ]
 };
