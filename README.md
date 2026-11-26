@@ -17,13 +17,17 @@ seed.js       starting content, copied from the original site
 On first start the database is filled with the current team, events and FAQ. After that, the admin page is the source of truth.
 
 ## What the admin can edit
-Events, Team (including order, roles, departments, president), FAQ, and it lists every interest-form submission (with CSV export).
+Events, Team (including order, roles, departments, president), FAQ, and it lists every application and interest-form submission (with CSV export, department filter and a "Full application" view).
 STEM disciplines, departments and the page copy are still in `public/codepatch-stem.bundle.js`.
 
 ## How it connects
 - The site calls `GET /api/content` on load. If the API is unreachable it quietly shows the built-in content.
 - The interest form posts to `POST /api/interest` (limited to 8 per hour per IP) and shows the real ticket ID.
 - Admin routes live under `/api/admin/*`. They need the login cookie (httpOnly, SameSite=Strict, 8 hours); login is limited to 10 tries per 15 minutes.
+
+## The chapter application
+`application.js` holds every question and requirement for the join form: the general questions, each department's own questions and requirements, the commitment step, and the shorter forms for events and starting a chapter. The server sends it to the site and uses the same file to validate submissions, so to change a question you edit that one file and restart. No front-end change is needed. The questions and requirements in it are starting points; replace them with the chapter's real ones.
+Applicants can pick up to two departments (`maxDepartments`). Each department adds a step with its own questions, shows its requirements, and ends with a required "I have read the requirements" tick. Applications are stored with a snapshot of every question and answer, so old applications still read correctly after you edit the questions.
 
 ## Deploying (Render + MongoDB Atlas, both free)
 See the steps in the chat reply, or in short: push this folder as the root of your GitHub repo, create an Atlas database, create a Render Web Service from the repo (build `npm install`, start `npm start`), and add the four environment variables.
