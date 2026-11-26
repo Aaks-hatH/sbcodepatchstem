@@ -87,11 +87,26 @@ function adminNewRsvp({ ev, rsvp, waitlisted, taken, adminUrl }) {
 function adminCancelled({ ev, rsvp }) {
   return { subject: `RSVP cancelled: ${rsvp.name} for ${ev.title}`, html: shell('RSVP cancelled', `<p style="margin:0">${esc(rsvp.name)} (${esc(rsvp.email)}) cancelled their RSVP for <b>${esc(ev.title)}</b>.</p>`) };
 }
+function answerTable(answers) {
+  let last = null, out = '';
+  for (const x of answers || []) {
+    if (x.section !== last) { last = x.section; out += `<tr><td colspan="2" style="padding:14px 0 4px;color:#e5b83f;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px">${esc(x.section)}</td></tr>`; }
+    out += `<tr><td colspan="2" style="padding:6px 0 0;color:#a69f92;font-size:13px">${esc(x.label)}</td></tr><tr><td colspan="2" style="padding:0 0 6px;color:#f1ede4;white-space:pre-wrap">${esc(x.value)}</td></tr>`;
+  }
+  return out;
+}
 function adminInterest({ doc, ticketId, adminUrl }) {
-  return { subject: `New interest form: ${doc.name} (${ticketId})`, html: shell('New interest submission', `<table role="presentation">${row('Ticket', ticketId)}${row('Name', doc.name)}${row('Email', doc.email)}${row('Interest', doc.track)}${row('Department', doc.department)}${row('Message', doc.message)}</table><p style="margin-top:18px">${btn(adminUrl, 'Open admin')}</p>`), replyTo: doc.email };
+  const isJoin = doc.path === 'join', depts = (doc.departments || []).join(', ');
+  const subject = isJoin ? `New application: ${doc.name} (${depts}) ${ticketId}` : `New ${doc.path === 'newChapter' ? 'chapter request' : 'interest form'}: ${doc.name} (${ticketId})`;
+  const head = `${row('Ticket', ticketId)}${row('Name', doc.name)}${row('Email', doc.email)}${row('Type', doc.track)}${isJoin ? row('Departments', depts) + row('Grade', doc.grade) : ''}`;
+  return { subject, html: shell(isJoin ? 'New chapter application' : 'New interest submission', `<table role="presentation">${head}${answerTable(doc.answers)}</table><p style="margin-top:18px">${btn(adminUrl, 'Open admin')}</p>`), replyTo: doc.email };
 }
 function interestReceipt({ doc, ticketId }) {
-  return { subject: `We got your message (${ticketId})`, html: shell('Thanks for reaching out!', `<p style="margin:0 0 6px">Hi ${esc(doc.name)},</p><p style="margin:0">We've logged your interest in <b>${esc(doc.track)}</b> (${esc(doc.department)}). A chapter officer will be in touch soon.</p><p style="color:#a69f92">Your ticket ID: <b style="color:#ffd84d">${esc(ticketId)}</b></p>`) };
+  const isJoin = doc.path === 'join', depts = (doc.departments || []).join(' and ');
+  const body = isJoin
+    ? `<p style="margin:0 0 6px">Hi ${esc(doc.name)},</p><p style="margin:0">We got your application to the <b>${esc(depts)}</b> department${(doc.departments || []).length > 1 ? 's' : ''}. A chapter officer will review it and email you with next steps.</p>`
+    : `<p style="margin:0 0 6px">Hi ${esc(doc.name)},</p><p style="margin:0">We've logged your interest in <b>${esc(doc.track)}</b>. A chapter officer will be in touch soon.</p>`;
+  return { subject: isJoin ? `We got your application (${ticketId})` : `We got your message (${ticketId})`, html: shell(isJoin ? 'Application received' : 'Thanks for reaching out!', `${body}<p style="color:#a69f92">Your ticket ID: <b style="color:#ffd84d">${esc(ticketId)}</b></p>`) };
 }
 function broadcast({ ev, subject, message, name }) {
   return { subject, html: shell(subject, `<p style="margin:0 0 6px">Hi ${esc(name)},</p><p style="margin:0">${nl(message)}</p>${eventBox(ev)}`) };
