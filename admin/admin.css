@@ -49,3 +49,5 @@ dialog{width:min(620px,100% - 1.5rem);max-height:92vh;padding:0;border:0;backgro
 
 .top h1,.top .link{white-space:nowrap}
 @media (max-width:480px){.top{gap:.6rem;padding:.55rem .8rem}.top h1{font-size:1.05rem}}
+
+.app{margin:.5rem 0 0;border:1px solid var(--line,#2a3341);border-radius:8px;padding:.4rem .8rem}.app summary{cursor:pointer;font-weight:600;padding:.25rem 0}.app__sec h4{margin:.9rem 0 .2rem;color:var(--muted);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}.app dl{margin:0}.app dt{color:var(--muted);font-size:.85rem;margin-top:.5rem}.app dd{margin:.1rem 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
