@@ -310,11 +310,11 @@
     },
     {
       q: 'How do I take part?',
-      a: 'Use the interest wizard below. You can explore coding, join mathematics activities, or help organize events.',
+      a: 'Use the application form below. You can explore coding, join mathematics activities, or help organize events.',
     },
     {
       q: 'Can I start a chapter at my school?',
-      a: 'The chapter directory is built to grow. Use the interest wizard, mention your school, and say you want to start a chapter.',
+      a: 'The chapter directory is built to grow. Use the application form below and choose Start a chapter at my school.',
     },
   ];
 
@@ -363,15 +363,19 @@
       if (!r.ok) throw new Error(data.error || 'Could not send your RSVP.');
       return data;
     },
-    async submitContactWizard(payload) {
+    async getApplicationConfig() {
+      const c = await loadContent();
+      return c && c.application ? c.application : null;
+    },
+    async submitApplication(payload) {
       const r = await fetch(API_BASE + '/api/interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.error || 'Could not send');
-      return { ok: true, ticketId: data.ticketId, receivedAt: data.receivedAt, payload };
+      if (!r.ok) { const e = new Error(data.error || 'Could not send. Please try again.'); e.fields = data.fields; throw e; }
+      return { ok: true, ticketId: data.ticketId, receivedAt: data.receivedAt };
     },
   };
 
@@ -2216,43 +2220,238 @@
     );
   }
 
+  /* ==========================================================================
+     APPLICATION WIZARD
+     All questions come from the server (application.js, via /api/content), so
+     editing a question never needs a change here. The server re-checks everything.
+     ========================================================================== */
+  const AP_EMAIL = /^\S+@\S+\.\S+$/;
+  const apShow = (v) => (Array.isArray(v) ? v.join(', ') : v === true ? 'Yes' : v === false ? 'No' : v || '');
+  function apCheck(f, v) {
+    if (f.type === 'checkbox') return f.required && !(v && v.length) ? 'Pick at least one.' : '';
+    if (f.type === 'confirm') return f.required && v !== true ? 'Please confirm to continue.' : '';
+    const t = typeof v === 'string' ? v.trim() : '';
+    if (f.type === 'select' || f.type === 'radio') return f.required && !t ? 'Please choose one.' : '';
+    if (!t) return f.required ? 'This is required.' : '';
+    if (f.type === 'email' && !AP_EMAIL.test(t)) return 'Please enter a valid email address.';
+    if (f.type === 'url') { try { const u = new URL(t); if (u.protocol !== 'http:' && u.protocol !== 'https:') throw 0; } catch (_) { return 'Please enter a full link starting with https://'; } }
+    if (f.min && t.length < f.min) return 'Please write at least ' + f.min + ' characters (you have ' + t.length + ').';
+    return '';
+  }
+
+  function ApField({ f, k, value, error, onChange }) {
+    const id = 'ap-' + k.replace(/\W+/g, '-'), errId = id + '-err';
+    const bad = error ? { 'aria-invalid': 'true', 'data-bad': '1', 'aria-describedby': errId } : {};
+    const err = error ? h('span', { className: 'rsvp-err', id: errId, role: 'alert' }, error) : null;
+    const help = f.help ? h('span', { className: 'ap-help', id: id + '-help' }, f.help) : null;
+    const req = f.required ? h('span', { className: 'ap-req', 'aria-hidden': 'true' }, ' *') : h('span', { className: 'ap-opt-tag' }, ' (optional)');
+
+    if (f.type === 'confirm') {
+      return h('div', { className: 'ap-field' },
+        h('label', { className: 'ap-choice ap-choice--confirm' + (value ? ' is-on' : '') },
+          h('input', { type: 'checkbox', checked: !!value, onChange: (e) => onChange(e.target.checked), ...bad }),
+          h('span', null, f.label, f.required ? h('span', { className: 'ap-req', 'aria-hidden': 'true' }, ' *') : null)), err);
+    }
+    if (f.type === 'radio' || f.type === 'checkbox') {
+      const multi = f.type === 'checkbox', cur = multi ? (value || []) : value;
+      const toggle = (o) => onChange(multi ? (cur.includes(o) ? cur.filter((x) => x !== o) : [...cur, o]) : o);
+      return h('fieldset', { className: 'ap-field ap-fieldset', 'aria-describedby': f.help ? id + '-help' : undefined },
+        h('legend', null, f.label, req), help,
+        h('div', { className: 'ap-choices' }, f.options.map((o, i) => {
+          const on = multi ? cur.includes(o) : cur === o;
+          return h('label', { key: o, className: 'ap-choice' + (on ? ' is-on' : '') },
+            h('input', { type: multi ? 'checkbox' : 'radio', name: id, checked: on, onChange: () => toggle(o), ...(i === 0 ? bad : {}) }), h('span', null, o));
+        })), err);
+    }
+    const common = { id, className: f.type === 'select' ? 'cp-select' : f.type === 'textarea' ? 'cp-textarea' : 'cp-input', value: value || '', 'aria-describedby': error ? errId : f.help ? id + '-help' : undefined, ...bad };
+    let control;
+    if (f.type === 'select') control = h('select', { ...common, onChange: (e) => onChange(e.target.value) }, h('option', { value: '' }, 'Choose...'), f.options.map((o) => h('option', { key: o, value: o }, o)));
+    else if (f.type === 'textarea') control = h('textarea', { ...common, rows: 4, maxLength: f.max, placeholder: f.placeholder || '', onChange: (e) => onChange(e.target.value) });
+    else control = h('input', { ...common, type: f.type === 'email' ? 'email' : f.type === 'url' ? 'url' : 'text', maxLength: f.max, placeholder: f.placeholder || '', autoComplete: f.autoComplete, onChange: (e) => onChange(e.target.value) });
+    const count = f.type === 'textarea' && f.min ? h('span', { className: 'ap-count' + ((value || '').trim().length >= f.min ? ' is-ok' : '') }, (value || '').trim().length + ' / ' + f.min + ' minimum') : null;
+    return h('div', { className: 'ap-field' }, h('label', { htmlFor: id, className: 'ap-label' }, f.label, req), help, control, count, err);
+  }
+
+  function ApplicationWizard() {
+    const [cfg, setCfg] = useState(undefined); /* undefined = loading, null = unavailable */
+    const [path, setPath] = useState(null);
+    const [picked, setPicked] = useState([]);
+    const [answers, setAnswers] = useState({ general: {}, departments: {} });
+    const [stepIdx, setStepIdx] = useState(0);
+    const [errors, setErrors] = useState({});
+    const [formError, setFormError] = useState('');
+    const [busy, setBusy] = useState(false);
+    const [receipt, setReceipt] = useState(null);
+    const [hp, setHp] = useState('');
+    const topRef = useRef(null);
+    const mounted = useRef(false);
+    const restored = useRef(false);
+
+    useEffect(() => { let on = true; CodePatchService.getApplicationConfig().then((c) => on && setCfg(c || null)); return () => { on = false; }; }, []);
+
+    /* Restore an unfinished application after an accidental refresh (this tab only). */
+    useEffect(() => {
+      if (!cfg) return;
+      try {
+        const d = JSON.parse(sessionStorage.getItem('cp-apply') || 'null');
+        if (d && d.path && cfg.paths[d.path]) { restored.current = true; setPath(d.path); setPicked((d.picked || []).filter((x) => cfg.departments[x])); setAnswers(d.answers || { general: {}, departments: {} }); setStepIdx(d.stepIdx || 0); }
+      } catch (_) {}
+    }, [cfg]);
+    useEffect(() => {
+      if (!cfg || receipt) return;
+      try { if (path) sessionStorage.setItem('cp-apply', JSON.stringify({ path, picked, answers, stepIdx })); else sessionStorage.removeItem('cp-apply'); } catch (_) {}
+    }, [cfg, path, picked, answers, stepIdx, receipt]);
+
+    const steps = useMemo(() => {
+      if (!cfg || !path) return [];
+      if (path !== 'join') return [{ k: 'details', title: 'Your details', fields: cfg.paths[path].fields }];
+      return [
+        { k: 'about', title: 'About you', fields: cfg.about },
+        { k: 'departments', title: 'Departments' },
+        ...picked.map((d) => ({ k: 'dept', d, title: d, fields: cfg.departments[d].questions })),
+        { k: 'commit', title: 'Commitment', fields: cfg.commitment },
+        { k: 'review', title: 'Review' },
+      ];
+    }, [cfg, path, picked]);
+    const step = steps[Math.min(stepIdx, steps.length - 1)];
+    const last = stepIdx >= steps.length - 1;
+
+    /* Move focus to the step heading whenever the step changes (not on first paint). */
+    useEffect(() => {
+      if (!mounted.current) { mounted.current = true; return; }
+      if (restored.current) { restored.current = false; return; } /* restoring a draft should not scroll the page */
+      const t = topRef.current; if (t) { t.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); t.focus({ preventScroll: true }); }
+    }, [stepIdx, path, receipt]);
+
+    const keyOf = (s, f) => (s.k === 'dept' ? s.d + '.' + f.id : 'general.' + f.id);
+    const valOf = (s, f) => (s.k === 'dept' ? (answers.departments[s.d] || {})[f.id] : answers.general[f.id]);
+    const setVal = (s, f, v) => {
+      const key = keyOf(s, f);
+      if (s.k === 'dept') setAnswers((a) => ({ ...a, departments: { ...a.departments, [s.d]: { ...(a.departments[s.d] || {}), [f.id]: v } } }));
+      else setAnswers((a) => ({ ...a, general: { ...a.general, [f.id]: v } }));
+      if (errors[key]) setErrors((e) => ({ ...e, [key]: '' }));
+    };
+    const focusBad = () => setTimeout(() => { const b = document.querySelector('#apply-card [data-bad="1"]'); if (b) b.focus(); }, 0);
+
+    const checkStep = (s) => {
+      const errs = {};
+      if (s.k === 'departments') { if (!picked.length) errs.departments = 'Pick at least one department.'; }
+      else if (s.fields) for (const f of s.fields) { const m = apCheck(f, valOf(s, f)); if (m) errs[keyOf(s, f)] = m; }
+      return errs;
+    };
+    const next = () => {
+      const errs = checkStep(step); setErrors(errs);
+      if (Object.keys(errs).length) { focusBad(); return; }
+      setFormError(''); setStepIdx(stepIdx + 1);
+    };
+    const back = () => { setFormError(''); if (stepIdx === 0) { setPath(null); setErrors({}); } else setStepIdx(stepIdx - 1); };
+    const reset = () => { setPath(null); setPicked([]); setAnswers({ general: {}, departments: {} }); setStepIdx(0); setErrors({}); setFormError(''); setReceipt(null); setHp(''); };
+
+    const submit = async () => {
+      /* Check every step again so nothing slips through if someone jumped around. */
+      for (let i = 0; i < steps.length; i++) { const errs = checkStep(steps[i]); if (Object.keys(errs).length) { setErrors(errs); setStepIdx(i); setFormError('One of your answers needs attention.'); focusBad(); return; } }
+      setBusy(true); setFormError('');
+      try {
+        const payload = { path, departments: path === 'join' ? picked : [], answers: { general: answers.general, departments: Object.fromEntries(picked.map((d) => [d, answers.departments[d] || {}])) }, website: hp };
+        const res = await CodePatchService.submitApplication(payload);
+        try { sessionStorage.removeItem('cp-apply'); } catch (_) {}
+        setReceipt({ ...res, path, picked: path === 'join' ? picked : [], name: (answers.general.name || '').trim() });
+      } catch (err) {
+        if (err.fields) {
+          setErrors(err.fields);
+          const bad = Object.keys(err.fields)[0], at = steps.findIndex((s) => (s.k === 'dept' ? bad.startsWith(s.d + '.') : s.k === 'departments' ? bad === 'departments' : s.fields && bad.startsWith('general.') && s.fields.some((f) => 'general.' + f.id === bad)));
+          if (at >= 0) { setStepIdx(at); focusBad(); }
+        }
+        setFormError(err && err.message ? err.message : 'Could not send right now. Please try again.');
+      } finally { setBusy(false); }
+    };
+
+    const card = (children) => h(SpotlightCard, { id: 'apply-card', className: 'ap-card' }, children);
+    const title = (text, sub) => h('div', { className: 'ap-head' }, h('h3', { ref: topRef, tabIndex: -1, className: 'ap-title' }, text), sub ? h('p', { className: 'ap-sub' }, sub) : null);
+
+    if (cfg === undefined) return card([title('Apply to the chapter'), h('p', { className: 'ap-sub' }, 'Loading the application...')]);
+    if (cfg === null) return card([title('Apply to the chapter'), h('p', { className: 'ap-sub' }, 'The application could not load right now. Please refresh in a minute, or message @sbcodepatch on Instagram.')]);
+
+    /* ---- Done ---- */
+    if (receipt) {
+      const isJoin = receipt.path === 'join';
+      return card([
+        h('span', { key: 'b', className: 'cp-badge-gold' }, isJoin ? 'APPLICATION RECEIVED' : 'DISPATCH RECORDED'),
+        h('h3', { key: 't', ref: topRef, tabIndex: -1, className: 'ap-title ap-title--done' }, 'Ticket ID: ' + receipt.ticketId),
+        h('p', { key: 'p', className: 'ap-sub' }, isJoin
+          ? 'Thank you, ' + receipt.name + '. Your application to ' + receipt.picked.join(' and ') + ' is in. A chapter officer will review it and email you with next steps. Keep your ticket ID in case you need to reach us.'
+          : 'Thank you, ' + receipt.name + '. We have your message and will be in touch.'),
+        h('button', { key: 'r', type: 'button', className: 'cp-btn cp-btn--outline', onClick: reset }, 'Submit another'),
+      ]);
+    }
+
+    /* ---- Choose what you want to do ---- */
+    if (!path) {
+      return card([
+        title('Apply to the chapter', 'What would you like to do?'),
+        h('div', { key: 'o', className: 'ap-paths' }, Object.entries(cfg.paths).map(([k, p]) =>
+          h('button', { key: k, type: 'button', className: 'ap-path' + (k === 'join' ? ' ap-path--main' : ''), onClick: () => { setPath(k); setStepIdx(0); setErrors({}); } },
+            h('b', null, p.label), h('span', null, p.summary)))),
+      ]);
+    }
+
+    /* ---- Steps ---- */
+    const progress = steps.length > 1 ? h('ol', { className: 'ap-steps', 'aria-label': 'Application progress' }, steps.map((s, i) =>
+      h('li', { key: s.k + (s.d || ''), className: i < stepIdx ? 'is-done' : i === stepIdx ? 'is-now' : '', 'aria-current': i === stepIdx ? 'step' : undefined },
+        h('i', null, i < stepIdx ? '✓' : String(i + 1)), h('span', null, s.title)))) : null;
+
+    let body;
+    if (step.k === 'departments') {
+      const max = cfg.paths.join.maxDepartments;
+      const toggle = (d) => { setErrors({}); setPicked((p) => (p.includes(d) ? p.filter((x) => x !== d) : p.length >= max ? p : [...p, d])); };
+      body = [
+        title('Choose your department' + (max > 1 ? 's' : ''), 'Pick up to ' + max + '. ' + (max > 1 ? 'The first one you pick is your first choice. ' : '') + 'Each has its own questions and requirements.'),
+        h('div', { key: 'd', className: 'ap-depts', role: 'group', 'aria-label': 'Departments' }, Object.entries(cfg.departments).map(([d, info]) => {
+          const on = picked.includes(d), full = !on && picked.length >= max;
+          return h('label', { key: d, className: 'ap-dept' + (on ? ' is-on' : '') + (full ? ' is-full' : '') },
+            h('input', { type: 'checkbox', checked: on, disabled: full, onChange: () => toggle(d), ...(errors.departments && d === Object.keys(cfg.departments)[0] ? { 'data-bad': '1', 'aria-invalid': 'true' } : {}) }),
+            h('span', { className: 'ap-dept__top' }, h('span', { className: 'ap-dept__rune', 'aria-hidden': 'true' }, info.rune), h('b', null, d), on && picked.length > 1 ? h('em', null, picked[0] === d ? 'First choice' : 'Second choice') : null),
+            h('span', { className: 'ap-dept__blurb' }, info.blurb),
+            h('span', { className: 'ap-dept__reqs' }, h('u', null, 'Requirements'), h('ul', null, info.requirements.map((r) => h('li', { key: r }, r)))));
+        })),
+        errors.departments ? h('span', { key: 'e', className: 'rsvp-err', role: 'alert' }, errors.departments) : null,
+      ];
+    } else if (step.k === 'review') {
+      const rows = [];
+      cfg.about.forEach((f) => { const v = apShow(answers.general[f.id]); if (v) rows.push(['About you', 0, f.label, v]); });
+      picked.forEach((d, i) => cfg.departments[d].questions.forEach((f) => { const v = apShow((answers.departments[d] || {})[f.id]); if (v) rows.push([d + (picked.length > 1 && i === 0 ? ' (first choice)' : ''), 2 + i, f.label, v]); }));
+      cfg.commitment.forEach((f) => { const v = apShow(answers.general[f.id]); if (v) rows.push(['Commitment', 2 + picked.length, f.label, v]); });
+      const groups = []; rows.forEach((r) => { let g = groups[groups.length - 1]; if (!g || g.name !== r[0]) groups.push(g = { name: r[0], at: r[1], items: [] }); g.items.push(r); });
+      body = [
+        title('Review your application', 'Check your answers, then send. You can edit any section.'),
+        h('div', { key: 'rv', className: 'ap-review' }, groups.map((g) => h('section', { key: g.name, className: 'ap-rsec' },
+          h('div', { className: 'ap-rsec__head' }, h('h4', null, g.name), h('button', { type: 'button', className: 'ap-link', onClick: () => setStepIdx(g.at) }, 'Edit')),
+          h('dl', null, g.items.map((r, i) => [h('dt', { key: 'k' + i }, r[2]), h('dd', { key: 'v' + i }, r[3])]))))),
+      ];
+    } else {
+      const sub = step.k === 'about' ? cfg.paths.join.blurb : step.k === 'dept' ? cfg.departments[step.d].blurb : step.k === 'commit' ? 'Almost done.' : cfg.paths[path].summary;
+      body = [
+        title(step.k === 'dept' ? step.d + ' questions' : step.k === 'about' ? 'Tell us about you' : step.k === 'commit' ? 'One last thing' : cfg.paths[path].label, sub),
+        step.k === 'dept' ? h('div', { key: 'rq', className: 'ap-reqbox' }, h('b', null, 'What ' + step.d + ' members do'), h('ul', null, cfg.departments[step.d].requirements.map((r) => h('li', { key: r }, r)))) : null,
+        h('div', { key: 'f', className: 'ap-fields' }, step.fields.map((f) => h(ApField, { key: keyOf(step, f), f, k: keyOf(step, f), value: valOf(step, f), error: errors[keyOf(step, f)], onChange: (v) => setVal(step, f, v) }))),
+      ];
+    }
+
+    const single = steps.length === 1;
+    return card([
+      progress,
+      h('div', { key: 'body', className: 'ap-body cp-panel-enter' }, body),
+      h('input', { key: 'hp', type: 'text', className: 'rsvp-hp', tabIndex: -1, autoComplete: 'off', 'aria-hidden': 'true', value: hp, onChange: (e) => setHp(e.target.value), name: 'website' }),
+      formError ? h('div', { key: 'fe', className: 'rsvp-err rsvp-err--form', role: 'alert' }, formError) : null,
+      h('div', { key: 'nav', className: 'ap-nav' },
+        h('button', { type: 'button', className: 'cp-btn cp-btn--outline', onClick: back, disabled: busy }, stepIdx === 0 ? 'Back to options' : 'Back'),
+        last ? h('button', { type: 'button', className: 'cp-btn cp-btn--gold', onClick: submit, disabled: busy }, busy ? 'Sending...' : single ? 'Send' : 'Submit application')
+             : h('button', { type: 'button', className: 'cp-btn cp-btn--gold', onClick: next }, 'Next')),
+    ]);
+  }
+
   function FaqAndContactSection() {
     const [openFaq, setOpenFaq] = useState(0);
-    const [form, setForm] = useState({
-      name: '',
-      email: '',
-      track: 'Join SBHS Chapter',
-      department: 'Coding',
-      message: '',
-    });
-    const [submitting, setSubmitting] = useState(false);
-    const [receipt, setReceipt] = useState(null);
-    const [errorMsg, setErrorMsg] = useState('');
-    const [fieldErrors, setFieldErrors] = useState({});
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const fe = {};
-      if (!form.name.trim()) fe.name = 'Please enter your name.';
-      if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) fe.email = 'Please enter a valid email address.';
-      setFieldErrors(fe);
-      if (fe.name || fe.email) {
-        setErrorMsg('');
-        const bad = document.querySelector('#contact [data-bad="1"]');
-        if (bad) bad.focus();
-        return;
-      }
-      setErrorMsg('');
-      setSubmitting(true);
-      try {
-        const res = await CodePatchService.submitContactWizard(form);
-        setReceipt(res);
-      } catch (err) {
-        setErrorMsg(err && err.message ? err.message : 'Could not send right now. Please try again.');
-      } finally {
-        setSubmitting(false);
-      }
-    };
 
     return h(
       'section',
@@ -2260,11 +2459,11 @@
       h(
         'div',
         { className: 'cp-container cp-reveal' },
-        h('span', { className: 'cp-eyebrow' }, 'Questions and chapter interest'),
-        h('h2', { className: 'cp-heading' }, 'FAQ & Interest Wizard'),
+        h('span', { className: 'cp-eyebrow' }, 'Apply to join and get your questions answered'),
+        h('h2', { className: 'cp-heading' }, 'Apply & FAQ'),
         h(
           'div',
-          { className: 'cp-grid-2', style: { alignItems: 'start', marginTop: '2rem' } },
+          { className: 'cp-grid-2 ap-layout', style: { alignItems: 'start', marginTop: '2rem' } },
           h(
             SpotlightCard,
             null,
@@ -2307,123 +2506,7 @@
               )
             )
           ),
-          h(
-            SpotlightCard,
-            null,
-            h('h3', { style: { fontFamily: 'var(--cp-font-display)', marginTop: 0, fontSize: '1.35rem' } }, 'Chapter Interest Wizard'),
-            receipt
-              ? h(
-                  'div',
-                  { className: 'cp-panel-enter', style: { padding: '1rem 0' } },
-                  h('span', { className: 'cp-badge-gold' }, 'DISPATCH RECORDED'),
-                  h('h4', { style: { fontFamily: 'var(--cp-font-display)', fontSize: '1.35rem', margin: '0.85rem 0 0.4rem' } }, 'Ticket ID: ' + receipt.ticketId),
-                  h(
-                    'p',
-                    { style: { color: 'var(--cp-muted)', marginBottom: '1.25rem' } },
-                    'Thank you, ' + receipt.payload.name + '. Your interest in ' + receipt.payload.track + ' (' + receipt.payload.department + ') has been logged.'
-                  ),
-                  h(
-                    'button',
-                    {
-                      type: 'button',
-                      className: 'cp-btn cp-btn--outline',
-                      onClick: () => {
-                        setReceipt(null);
-                        setForm({ name: '', email: '', track: 'Join SBHS Chapter', department: 'Coding', message: '' });
-                      },
-                    },
-                    'Submit Another Request'
-                  )
-                )
-              : h(
-                  'form',
-                  { onSubmit: handleSubmit, noValidate: true, style: { display: 'grid', gap: '1rem' } },
-                  h(
-                    'label',
-                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'Full Name *',
-                    h('input', {
-                      className: 'cp-input',
-                      type: 'text',
-                      placeholder: 'Your full name',
-                      autoComplete: 'name',
-                      'aria-invalid': fieldErrors.name ? 'true' : 'false',
-                      'data-bad': fieldErrors.name ? '1' : undefined,
-                      value: form.name,
-                      onChange: (e) => { setForm({ ...form, name: e.target.value }); if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: '' }); },
-                    }),
-                    fieldErrors.name ? h('span', { className: 'rsvp-err', role: 'alert' }, fieldErrors.name) : null
-                  ),
-                  h(
-                    'label',
-                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'School or Personal Email *',
-                    h('input', {
-                      className: 'cp-input',
-                      type: 'email',
-                      placeholder: 'student@example.com',
-                      autoComplete: 'email',
-                      'aria-invalid': fieldErrors.email ? 'true' : 'false',
-                      'data-bad': fieldErrors.email ? '1' : undefined,
-                      value: form.email,
-                      onChange: (e) => { setForm({ ...form, email: e.target.value }); if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: '' }); },
-                    }),
-                    fieldErrors.email ? h('span', { className: 'rsvp-err', role: 'alert' }, fieldErrors.email) : null
-                  ),
-                  h(
-                    'label',
-                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'Interest Path',
-                    h(
-                      'select',
-                      {
-                        className: 'cp-select',
-                        value: form.track,
-                        onChange: (e) => setForm({ ...form, track: e.target.value }),
-                      },
-                      h('option', { value: 'Join SBHS Chapter' }, 'Join South Brunswick High School Chapter'),
-                      h('option', { value: 'Workshops & Events' }, 'Attend Workshops & Events'),
-                      h('option', { value: 'Start a New Chapter' }, 'Start a Chapter at My School')
-                    )
-                  ),
-                  h(
-                    'label',
-                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'Preferred Department',
-                    h(
-                      'select',
-                      {
-                        className: 'cp-select',
-                        value: form.department,
-                        onChange: (e) => setForm({ ...form, department: e.target.value }),
-                      },
-                      h('option', { value: 'Coding' }, 'Coding'),
-                      h('option', { value: 'Mathematics' }, 'Mathematics'),
-                      h('option', { value: 'Marketing' }, 'Marketing'),
-                      h('option', { value: 'Science' }, 'Science')
-                    )
-                  ),
-                  h(
-                    'label',
-                    { style: { fontSize: '0.85rem', color: 'var(--cp-muted)' } },
-                    'Notes or School Name',
-                    h('textarea', {
-                      className: 'cp-textarea',
-                      rows: 3,
-                      maxLength: 1500,
-                      placeholder: 'Tell us what you want to build or mention your school...',
-                      value: form.message,
-                      onChange: (e) => setForm({ ...form, message: e.target.value }),
-                    })
-                  ),
-                  errorMsg ? h('div', { style: { color: '#FF7B7B', fontSize: '0.85rem' } }, errorMsg) : null,
-                  h(
-                    'button',
-                    { type: 'submit', className: 'cp-btn cp-btn--gold', disabled: submitting },
-                    submitting ? 'Forging Dispatch...' : 'Send Chapter Interest'
-                  )
-                )
-          )
+          h(ApplicationWizard, null)
         )
       )
     );
