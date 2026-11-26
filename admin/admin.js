@@ -86,9 +86,9 @@ const CFG = {
   faq: { label: 'FAQ', hint: 'Questions and answers shown above the interest form.', noun: 'question',
     fields: [['q', 'Question', 'text', true], ['a', 'Answer', 'area', true]], defaults: {} },
 };
-const NAV = [['dashboard', 'Dashboard', '◈'], ['events', 'Events', '▣'], ['rsvps', 'RSVPs', '✓'], ['submissions', 'Messages', '✉'], ['team', 'Team', '☻'], ['faq', 'FAQ', '?'], ['settings', 'Settings', '⚙']];
+const NAV = [['dashboard', 'Dashboard', '◈'], ['events', 'Events', '▣'], ['rsvps', 'RSVPs', '✓'], ['submissions', 'Applications', '✉'], ['team', 'Team', '☻'], ['faq', 'FAQ', '?'], ['settings', 'Settings', '⚙']];
 let tab = 'dashboard';
-const filters = { q: '', event: '', status: '', sub: '' };
+const filters = { q: '', event: '', status: '', sub: '', dept: '' };
 let navBadges = {};
 
 function renderTabs() {
@@ -96,7 +96,7 @@ function renderTabs() {
     el('span', { class: 'ico', 'aria-hidden': 'true' }, icon), label, navBadges[k] ? el('span', { class: 'count' }, String(navBadges[k])) : null)));
 }
 function go(k, preset) {
-  const reset = { q: '', event: '', status: '', sub: '' };
+  const reset = { q: '', event: '', status: '', sub: '', dept: '' };
   if (preset) Object.assign(filters, reset, preset); else if (k !== tab) Object.assign(filters, reset);
   tab = k; renderTabs(); render(); window.scrollTo(0, 0);
 }
@@ -122,7 +122,7 @@ async function renderDashboard() {
     el('div', { class: 'stats' },
       stat(c.going, 'People going', plural(c.goingRsvps, 'RSVP'), () => go('rsvps', { status: 'going' })),
       stat(c.waitlist, 'On waitlists', 'waiting for a spot', () => go('rsvps', { status: 'waitlist' })),
-      stat(c.newSubmissions, 'New messages', `${c.submissions} total`, () => go('submissions', { sub: 'new' })),
+      stat(c.newSubmissions, 'New applications', `${c.submissions} total`, () => go('submissions', { sub: 'new' })),
       stat(c.published, 'Live events', `${c.events} total, ${c.team} team members`, () => go('events'))),
     el('div', { class: 'cols' },
       el('section', { class: 'panel' }, el('h3', {}, 'Upcoming events with RSVPs'),
@@ -204,29 +204,37 @@ async function renderRsvps() {
     el('div', { class: 'filters' }, sel('event', [['', 'All events'], ...events.map((e) => [e.id, e.title])], 'Filter by event'), sel('status', [['', 'All statuses'], ['going', 'Going'], ['waitlist', 'Waitlist'], ['cancelled', 'Cancelled']], 'Filter by status')), summary, out];
 }
 
-/* ---------- Messages (interest form) ---------- */
+/* ---------- Applications (interest form) ---------- */
+function appDetails(answers) {
+  const groups = [];
+  for (const a of answers) { let g = groups[groups.length - 1]; if (!g || g.name !== a.section) groups.push(g = { name: a.section, items: [] }); g.items.push(a); }
+  return el('details', { class: 'app' }, el('summary', {}, 'Full application'),
+    groups.map((g) => el('div', { class: 'app__sec' }, el('h4', {}, g.name), el('dl', {}, g.items.map((a) => [el('dt', {}, a.label), el('dd', {}, a.value)])))));
+}
 async function renderMessages() {
   const all = await api('/submissions'); navBadges.submissions = all.filter((s) => (s.status || 'new') === 'new').length; renderTabs();
-  const out = el('div'), shownRows = () => all.filter((s) => (!filters.sub || (s.status || 'new') === filters.sub) && match(filters.q, s.name, s.email, s.message, s.track, s.department, s.ticketId, s.notes));
+  const flat = (r) => (r.answers || []).map((x) => `${x.section} / ${x.label}: ${x.value}`).join('\n');
+  const out = el('div'), shownRows = () => all.filter((s) => (!filters.sub || (s.status || 'new') === filters.sub) && (!filters.dept || (s.departments || [s.department]).includes(filters.dept)) && match(filters.q, s.name, s.email, s.message, s.track, s.department, s.ticketId, s.notes, flat(s)));
   const draw = () => {
     const rows = shownRows();
-    if (!rows.length) { out.replaceChildren(empty(all.length ? 'No messages match.' : 'No messages yet.')); return; }
+    if (!rows.length) { out.replaceChildren(empty(all.length ? 'No applications match.' : 'No applications yet.')); return; }
     out.replaceChildren(el('ul', { class: 'items' }, rows.map((r) => {
       const st = r.status || 'new', notes = el('textarea', { class: 'notes', 'aria-label': 'Private notes', placeholder: 'Private notes (only admins see these)', maxlength: 1000 }); notes.value = r.notes || '';
       const set = async (body, msg) => { try { await api('/submissions/' + r.id, { method: 'PUT', body }); Object.assign(r, body); toast(msg); navBadges.submissions = all.filter((s) => (s.status || 'new') === 'new').length; renderTabs(); draw(); } catch (e) { fail(e); } };
       return el('li', { class: 'item item--col' },
-        el('div', { class: 'row' }, el('div', { class: 'main' }, el('div', { class: 'tags' }, badge(st === 'new' ? 'New' : st === 'contacted' ? 'Contacted' : 'Archived', st === 'new' ? 'warn' : st === 'contacted' ? 'ok' : 'mute'), badge(r.track), badge(r.department)),
-          el('b', {}, r.name), el('small', {}, el('a', { href: 'mailto:' + r.email }, r.email), ` | ${new Date(r.createdAt).toLocaleString()} | ${r.ticketId}`), r.message ? el('p', { class: 'msg' }, r.message) : null),
+        el('div', { class: 'row' }, el('div', { class: 'main' }, el('div', { class: 'tags' }, badge(st === 'new' ? 'New' : st === 'contacted' ? 'Contacted' : 'Archived', st === 'new' ? 'warn' : st === 'contacted' ? 'ok' : 'mute'), badge(r.track), ...(r.departments && r.departments.length ? r.departments : [r.department]).filter(Boolean).map((d) => badge(d)), r.grade ? badge(r.grade + ' grade') : null),
+          el('b', {}, r.name), el('small', {}, el('a', { href: 'mailto:' + r.email }, r.email), ` | ${new Date(r.createdAt).toLocaleString()} | ${r.ticketId}`), r.answers && r.answers.length ? appDetails(r.answers) : r.message ? el('p', { class: 'msg' }, r.message) : null),
           el('div', { class: 'btns' }, el('a', { class: 'btn btn--sm', href: `mailto:${r.email}?subject=${encodeURIComponent('Re: your CodePatch interest (' + r.ticketId + ')')}`, onclick: () => st === 'new' && set({ status: 'contacted' }, 'Marked as contacted') }, 'Reply'),
             st !== 'contacted' ? el('button', { class: 'btn btn--ghost btn--sm', type: 'button', onclick: () => set({ status: 'contacted' }, 'Marked as contacted') }, 'Mark contacted') : null,
             st !== 'archived' ? el('button', { class: 'btn btn--ghost btn--sm', type: 'button', onclick: () => set({ status: 'archived' }, 'Archived') }, 'Archive') : el('button', { class: 'btn btn--ghost btn--sm', type: 'button', onclick: () => set({ status: 'new' }, 'Moved to new') }, 'Unarchive'),
-            el('button', { class: 'btn btn--ghost btn--sm btn--danger', type: 'button', onclick: async () => { if (!confirm('Delete this message permanently?')) return; try { await api('/submissions/' + r.id, { method: 'DELETE' }); toast('Deleted'); render(); } catch (e) { fail(e); } } }, 'Delete'))),
+            el('button', { class: 'btn btn--ghost btn--sm btn--danger', type: 'button', onclick: async () => { if (!confirm('Delete this application permanently?')) return; try { await api('/submissions/' + r.id, { method: 'DELETE' }); toast('Deleted'); render(); } catch (e) { fail(e); } } }, 'Delete'))),
         el('div', { class: 'row row--notes' }, notes, el('button', { class: 'btn btn--ghost btn--sm', type: 'button', onclick: () => set({ notes: notes.value }, 'Notes saved') }, 'Save notes')));
     })));
   };
   const s = el('select', { 'aria-label': 'Filter by status', onchange: (e) => { filters.sub = e.target.value; draw(); } }, [['', 'All'], ['new', 'New'], ['contacted', 'Contacted'], ['archived', 'Archived']].map(([v, t]) => el('option', { value: v }, t))); s.value = filters.sub;
+  const dsel = el('select', { 'aria-label': 'Filter by department', onchange: (e) => { filters.dept = e.target.value; draw(); } }, [['', 'All departments'], ['Coding', 'Coding'], ['Mathematics', 'Mathematics'], ['Marketing', 'Marketing'], ['Science', 'Science']].map(([v, t]) => el('option', { value: v }, t))); dsel.value = filters.dept;
   draw();
-  return [head('Messages', 'People who filled in the interest form, newest first.', searchBox('Search messages', draw), el('button', { class: 'btn btn--ghost', type: 'button', onclick: () => csv('codepatch-messages.csv', ['createdAt', 'ticketId', 'status', 'name', 'email', 'track', 'department', 'message', 'notes'], shownRows()) }, 'Export CSV')), el('div', { class: 'filters' }, s), out];
+  return [head('Applications', 'Chapter applications and interest forms, newest first. Open "Full application" to read every answer.', searchBox('Search applications', draw), el('button', { class: 'btn btn--ghost', type: 'button', onclick: () => csv('codepatch-applications.csv', ['createdAt', 'ticketId', 'status', 'name', 'email', 'track', 'grade', 'departments', 'application', 'notes'], shownRows().map((r) => ({ ...r, departments: (r.departments || [r.department]).filter(Boolean).join(' + '), application: flat(r) || r.message }))) }, 'Export CSV')), el('div', { class: 'filters' }, s, dsel), out];
 }
 
 /* ---------- Settings ---------- */
