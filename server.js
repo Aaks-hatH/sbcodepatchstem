@@ -10,6 +10,7 @@ const { MongoClient, ObjectId } = require('mongodb');
 const seed = require('./seed');
 const mail = require('./mailer');
 const makeHours = require('./hours');
+const application = require('./application');
 
 const { MONGODB_URI, JWT_SECRET, ADMIN_PASSWORD, PORT = 3000, NODE_ENV } = process.env;
 const PROD = NODE_ENV === 'production';
@@ -112,14 +113,17 @@ async function main() {
       events: events.map((e) => publicEvent(e, counts)),
       team: team.map(({ _id, order, ...m }) => ({ id: String(_id), ...m })),
       faq: faq.map(({ q, a }) => ({ q, a })),
+      application: application.PUBLIC_CONFIG,
     });
   }));
 
   const interestLimit = rateLimit({ windowMs: 60 * 60 * 1000, limit: 8, standardHeaders: true, legacyHeaders: false, message: { error: 'Too many submissions. Please try again later.' } });
   app.post('/api/interest', interestLimit, wrap(async (req, res) => {
     const b = req.body || {};
-    const doc = { name: str(100)(b.name), email: str(160)(b.email), track: str(80)(b.track), department: str(40)(b.department), message: str(1500)(b.message) };
-    if (!doc.name || !/^\S+@\S+\.\S+$/.test(doc.email)) throw httpError(400, 'Please enter your name and a valid email address.');
+    if (b.website) return res.status(201).json({ ok: true, ticketId: 'SBHS-00000', receivedAt: new Date() }); /* honeypot: bots fill hidden fields */
+    const v = application.validate(b);
+    if (!v.ok) return res.status(400).json({ error: v.message, fields: v.errors });
+    const doc = v.doc;
     const ticketId = 'SBHS-' + crypto.randomBytes(3).toString('hex').toUpperCase().slice(0, 5);
     const receivedAt = new Date();
     await C.submissions.insertOne({ ...doc, ticketId, status: 'new', notes: '', createdAt: receivedAt });
